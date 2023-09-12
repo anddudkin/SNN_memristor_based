@@ -3,7 +3,7 @@ from random import random as rand
 import torch
 from torchvision.datasets import MNIST
 
-from main import compute_ideal
+from compute import compute_ideal
 import time
 from datasets import MNIST_train_test
 # print(MNIST_train_test())

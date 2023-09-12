@@ -1,4 +1,4 @@
-from main import compute_ideal
+from compute import compute_ideal
 from tests import test_values
 def Neuron_Integrator(threshold):
      a,b=test_values()[0],test_values()[1],

@@ -41,3 +41,6 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
 
 
     return [I_out, G]
+
+def compute_Membrane_Pot_Change():
+    x=1
