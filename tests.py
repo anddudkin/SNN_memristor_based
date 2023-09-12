@@ -1,11 +1,19 @@
 from random import random as rand
 
 import torch
+from torchvision.datasets import MNIST
+
 from main import compute_ideal
 import time
+from datasets import MNIST_train_test
+# print(MNIST_train_test())
 
-
-
+def test_values():
+    x = int(torch.randint(1000, [1]))
+    y = int(torch.randint(1,10,[1]))
+    h = torch.randint(x, (40, 40))
+    hh = torch.randint(y, ([40]))
+    return [hh,h]
 
 
 #hh = torch.randperm(20)
@@ -19,13 +27,15 @@ b = torch.tensor(
     [10., 1., 5.,1.]
 )
 
-for i in range(100):
-    x = int(torch.randint(1000,[1]))
-    y = int(torch.randint(10,[1]))
-    h = torch.randint(x, (20, 20))
-    hh = torch.randint(y, ([20]))
-    compute_ideal(hh,h)
+x = int(torch.randint(1000, [1]))
+y = int(torch.randint(1, 10, [1]))
+h = torch.randint(x, (40, 40))
+hh = torch.randint(y, ([40]))
+compute_ideal(hh, h)
 
+
+#
+#
 # print(a.shape[1])
 # print(b.__len__())
 # print(torch.split(a,1))

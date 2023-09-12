@@ -24,6 +24,7 @@ a = torch.tensor([
     [0.2, 0.6, 0.7, 0.6],
     [0.2, 0.6, 0.7, 0.6],
 ])
+
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, *args, **kwargs):

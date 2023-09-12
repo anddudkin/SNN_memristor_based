@@ -24,6 +24,7 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
 
     print("Currents =  ", I_all)
     print(I_out)
+
     fig, (ax1, ax2) = plt.subplots(1, 2)
     sctr=ax1.matshow(I_all.tolist(),cmap='inferno')
     plt.colorbar(sctr, ax=ax1)
@@ -31,9 +32,12 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
     gg=ax2.matshow(G.tolist())
     fig.colorbar(gg)
     ax2.set_title('All_weights')
-    # plt.matshow(I_all.tolist())
+    #plt.matshow(I_all.tolist())
     # plt.matshow(G.tolist())
+    # fig.canvas.draw()
+    # fig.canvas.flush_events()
+    # time.sleep(0.1)
     plt.show()
 
 
-    return I_out, G
+    return [I_out, G]
