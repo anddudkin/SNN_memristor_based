@@ -6,6 +6,14 @@ import matplotlib.pyplot as plt
 print(MNIST)
 
 
+def test_values():
+    x = int(torch.randint(200, [1]))
+    y = int(torch.randint(1, 10, [1]))
+    G = torch.randint(x, (40, 40))
+    U = torch.randint(y, ([40]))
+    return [U, G]
+
+
 def MNIST_train_test():
     datasets.MNIST(root='./data', train=False, download=True, transform=None)
 
@@ -27,4 +35,3 @@ def MNIST_train_test():
     return [train_loader, test_loader, dataset1, dataset2]
 # for batch_idx, (data, target) in enumerate(train_loader):
 #     print(data, target)
-

@@ -8,12 +8,7 @@ import time
 from datasets import MNIST_train_test
 # print(MNIST_train_test())
 
-def test_values():
-    x = int(torch.randint(1000, [1]))
-    y = int(torch.randint(1,10,[1]))
-    h = torch.randint(x, (40, 40))
-    hh = torch.randint(y, ([40]))
-    return [hh,h]
+
 
 
 #hh = torch.randperm(20)
@@ -31,7 +26,7 @@ x = int(torch.randint(1000, [1]))
 y = int(torch.randint(1, 10, [1]))
 h = torch.randint(x, (40, 40))
 hh = torch.randint(y, ([40]))
-compute_ideal(hh, h)
+# compute_ideal(hh, h)
 
 
 #
