@@ -7,10 +7,10 @@ print(MNIST)
 
 
 def test_values():
-    x = int(torch.randint(200, [1]))
-    y = int(torch.randint(1, 10, [1]))
-    G = torch.randint(x, (40, 40))
-    U = torch.randint(y, ([40]))
+    #x = int(torch.randint(, [1]))
+    #y = int(torch.randint(1, 2, [1]))
+    G = torch.rand((40, 40))
+    U = torch.rand(40)
     return [U, G]
 
 

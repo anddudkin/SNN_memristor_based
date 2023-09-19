@@ -4,6 +4,7 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 
+#def weights_inicialization_inferens(G: torch.tensor):
 
 def compute_ideal(V_in: torch.tensor, G: torch.tensor):
     '''  Compute ideal crossbar
@@ -21,19 +22,20 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
     I_out = torch.matmul(G, V_in)  # matrix multipl
 
     for i, j in enumerate(V_in):  # compute currents of each node
-        I_all[i] = torch.mul(G[i], int(j))
+        I_all[i] = torch.mul(G[i], j)
 
     print("Currents =  ", I_all)
     print(I_out)
 
     fig, (ax1, ax2) = plt.subplots(1, 2)
-    sctr = ax1.matshow(I_all.tolist(), cmap='inferno')
-    plt.colorbar(sctr, ax=ax1)
+    p1 = ax1.matshow(I_all.tolist(), cmap='inferno')
+    plt.colorbar(p1,fraction=0.046, pad=0.04)
     ax1.set_title('All_Currents')
-    gg = ax2.matshow(G.tolist())
-    fig.colorbar(gg)
+    p2 = ax2.matshow(G.tolist())
+    fig.colorbar(p2, fraction=0.046, pad=0.04)
     ax2.set_title('All_weights')
     # plt.matshow(I_all.tolist())
+    fig.tight_layout()
     # plt.matshow(G.tolist())
     # fig.canvas.draw()
     # fig.canvas.flush_events()
@@ -45,3 +47,4 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
 
 def compute_Membrane_Pot_Change():
     x = 1
+

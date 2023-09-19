@@ -3,7 +3,7 @@ from random import random as rand
 import torch
 from torchvision.datasets import MNIST
 
-from compute import compute_ideal
+from compute_crossbar import compute_ideal
 import time
 from datasets import MNIST_train_test
 # print(MNIST_train_test())
@@ -27,8 +27,9 @@ y = int(torch.randint(1, 10, [1]))
 h = torch.randint(x, (40, 40))
 hh = torch.randint(y, ([40]))
 # compute_ideal(hh, h)
-
-
+b=torch.rand((10))
+print(b[1])
+print(type(b[1]))
 #
 #
 # print(a.shape[1])
