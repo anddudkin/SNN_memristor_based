@@ -4,7 +4,8 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 
-#def weights_inicialization_inferens(G: torch.tensor):
+
+# def weights_inicialization_inferens(G: torch.tensor):
 
 def compute_ideal(V_in: torch.tensor, G: torch.tensor):
     '''  Compute ideal crossbar
@@ -29,7 +30,7 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
 
     fig, (ax1, ax2) = plt.subplots(1, 2)
     p1 = ax1.matshow(I_all.tolist(), cmap='inferno')
-    plt.colorbar(p1,fraction=0.046, pad=0.04)
+    plt.colorbar(p1, fraction=0.046, pad=0.04)
     ax1.set_title('All_Currents')
     p2 = ax2.matshow(G.tolist())
     fig.colorbar(p2, fraction=0.046, pad=0.04)
@@ -47,4 +48,3 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
 
 def compute_Membrane_Pot_Change():
     x = 1
-
