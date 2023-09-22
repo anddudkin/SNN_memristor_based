@@ -1,6 +1,6 @@
 import torch
 
-from anddudkin_mem_project.visuals import DrawNN
+from visuals import DrawNN
 from datasets import test_values
 from compute_crossbar import compute_ideal
 from NeuronModels import Neuron_IF

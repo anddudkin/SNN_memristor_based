@@ -5,15 +5,19 @@ from compute_crossbar import compute_ideal
 
 class Neuron_IF:
 
-    def __init__(self, n_neurons, U_mem, U_tr, U_rest, refr):
-        """ I_in - Input current
+    def __init__(self, n_neurons, U_mem, U_tr, U_rest, refr_time):
+        """ n_neurons - number of output IF neurons
+            I_in - Input current
             U_tr -  max capacity of neuron (Treshold). If U_mem > U_tr neuron spikes
+            U_mem - standard membrane potrntial
+            U_rest - membrane potential while resting (refractory), after neuron spikes
+            refr_time - refractory period time
             """
         self.n_neurons = n_neurons
         self.U_mem = U_mem
         self.U_tr = U_tr
         self.U_rest = U_rest
-        self.refr = refr
+        self.refr_time = refr_time
 
     def initialization(self):
         self.U_mem_all_neurons = torch.zeros([self.n_neurons],
@@ -31,7 +35,7 @@ class Neuron_IF:
             self.spikes[idx][0] = idx  # нумеруем нейроны для отслеживания генерации импульса
             if self.U_mem_all_neurons[idx] >= self.U_tr: #прроверяем привышение мембр. потенциала
                 self.spikes[idx][1] = 1
-                self.refractor_count[idx][1]= self.refr # если нейрон сгенерировал импульс, начинается рефракторный период
+                self.refractor_count[idx][1]= self.refr_time # если нейрон сгенерировал импульс, начинается рефракторный период
         return self.U_mem_all_neurons, self.spikes
 
 

@@ -1,5 +1,5 @@
 import torch
-from pyvis.network import Network
+
 
 
 def construct_matrix_connections(n_in_neurons, n_out_neurons, type):
