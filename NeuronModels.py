@@ -12,6 +12,7 @@ class Neuron_IF:
             U_mem - standard membrane potrntial
             U_rest - membrane potential while resting (refractory), after neuron spikes
             refr_time - refractory period time
+
             """
         self.n_neurons = n_neurons
         self.U_mem = U_mem
