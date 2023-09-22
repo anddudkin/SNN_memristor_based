@@ -25,8 +25,8 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
     for i, j in enumerate(V_in):  # compute currents of each node
         I_all[i] = torch.mul(G[i], j)
 
-    print("Currents =  ", I_all)
-    print(I_out)
+    print("Currents_all =  ", I_all)
+    print("I_out= ", I_out)
 
     fig, (ax1, ax2) = plt.subplots(1, 2)
     p1 = ax1.matshow(I_all.tolist(), cmap='inferno')
@@ -45,6 +45,6 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
 
     return [I_out, G]
 
+def compute_weight_change (U_in):
+    pass
 
-def compute_Membrane_Pot_Change():
-    x = 1

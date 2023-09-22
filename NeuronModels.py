@@ -3,25 +3,40 @@ import torch
 from compute_crossbar import compute_ideal
 
 
-def Neuron_IF(I_in, n_neurons: int, U_tr, U_rest=10, refr=5):
-    """I_in - Input current
-        U_tr -  max capacity of neuron (Treshold). If U_mem > U_tr neuron spikes
-    """
+class Neuron_IF:
 
-    if I_in.size != n_neurons:
-        print("Size of input currents must be the same as number of neurons")
-        print("I_in.size= ", I_in.size, "neurons= ", n_neurons)
+    def __init__(self, n_neurons, U_mem, U_tr, U_rest, refr):
+        """ I_in - Input current
+            U_tr -  max capacity of neuron (Treshold). If U_mem > U_tr neuron spikes
+            """
+        self.n_neurons = n_neurons
+        self.U_mem = U_mem
+        self.U_tr = U_tr
+        self.U_rest = U_rest
+        self.refr = refr
 
-    U_all_neurons = torch.zeros([n_neurons],
-                                dtype=torch.float)  # array with U_mem = 0 for all neurons #каждый раз при вызове мембранный потенциал сбрасывется!!!
-    spikes = torch.zeros([n_neurons, 2], dtype=torch.float)
+    def initialization(self):
+        self.U_mem_all_neurons = torch.zeros([self.n_neurons],
+                                             dtype=torch.float)
+        self.refractor_count = torch.zeros([self.n_neurons,2],
+                                           dtype=torch.float)
+        self.spikes = torch.zeros([self.n_neurons, 2],
+                                  dtype=torch.int8)
+        return self.U_mem_all_neurons, self.refractor_count
 
-    for idx, i in enumerate(I_in, start=0):
-        U_all_neurons[idx] += i
-        spikes[idx][0] = idx  # нумеруем нейроны для отслеживания генерации импульса
-        if U_all_neurons[idx] >= U_tr:
-            spikes[idx][1] = 1
-    return [U_all_neurons, spikes]
+    def compute_U_mem(self, I_in):
+        for idx, i in enumerate(I_in, start=0):
+            self.U_mem_all_neurons[idx] += i
+            self.refractor_count[idx][0] += idx
+            self.spikes[idx][0] = idx  # нумеруем нейроны для отслеживания генерации импульса
+            if self.U_mem_all_neurons[idx] >= self.U_tr: #прроверяем привышение мембр. потенциала
+                self.spikes[idx][1] = 1
+                self.refractor_count[idx][1]= self.refr # если нейрон сгенерировал импульс, начинается рефракторный период
+        return self.U_mem_all_neurons, self.spikes
+
+
+
+
 
 
 def Neuron_LIF(I_in, U_tr, n_neurons: int):
