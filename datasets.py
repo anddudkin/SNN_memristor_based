@@ -7,8 +7,6 @@ print(MNIST)
 
 
 def test_values():
-    #x = int(torch.randint(, [1]))
-    #y = int(torch.randint(1, 2, [1]))
     G = torch.rand((40, 40))
     U = torch.rand(40)
     return [U, G]

@@ -20,6 +20,11 @@ class Neuron_IF:
         self.refr_time = refr_time
 
     def initialization(self):
+        """ Returns
+                    U_mem_all_neurons
+                    refractor_count
+                    spikes
+                    """
         self.U_mem_all_neurons = torch.zeros([self.n_neurons],
                                              dtype=torch.float)
         self.refractor_count = torch.zeros([self.n_neurons,2],

@@ -19,5 +19,5 @@ def construct_matrix_connections(n_in_neurons, n_out_neurons, type):
     return matrix_conn
 
 
-b = construct_matrix_connections(4, 10, "all_to_all")
+b = construct_matrix_connections(2, 4, "all_to_all")
 print(b)
