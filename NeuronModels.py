@@ -27,10 +27,8 @@ class Neuron_IF:
         self.U_mem_all_neurons = None
 
     def initialization(self):
-        """ Returns
-                    U_mem_all_neurons\n
-                    refractor_count\n
-                    spikes\n
+        """
+         initialization
                     """
         self.U_mem_all_neurons = torch.zeros([self.n_neurons],
                                              dtype=torch.float)
@@ -69,7 +67,10 @@ class Neuron_IF:
         return self.U_mem_all_neurons, I_for_each_neuron
 
     def check_spikes(self):
-
+        """
+        Checks if neuron spikes
+        :return: tenzor [index of neuron, spike (0 or 1)]
+        """
         for i in range(self.n_neurons):
             self.spikes[i][1] = 0 # обнуляем список импульсов
             if self.U_mem_all_neurons[i] > self.U_tr:  # threshold check

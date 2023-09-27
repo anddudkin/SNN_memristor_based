@@ -24,7 +24,7 @@ def MNIST_train_test():
     #print(dataset1[0])
     #print(dataset2)
 
-    #plt.imshow(dataset1.data[0])
+    plt.imshow(dataset1.data[0])
     #plt.title(dataset1[0][1])
     #plt.show()
     train_loader = torch.utils.data.DataLoader(dataset1, batch_size=1)
