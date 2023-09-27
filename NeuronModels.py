@@ -72,7 +72,7 @@ class Neuron_IF:
         :return: tenzor [index of neuron, spike (0 or 1)]
         """
         for i in range(self.n_neurons):
-            self.spikes[i][1] = 0 # обнуляем список импульсов
+            self.spikes[i][1] = 0  # обнуляем список импульсов
             if self.U_mem_all_neurons[i] > self.U_tr:  # threshold check
 
                 self.U_mem_all_neurons[i] = self.U_rest  # if spikes rest
