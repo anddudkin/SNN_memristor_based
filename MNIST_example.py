@@ -16,12 +16,15 @@ out_neurons = Neuron_IF(5, 0, 1, -1, 5)
 out_neurons.initialization()
 
 for idx, img in enumerate(data_train):
-    print(img[0])
-    print(img[0].view(784))
-    print(img[0].view(28,28))
-    plt.imshow(torch.squeeze(img[0]),cmap='gray')
-    plt.title(img[1])
-    plt.show()
+    for i in range
+
+
+print(img[0])
+print(img[0].view(784))
+print(img[0].view(28, 28))
+plt.imshow(torch.squeeze(img[0]),cmap='gray')
+plt.title(img[1])
+plt.show()
 out_neurons.compute_U_mem([1,1,0,0,1],conn)
 
 print("Umem",out_neurons.U_mem_all_neurons)
