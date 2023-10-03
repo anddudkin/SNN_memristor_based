@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 
 # print(MNIST)
 
+def rand_in_U(n_in_neurons):  # [1., 1., 0., 0., 1., 1., 1., 0., 1., 0.]
+    U = torch.bernoulli(torch.randn(n_in_neurons).uniform_())
+    return U
 
-def test_values():
+
+def rand_values():
     G = torch.rand((40, 40))
     U = torch.rand(40)
     return [U, G]
@@ -25,7 +29,7 @@ def MNIST_train_test():
     # print(dataset1[0])
     # print(dataset2)
 
-    plt.imshow(dataset1.data[0])
+    #plt.imshow(dataset1.data[0])
     # plt.title(dataset1[0][1])
     # plt.show()
     train_loader = torch.utils.data.DataLoader(dataset1, batch_size=1)

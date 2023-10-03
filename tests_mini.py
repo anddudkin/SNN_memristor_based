@@ -12,11 +12,17 @@ import torch
 # print(g.compute_U_mem(x)[1])
 # print()
 
-g = torch.tensor([[0,3,4,3],[1,2,6,6],[0,5,4,6],[0,5,4,6]])
+g = torch.tensor([[0,3,4,3]])
+g1 = torch.tensor([[0,3,4,3]])
+g2 = torch.tensor([[0,3,4,3]])
+f=torch.cat([g,g1])
+f2=torch.cat([f,g2])
 print(g.shape)
-print(torch.squeeze(g))
-print(g.view(16))
-f=g.view(16)
+print(f)
+print(f2.shape)
+print(f.shape)
 
-print(f.reshape(4,4))
-print(g[:,3])  возврящает столбцы очень удобно
+
+
+
+#print(g[:,3])  возврящает столбцы очень удобно

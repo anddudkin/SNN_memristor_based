@@ -1,6 +1,21 @@
 import sys
-import matplotlib
+import matplotlib.pyplot as plt
 import torch
+import numpy as np
+
+
+def plot_U_mem(n_neurons, U_mem):
+    x=[]
+    for i in range(len(U_mem)):
+        x.append(i)
+    print(len(U_mem))
+    print(x)
+    for i in range(n_neurons):
+        plt.plot(x, U_mem[:, i])
+
+    plt.show()
+
+
 """
 matplotlib.use('Qt5Agg')
 
@@ -88,7 +103,7 @@ class Layer():
 
     def __calculate_left_margin_so_layer_is_centered(self, number_of_neurons):
         return self.horizontal_distance_between_neurons * (
-                    self.number_of_neurons_in_widest_layer - number_of_neurons) / 2
+                self.number_of_neurons_in_widest_layer - number_of_neurons) / 2
 
     def __calculate_layer_y_position(self):
         if self.previous_layer:
@@ -161,5 +176,3 @@ class DrawNN():
             network.add_layer(l)
 
         network.draw()
-
-
