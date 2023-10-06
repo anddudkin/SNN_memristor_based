@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 from torchvision import datasets, transforms
 from torchvision.datasets import MNIST
@@ -26,15 +27,58 @@ def MNIST_train_test():
                               transform=transform)
     dataset2 = datasets.MNIST('../data', train=False,
                               transform=transform)
+
     # print(dataset1[0])
     # print(dataset2)
 
-    #plt.imshow(dataset1.data[0])
+    # plt.imshow(dataset1.data[0])
     # plt.title(dataset1[0][1])
     # plt.show()
     train_loader = torch.utils.data.DataLoader(dataset1, batch_size=1)
     test_loader = torch.utils.data.DataLoader(dataset2)
     # print(train_loader)
     return [train_loader, test_loader, dataset1, dataset2]
+
+
 # for batch_idx, (data, target) in enumerate(train_loader):
 #     print(data, target)
+
+def MNIST_train_test_14x14():
+    datasets.MNIST(root='./data', train=False, download=True, transform=None)
+
+    transform = transforms.Compose([
+        transforms.ToTensor()])
+    dataset1 = datasets.MNIST('../data', train=True, download=True,
+                              transform=transform)
+    dataset2 = datasets.MNIST('../data', train=False,
+                              transform=transform)
+
+    # for i in range(5000):
+    #     dataset1[i][0][0] = dataset1[i][0][0][::4, ::4]
+    #     plt.imshow(torch.squeeze(dataset1[i][0][0]))
+    #     plt.show()
+    return dataset1
+
+
+def encoding_to_spikes(data, time):
+    return torch.bernoulli(data.repeat(time, 1, 1))
+
+
+a = MNIST_train_test_14x14()
+# print(print(torch.bernoulli(a[0][0])))
+# print(a[1][0][::4, ::4])
+# plt.imshow(torch.squeeze(a[1][0][::1, ::4, ::4]))
+#
+# print(encoding_to_spikes(a[0][0], 10))
+# print(encoding_to_spikes(a[0][0], 10).size())
+print(encoding_to_spikes(a[0][0], 10)[0].reshape(784))
+o = []
+
+# print(type(b))
+# print(torch.squeeze(a[1][0]))
+# bb=torch.squeeze(a[1][0])
+# print(bb[::2,::2].shape)
+# plt.imshow(bb[::2,::2])
+
+# for i in range(20):
+#     print(a[i])

@@ -27,5 +27,10 @@ def inicialize_weights(martix_conn):
     return martix_conn
 
 
+def conn_matrix_transform(matrix_conn, n_in, n_out):
+    matrix_con_weights = matrix_conn[:, 2].reshape(n_in, n_out)
+    return matrix_con_weights
+
+
 def compute_det_w(matrix_conn, I_in):
     pass

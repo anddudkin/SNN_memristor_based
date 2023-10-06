@@ -47,42 +47,29 @@ class Neuron_IF:
             self.spikes[i][0] = i
 
         if self.traces:
-            self.U_mem_trace = torch.zeros([1,self.n_neurons],
-                                                dtype=torch.float)
+            self.U_mem_trace = torch.zeros([1, self.n_neurons],
+                                           dtype=torch.float)
             self.spikes_trace_in = torch.zeros([self.n_neurons_in],
                                                dtype=torch.float)
             self.spikes_trace_out = torch.zeros([self.n_neurons],
                                                 dtype=torch.float)
 
-    def compute_U_mem(self, U_in, conn_matrix):
-        """
-        Compute U_out for each output neuron
-        :param U_in:
-        :param conn_matrix:
-        :return: tenzor[U_mem] and tenzor [sum of I_out for each output neuron]
-        """
-        self.time_sim += 1
-        I_for_each_neuron = torch.zeros([self.n_neurons],
-                                        dtype=torch.float)
-        for idx, i in enumerate(U_in, start=0):   # compute dU for each neuron
-            for j in conn_matrix:
-                if idx == j[1] and self.refractor_count[int(j[0])][1] == 0:
-                    I_for_each_neuron[int(j[0])] += i * j[2]
+    def compute_U_mem_new(self, U_in, conn_matrix):
 
-        self.U_mem_all_neurons = torch.add(I_for_each_neuron, self.U_mem_all_neurons)  # U + dU
+        I_for_each_neuron = torch.matmul(U_in, conn_matrix)
 
-        for i in range(self.n_neurons):   #decrese refractory count
-            if self.refractor_count[i][1] > 0:
+        for i in range(len(self.U_mem_all_neurons)):
+            if self.refractor_count[i][1] == 0:
+                self.U_mem_all_neurons[i] += I_for_each_neuron[i]
+            else:
                 self.refractor_count[i][1] -= 1
 
         if self.traces:  # spike and U traces
             for i in range(self.n_neurons_in):
                 if U_in[i] == 1:
                     self.spikes_trace_in[i] = self.time_sim  # times of spikes
-            self.U_mem_trace = torch.cat((self.U_mem_trace, self.U_mem_all_neurons.reshape(1,len(self.U_mem_all_neurons))),0)
-
-        return self.U_mem_all_neurons, I_for_each_neuron
-
+            self.U_mem_trace = torch.cat(
+                (self.U_mem_trace, self.U_mem_all_neurons.reshape(1, len(self.U_mem_all_neurons))), 0)
     def check_spikes(self):
         """
         Checks if neuron spikes
@@ -127,3 +114,37 @@ def Neuron_LIF(I_in, U_tr, n_neurons: int):
     #             self.refractor_count[idx][
     #                 1] = self.refr_time  # если нейрон сгенерировал импульс, начинается рефракторный период
     #     return self.U_mem_all_neurons, self.spikes
+
+
+'''
+    def compute_U_mem(self, U_in, conn_matrix):
+        """
+        Compute U_out for each output neuron
+        :param U_in:
+        :param conn_matrix:
+        :return: tenzor[U_mem] and tenzor [sum of I_out for each output neuron]
+        """
+
+        self.time_sim += 1
+        I_for_each_neuron = torch.zeros([self.n_neurons],
+                                        dtype=torch.float)
+        for idx, i in enumerate(U_in, start=0):   # compute dU for each neuron
+            for j in conn_matrix:
+                if idx == j[1] and self.refractor_count[int(j[0])][1] == 0 and i != 0:
+                    I_for_each_neuron[int(j[0])] += i * j[2]
+            print(I_for_each_neuron)
+
+        self.U_mem_all_neurons = torch.add(I_for_each_neuron, self.U_mem_all_neurons)  # U + dU
+
+        for i in range(self.n_neurons):   #decrese refractory count
+            if self.refractor_count[i][1] > 0:
+                self.refractor_count[i][1] -= 1
+
+        if self.traces:  # spike and U traces
+            for i in range(self.n_neurons_in):
+                if U_in[i] == 1:
+                    self.spikes_trace_in[i] = self.time_sim  # times of spikes
+            self.U_mem_trace = torch.cat((self.U_mem_trace, self.U_mem_all_neurons.reshape(1,len(self.U_mem_all_neurons))),0)
+
+        return self.U_mem_all_neurons, I_for_each_neuron
+'''
