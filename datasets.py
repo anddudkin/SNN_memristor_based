@@ -64,15 +64,13 @@ def encoding_to_spikes(data, time):
     return torch.bernoulli(data.repeat(time, 1, 1))
 
 
-a = MNIST_train_test_14x14()
+
 # print(print(torch.bernoulli(a[0][0])))
 # print(a[1][0][::4, ::4])
 # plt.imshow(torch.squeeze(a[1][0][::1, ::4, ::4]))
 #
 # print(encoding_to_spikes(a[0][0], 10))
 # print(encoding_to_spikes(a[0][0], 10).size())
-print(encoding_to_spikes(a[0][0], 10)[0].reshape(784))
-o = []
 
 # print(type(b))
 # print(torch.squeeze(a[1][0]))
