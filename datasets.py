@@ -3,6 +3,7 @@ import torch
 from torchvision import datasets, transforms
 from torchvision.datasets import MNIST
 import matplotlib.pyplot as plt
+from torchvision.transforms import InterpolationMode
 
 
 # print(MNIST)
@@ -47,23 +48,34 @@ def MNIST_train_test_14x14():
     datasets.MNIST(root='./data', train=False, download=True, transform=None)
 
     transform = transforms.Compose([
-        transforms.ToTensor()])
+        transforms.ToTensor(), transforms.Resize((14, 14), antialias=True)])
     dataset1 = datasets.MNIST('../data', train=True, download=True,
                               transform=transform)
     dataset2 = datasets.MNIST('../data', train=False,
                               transform=transform)
+    return dataset1, dataset2
 
-    # for i in range(5000):
-    #     dataset1[i][0][0] = dataset1[i][0][0][::4, ::4]
-    #     plt.imshow(torch.squeeze(dataset1[i][0][0]))
-    #     plt.show()
-    return dataset1
+
+def MNIST_train_test_9x9():
+    datasets.MNIST(root='./data', train=False, download=True, transform=None)
+
+    transform = transforms.Compose([
+        transforms.ToTensor(), transforms.Resize((9, 9),antialias=False) ])
+    dataset1 = datasets.MNIST('../data', train=True, download=True,
+                              transform=transform)
+    dataset2 = datasets.MNIST('../data', train=False,
+                              transform=transform)
+    return dataset1, dataset2
+
+
+mn = MNIST_train_test_9x9()[0]
+x=15
+plt.imshow(torch.squeeze(mn[x][0]))
+plt.show()
 
 
 def encoding_to_spikes(data, time):
     return torch.bernoulli(data.repeat(time, 1, 1))
-
-
 
 # print(print(torch.bernoulli(a[0][0])))
 # print(a[1][0][::4, ::4])

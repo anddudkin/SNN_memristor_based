@@ -8,8 +8,7 @@ def plot_U_mem(n_neurons, U_mem):
     x=[]
     for i in range(len(U_mem)):
         x.append(i)
-    print(len(U_mem))
-    print(x)
+
     for i in range(n_neurons):
         plt.plot(x, U_mem[:, i])
 

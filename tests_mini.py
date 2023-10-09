@@ -14,7 +14,8 @@ from anddudkin_mem_project.topology import inicialize_weights, construct_matrix_
 # x=compute_ideal(test_values()[0],test_values()[1])[0]
 # print(g.compute_U_mem(x)[1])
 # print()
-
+conn = inicialize_weights(construct_matrix_connections(10, 2, "all_to_all"))
+print(conn[])
 g = torch.tensor([[0,0,0.5],[0,1,0.7],
                   [1,0,0.8],[1,1,0.3],
                   [2,0,0.4],[2,1,0.5]])

@@ -42,6 +42,7 @@ class Neuron_IF:
         self.spikes = torch.zeros([self.n_neurons, 2],
                                   dtype=torch.float)
         self.time_sim = 0
+
         for i in range(self.n_neurons):
             self.refractor_count[i][0] = i  # вид [индекс, значение]
             self.spikes[i][0] = i
@@ -57,7 +58,7 @@ class Neuron_IF:
     def compute_U_mem_new(self, U_in, conn_matrix):
 
         I_for_each_neuron = torch.matmul(U_in, conn_matrix)
-
+        self.time_sim += 1
         for i in range(len(self.U_mem_all_neurons)):
             if self.refractor_count[i][1] == 0:
                 self.U_mem_all_neurons[i] += I_for_each_neuron[i]
@@ -70,6 +71,7 @@ class Neuron_IF:
                     self.spikes_trace_in[i] = self.time_sim  # times of spikes
             self.U_mem_trace = torch.cat(
                 (self.U_mem_trace, self.U_mem_all_neurons.reshape(1, len(self.U_mem_all_neurons))), 0)
+
     def check_spikes(self):
         """
         Checks if neuron spikes
@@ -98,7 +100,7 @@ class Neuron_IF:
             for k, j in enumerate(conn_matrix):
                 if j[0] == indx:
                     conn_matrix[k][2] += compute_dw(self.spikes_trace_in[int(conn_matrix[k][1])] - i)
-                    self.dw_all[k] = compute_dw(self.spikes_trace_in[int(conn_matrix[k][1])] - i)
+                    # self.dw_all[k] = compute_dw(self.spikes_trace_in[int(conn_matrix[k][1])] - i)
 
 
 def Neuron_LIF(I_in, U_tr, n_neurons: int):

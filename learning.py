@@ -16,17 +16,19 @@ a, b = [], []
 
 
 def compute_dw(t):
-    if t > 0:
-        return -A_plus * np.exp(-float(t) / tau_plus)
-    if t <= 0:
-        return A_minus * np.exp(float(t) / tau_minus)
+    if tau_plus > t > 0:
+        return -A_plus * np.exp(-t / tau_plus)
+    elif -tau_minus < t <= 0:
+        return A_minus * np.exp(t / tau_minus)
+    else:
+        return 0
 
-
-for i in range(-30, 30, 1):
-    a.append(compute_dw(i))
-    b.append(i)
-plt.plot(b, a, '.')
-plt.show()
+def plot_stdp():
+    for i in range(-30, 30, 1):
+        a.append(compute_dw(i))
+        b.append(i)
+    plt.plot(b, a, '.')
+    plt.show()
 
 
 # STDP weight update rule
