@@ -1,7 +1,7 @@
 import torch
 
 from anddudkin_mem_project.learning import compute_dw
-from topology import construct_matrix_connections
+
 from compute_crossbar import compute_ideal
 
 
@@ -15,6 +15,7 @@ class Neuron_IF:
             U_rest - membrane potential while resting (refractory), after neuron spikes\n
             refr_time - refractory period time\n
             """
+        self.dw_all = None
         self.n_neurons_in = n_neurons_in
 
         self.n_neurons = n_neurons
@@ -69,7 +70,7 @@ class Neuron_IF:
             for i in range(self.n_neurons_in):
                 if U_in[i] == 1:
                     self.spikes_trace_in[i] = self.time_sim  # times of spikes
-            self.U_mem_trace = torch.cat(
+            self.U_mem_trace = torch.cat(                    # stack traces of U_mem for plotting
                 (self.U_mem_trace, self.U_mem_all_neurons.reshape(1, len(self.U_mem_all_neurons))), 0)
 
     def check_spikes(self):
@@ -93,7 +94,7 @@ class Neuron_IF:
                             self.spikes_trace_out[j] = self.time_sim  # times of spikes
         return self.spikes
 
-    def update_w(self, conn_matrix):
+    def update_w_slow(self, conn_matrix):
         self.dw_all = torch.zeros([len(conn_matrix)], dtype=torch.float)
 
         for indx, i in enumerate(self.spikes_trace_out, start=0):
@@ -101,6 +102,8 @@ class Neuron_IF:
                 if j[0] == indx:
                     conn_matrix[k][2] += compute_dw(self.spikes_trace_in[int(conn_matrix[k][1])] - i)
                     # self.dw_all[k] = compute_dw(self.spikes_trace_in[int(conn_matrix[k][1])] - i)
+
+
 
 
 def Neuron_LIF(I_in, U_tr, n_neurons: int):

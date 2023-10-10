@@ -1,7 +1,7 @@
 import torch
 
 from anddudkin_mem_project.datasets import encoding_to_spikes
-from anddudkin_mem_project.topology import inicialize_weights, construct_matrix_connections, conn_matrix_transform
+from anddudkin_mem_project.learning import compute_dw
 
 # from visuals import DrawNN
 # from datasets import test_values
@@ -14,8 +14,8 @@ from anddudkin_mem_project.topology import inicialize_weights, construct_matrix_
 # x=compute_ideal(test_values()[0],test_values()[1])[0]
 # print(g.compute_U_mem(x)[1])
 # print()
-conn = inicialize_weights(construct_matrix_connections(10, 2, "all_to_all"))
-print(conn[])
+
+"""
 g = torch.tensor([[0,0,0.5],[0,1,0.7],
                   [1,0,0.8],[1,1,0.3],
                   [2,0,0.4],[2,1,0.5]])
@@ -32,11 +32,16 @@ print("gg shape", gg.shape)
 h=torch.matmul(gg,b)
 print("hhhhhhhh ",h)
 
-conn = inicialize_weights(construct_matrix_connections(4, 2, "all_to_all"))
-conn_w=conn_matrix_transform(conn,4,2)
+"""
 
-print(conn)
-print(conn_w)
+g = torch.Tensor([2,3])
+g=g.repeat(3,1)
 
+y = torch.Tensor([4,5,0])
+print(y.reshape(3,1))
+print(torch.sub(g,y.reshape(3,1)))
+print(g)
 
-#print(g[:,3])  возврящает столбцы очень удобно
+n = torch.sub(g,y.reshape(3,1))
+n.apply_(compute_dw)
+print(n)
