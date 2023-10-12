@@ -2,10 +2,10 @@ import sys
 import matplotlib.pyplot as plt
 import torch
 import numpy as np
-
+import math
 
 def plot_U_mem(n_neurons, U_mem):
-    x=[]
+    x = []
     for i in range(len(U_mem)):
         x.append(i)
 
@@ -15,6 +15,12 @@ def plot_U_mem(n_neurons, U_mem):
     plt.show()
 
 
+def plot_weights(n_in, n_out, weights):
+    c = []
+    for i in range(n_out):
+        c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
+    hh=torch.cat(c,1)
+    return hh
 """
 matplotlib.use('Qt5Agg')
 

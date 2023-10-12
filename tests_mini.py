@@ -1,19 +1,6 @@
 import torch
 
-from anddudkin_mem_project.datasets import encoding_to_spikes
-from anddudkin_mem_project.learning import compute_dw
 
-# from visuals import DrawNN
-# from datasets import test_values
-# from compute_crossbar import compute_ideal
-# from NeuronModels import Neuron_IF
-# network = DrawNN([4, 10])
-# network.draw()
-# g = Neuron_IF(40,10,10,10,10)
-# g.initialization()
-# x=compute_ideal(test_values()[0],test_values()[1])[0]
-# print(g.compute_U_mem(x)[1])
-# print()
 
 """
 g = torch.tensor([[0,0,0.5],[0,1,0.7],
@@ -33,7 +20,18 @@ h=torch.matmul(gg,b)
 print("hhhhhhhh ",h)
 
 """
+f = torch.tensor([2,4,5,6])
+f = f.reshape(4,1)
+print(f)
+f=f.repeat(1,3)
+print(f)
 
+h= torch.tensor([3,5,0])
+h=h.repeat(4,1)
+print(h)
+
+print(torch.sub(f,h))
+"""
 g = torch.Tensor([2,3])
 g=g.repeat(3,1)
 
@@ -45,3 +43,20 @@ print(g)
 n = torch.sub(g,y.reshape(3,1))
 n.apply_(compute_dw)
 print(n)
+"""
+"""
+conn = Connections(9, 3, "all_to_all")
+conn.all_to_all_conn()
+conn.inicialize_weights()
+b=conn.weights
+print(conn.weights)
+a1 = b[:,0].reshape(3,3)
+a2 = b[:,1].reshape(3,3)
+a3= b[:,2].reshape(3,3)
+nn=[]
+for i in range(3):
+    nn.append(b[:,i].reshape(3,3))
+c=torch.cat(nn,1)
+
+print(c)
+"""

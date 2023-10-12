@@ -7,14 +7,16 @@ from learning import compute_dw
 
 
 class Connections:
-    def __init__(self, n_in_neurons, n_out_neurons, type):
+    def __init__(self, n_in_neurons, n_out_neurons, type_conn="all_to_all", w_min=0, w_max=1):
         """ type of connection: 1) "all_to_all" 2).....
                 """
+        self.w_max = w_max
+        self.w_min = w_min
         self.weights = None
         self.w = None
         self.matrix_con_weights = None
         self.matrix_conn = None
-        self.type = type
+        self.type = type_conn
         self.n_in_neurons = n_in_neurons
         self.n_out_neurons = n_out_neurons
 
@@ -37,7 +39,7 @@ class Connections:
         """ inicializing random weights"""
 
         for i in range(len(self.matrix_conn)):
-            self.matrix_conn[i][2] = random()
+            self.matrix_conn[i][2] = random() / 2
 
         """ makes matrix of weights [n_in_neurons x n_out_neurons]"""
         self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
@@ -49,9 +51,9 @@ class Connections:
         update_w(out_neurons.spikes_trace_in,out_neurons.spikes_trace_out)
         """
         spike_traces_out = spike_traces_out.repeat(self.n_in_neurons, 1)
-
+        spike_traces_in = spike_traces_in.reshape(self.n_in_neurons,1).repeat(1, self.n_out_neurons)
         # matrix of dt values
-        time_diff = spike_traces_out - spike_traces_in.reshape(self.n_in_neurons, 1)
+        time_diff = torch.sub(spike_traces_in, spike_traces_out)
 
         # calling comute_dw function for each dt in matrix
         time_diff.apply_(compute_dw)
@@ -60,13 +62,7 @@ class Connections:
 
         self.weights = torch.add(self.weights, time_diff)
 
-
-conn = Connections(4, 3, "all_to_all")
-conn.all_to_all_conn()
-conn.inicialize_weights()
-print(conn.matrix_conn)
-
-print(conn.weights)
+        self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
 
 
 def compute_det_w(matrix_conn, I_in):
