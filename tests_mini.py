@@ -1,6 +1,8 @@
+import time
+
 import torch
 
-
+from anddudkin_mem_project.NeuronModels import NeuronLIF
 
 """
 g = torch.tensor([[0,0,0.5],[0,1,0.7],
@@ -20,17 +22,9 @@ h=torch.matmul(gg,b)
 print("hhhhhhhh ",h)
 
 """
-f = torch.tensor([2,4,5,6])
-f = f.reshape(4,1)
-print(f)
-f=f.repeat(1,3)
-print(f)
+b = NeuronLIF(100,200,0,decay=0.9)
+print(b.traces)
 
-h= torch.tensor([3,5,0])
-h=h.repeat(4,1)
-print(h)
-
-print(torch.sub(f,h))
 """
 g = torch.Tensor([2,3])
 g=g.repeat(3,1)

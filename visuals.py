@@ -4,6 +4,7 @@ import torch
 import numpy as np
 import math
 
+
 def plot_U_mem(n_neurons, U_mem):
     x = []
     for i in range(len(U_mem)):
@@ -12,15 +13,17 @@ def plot_U_mem(n_neurons, U_mem):
     for i in range(n_neurons):
         plt.plot(x, U_mem[:, i])
 
-    plt.show()
+    plt.plot()
 
 
 def plot_weights(n_in, n_out, weights):
     c = []
     for i in range(n_out):
         c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
-    hh=torch.cat(c,1)
+    hh = torch.cat(c, 1)
     return hh
+
+
 """
 matplotlib.use('Qt5Agg')
 

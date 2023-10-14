@@ -2,7 +2,7 @@ from random import random
 
 import torch
 
-from anddudkin_mem_project.NeuronModels import Neuron_IF
+from anddudkin_mem_project.NeuronModels import NeuronIF
 from learning import compute_dw
 
 
