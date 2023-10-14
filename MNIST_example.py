@@ -9,7 +9,7 @@ from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_trai
 from NeuronModels import NeuronIF, NeuronLIF
 import matplotlib.pyplot as plt
 
-n_neurons_out = 10
+n_neurons_out = 20
 n_neurons_in = 196
 n_train = 10
 n_test = 100
@@ -17,18 +17,17 @@ time = 80
 test = False
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
-conn.inicialize_weights()
+conn.initialize_weights("normal")
 
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
-out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.97, U_tr=100, U_rest=-20, refr_time= 5, traces=True)
-
+out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.97, U_tr=100, U_rest=-20, refr_time=5, traces=True)
 
 plt.ion()
 fig = plt.figure()
 fig1 = plt.figure()
-for i in tqdm(range(n_train),desc='Outer Loop',colour='green',position=0):
+for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
     input_spikes = encoding_to_spikes(data_train[i][0], time)
     for j in range(time):
         out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
@@ -41,13 +40,13 @@ for i in tqdm(range(n_train),desc='Outer Loop',colour='green',position=0):
         b = plot_weights(n_neurons_in, n_neurons_out, conn.weights)
         ax = fig.add_subplot(111)
         ax.matshow(b, cmap='YlOrBr')
-        #plt.draw()
-        #plt.pause(0.5)
+        # plt.draw()
+        # plt.pause(0.5)
         plt.clf()
 
     plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
     plt.show()
-    plt.pause(20 )
+    plt.pause(20)
 
 if test:
     for i in range(n_test):

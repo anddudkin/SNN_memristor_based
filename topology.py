@@ -5,6 +5,10 @@ import torch
 from NeuronModels import NeuronIF
 from learning import compute_dw
 
+"""
+https://arxiv.org/ftp/arxiv/papers/1710/1710.04734.pdf
+"""
+
 
 class Connections:
     def __init__(self, n_in_neurons, n_out_neurons, type_conn="all_to_all", w_min=0, w_max=1):
@@ -34,24 +38,37 @@ class Connections:
                         self.matrix_conn[ind][1] = j
                         ind += 1
 
-    def inicialize_weights(self):
+    def initialize_weights(self, dis="normal"):
 
-        """ inicializing random weights"""
+        """ initializing random weights
 
-        for i in range(len(self.matrix_conn)):
-            self.matrix_conn[i][2] = random() / 2
+        Args:
+            dis (str) : type of weights distribution
 
-        """ makes matrix of weights [n_in_neurons x n_out_neurons]"""
-        self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
+        """
+        if dis == "rand":
+            for i in range(len(self.matrix_conn)):
+                self.matrix_conn[i][2] = random()
 
+                self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons,
+                                                              self.n_out_neurons)  # makes matrix of weights [n_in_neurons x n_out_neurons]
+        elif dis == "normal":
+            self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
+            self.weights=self.weights.normal_(mean=0.4,std=0.2)
     def update_w(self, spike_traces_in, spike_traces_out):
-        """ take spike traces from Neuron_Model, compute dw and update weights
+
+        """ Take spike traces from Neuron_Model, compute dw and update weights )
+
+        Args:
+            spike_traces_in :
+            spike_traces_out :
+
         \n example:
         out_neurons = Neuron_IF(......)
-        update_w(out_neurons.spikes_trace_in,out_neurons.spikes_trace_out)
+        update_w(out_neurons.spikes_trace_in,out_neurons.spikes_trace_out
         """
         spike_traces_out = spike_traces_out.repeat(self.n_in_neurons, 1)
-        spike_traces_in = spike_traces_in.reshape(self.n_in_neurons,1).repeat(1, self.n_out_neurons)
+        spike_traces_in = spike_traces_in.reshape(self.n_in_neurons, 1).repeat(1, self.n_out_neurons)
         # matrix of dt values
         time_diff = torch.sub(spike_traces_in, spike_traces_out)
 
