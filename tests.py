@@ -6,8 +6,8 @@ from matplotlib import pyplot as plt
 from pyvis.network import Network
 from torchvision.datasets import MNIST
 
-from anddudkin_mem_project.topology import Connections
-from anddudkin_mem_project.visuals import plot_U_mem
+from topology import Connections
+from visuals import plot_U_mem
 from compute_crossbar import compute_ideal
 import time
 from datasets import MNIST_train_test

@@ -1,6 +1,6 @@
 import torch
 
-from anddudkin_mem_project.learning import compute_dw
+from learning import compute_dw
 
 from compute_crossbar import compute_ideal
 

@@ -1,7 +1,7 @@
 import torch
 from matplotlib import pyplot as plt
-from anddudkin_mem_project.NeuronModels import NeuronLIF
-from anddudkin_mem_project.topology import Connections
+from NeuronModels import NeuronLIF
+from topology import Connections
 
 
 def lif_neuron_test():

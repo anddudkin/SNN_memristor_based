@@ -3,7 +3,7 @@ import sys
 import torch
 from tqdm import tqdm
 from tqdm import trange
-from anddudkin_mem_project.visuals import plot_U_mem, plot_weights
+from visuals import plot_U_mem, plot_weights
 from topology import Connections
 from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_train_test_9x9, MNIST_train_test_14x14
 from NeuronModels import NeuronIF, NeuronLIF
