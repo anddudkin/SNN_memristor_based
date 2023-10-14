@@ -13,6 +13,7 @@ def lif_neuron_test():
     conn.all_to_all_conn()
     conn.inicialize_weights()
 
+
     U = torch.tensor([1, 1, 1, 1], dtype=torch.float)
     U1 = torch.tensor([0, 0, 0, 0], dtype=torch.float)
 
