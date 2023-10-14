@@ -1,9 +1,28 @@
 import time
 
+import numpy as np
 import torch
+from matplotlib import pyplot as plt
 
 from anddudkin_mem_project.NeuronModels import NeuronLIF
 
+
+class BB:
+    def __init__(self, h=5):
+        self.h = h
+
+    def pl(self):
+        self.h = 10
+
+    def res(self):
+        BB.__init__(self)
+
+
+c = BB()
+c.pl()
+print(c.h)
+c.res()
+print(c.h)
 """
 g = torch.tensor([[0,0,0.5],[0,1,0.7],
                   [1,0,0.8],[1,1,0.3],
@@ -22,8 +41,6 @@ h=torch.matmul(gg,b)
 print("hhhhhhhh ",h)
 
 """
-b = NeuronLIF(100,200,0,decay=0.9)
-print(b.traces)
 
 """
 g = torch.Tensor([2,3])

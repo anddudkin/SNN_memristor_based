@@ -8,7 +8,7 @@ from compute_crossbar import compute_ideal
 class NeuronIF:
     """Base class for Integrate and Fire neuron model"""
 
-    def __init__(self, n_neurons, n_neurons_in, U_mem=0, U_tr=100, U_rest=-20, refr_time=5, traces=bool):
+    def __init__(self, n_neurons_in, n_neurons_out, U_mem=0, U_tr=100, U_rest=-20, refr_time=5, traces=bool):
         """Compute I_out for each output neuron and updates U_mem of all neurons
 
         Args:
@@ -20,7 +20,7 @@ class NeuronIF:
         """
 
         self.n_neurons_in = n_neurons_in
-        self.n_neurons = n_neurons
+        self.n_neurons_out = n_neurons_out
         self.U_mem = U_mem
         self.U_tr = U_tr
         self.U_rest = U_rest
@@ -30,28 +30,23 @@ class NeuronIF:
         self.dw_all = None
         self.U_mem_trace = None
         # Initializing values
-        self.U_mem_all_neurons = torch.zeros([self.n_neurons],
-                                             dtype=torch.float)
-        self.U_mem_all_neurons = torch.zeros([self.n_neurons],
-                                             dtype=torch.float)
-        self.U_mem_all_neurons.fill_(self.U_mem)
+        self.U_mem_all_neurons = torch.zeros([self.n_neurons_out],
+                                             dtype=torch.float).fill_(self.U_mem)
+        # self.U_mem_all_neurons.fill_(self.U_mem)
 
-        self.refractor_count = torch.zeros([self.n_neurons, 2],
+        self.refractor_count = torch.zeros([self.n_neurons_out],
                                            dtype=torch.float)
-        self.spikes = torch.zeros([self.n_neurons, 2],
+        self.spikes = torch.zeros([self.n_neurons_out],
                                   dtype=torch.float)
         self.time_sim = 0
 
-        for i in range(self.n_neurons):
-            self.refractor_count[i][0] = i  # вид [индекс, значение]
-            self.spikes[i][0] = i
         # Initializing trace record
         if self.traces:
-            self.U_mem_trace = torch.zeros([1, self.n_neurons],
+            self.U_mem_trace = torch.zeros([1, self.n_neurons_out],
                                            dtype=torch.float)
             self.spikes_trace_in = torch.zeros([self.n_neurons_in],
                                                dtype=torch.float)
-            self.spikes_trace_out = torch.zeros([self.n_neurons],
+            self.spikes_trace_out = torch.zeros([self.n_neurons_out],
                                                 dtype=torch.float)
 
     def compute_U_mem(self, U_in, weights):
@@ -63,17 +58,18 @@ class NeuronIF:
         """
         I_for_each_neuron = torch.matmul(U_in, weights)
         self.time_sim += 1
-        for i in range(len(self.U_mem_all_neurons)):
-            if self.refractor_count[i][1] == 0:
+        for i in range(self.n_neurons_out):
+            if self.refractor_count[i] == 0:
                 self.U_mem_all_neurons[i] += I_for_each_neuron[i]
             else:
-                self.refractor_count[i][1] -= 1
+                self.refractor_count[i] -= 1
 
         if self.traces:  # spike and U traces
             for i in range(self.n_neurons_in):
                 if U_in[i] == 1:
                     self.spikes_trace_in[i] = self.time_sim  # times of spikes
-            self.U_mem_trace = torch.cat(  # stack traces of U_mem for plotting
+            # stack traces of U_mem for plotting
+            self.U_mem_trace = torch.cat(
                 (self.U_mem_trace, self.U_mem_all_neurons.reshape(1, len(self.U_mem_all_neurons))), 0)
 
     def check_spikes(self):
@@ -82,21 +78,43 @@ class NeuronIF:
 
         :return: tensor [index of neuron, spike (0 or 1)]
         """
-        for i in range(self.n_neurons):
-            self.spikes[i][1] = 0  # обнуляем список импульсов
+        for i in range(self.n_neurons_out):
+            self.spikes[i] = 0  # обнуляем список импульсов
             if self.U_mem_all_neurons[i] >= self.U_tr:  # threshold check
 
                 self.U_mem_all_neurons[i] = self.U_rest  # if spikes rest
 
-                self.spikes[i][1] = 1  # record spike
+                self.spikes[i] = 1  # record spike
 
-                self.refractor_count[i][1] = self.refr_time  # start refractor period
+                self.refractor_count[i] = self.refr_time  # start refractor period
 
                 if self.traces:
-                    for j in range(self.n_neurons):
-                        if self.spikes[j][1] == 1:
+                    for j in range(self.n_neurons_out):
+                        if self.spikes[j] == 1:
                             self.spikes_trace_out[j] = self.time_sim  # times of spikes
         return self.spikes
+
+    def reset_variables(self):
+
+        """  Resetting all variables to the original values """
+
+        self.U_mem_all_neurons = torch.zeros([self.n_neurons_out],
+                                             dtype=torch.float).fill_(self.U_mem)
+        self.U_mem_all_neurons.fill_(self.U_mem)
+
+        self.refractor_count = torch.zeros([self.n_neurons_out],
+                                           dtype=torch.float)
+        self.spikes = torch.zeros([self.n_neurons_out],
+                                  dtype=torch.float)
+        self.time_sim = 0
+
+        if self.traces:
+            self.U_mem_trace = torch.zeros([1, self.n_neurons_out],
+                                           dtype=torch.float)
+            self.spikes_trace_in = torch.zeros([self.n_neurons_in],
+                                               dtype=torch.float)
+            self.spikes_trace_out = torch.zeros([self.n_neurons_out],
+                                                dtype=torch.float)
 
     def update_w_slow(self, conn_matrix):
         self.dw_all = torch.zeros([len(conn_matrix)], dtype=torch.float)
@@ -109,11 +127,14 @@ class NeuronIF:
 
 
 class NeuronLIF(NeuronIF):
+
     """ Class for Leaky Integrate and Fire neuron model. Parent class - NeuronIF"""
 
-    def __init__(self, n_neurons, n_neurons_in, decay, U_mem=0, U_tr=100, U_rest=-20, refr_time=5, traces=bool):
-        super().__init__(n_neurons, n_neurons_in, U_mem, U_tr, U_rest, refr_time, traces)
+    def __init__(self, n_neurons_in, n_neurons_out, decay, U_mem_min=0, U_mem=0, U_tr=100, U_rest=-20, refr_time=5,
+                 traces=bool):
+        super().__init__(n_neurons_in, n_neurons_out, U_mem, U_tr, U_rest, refr_time, traces)
         self.decay = decay
+        self.U_mem_min = U_mem_min
 
     def compute_decay(self):
         pass
@@ -121,6 +142,10 @@ class NeuronLIF(NeuronIF):
     def compute_U_mem(self, U_in, weights):
         super().compute_U_mem(U_in, weights)
         self.U_mem_all_neurons = torch.mul(self.U_mem_all_neurons, self.decay)
+        #for i in range(self.n_neurons_out):
+            #if self.U_mem_all_neurons[i] < 0 and self.spikes[i] == 0:
+                #pass
+        #self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem_min)
 
 
 '''
@@ -133,7 +158,7 @@ class NeuronLIF(NeuronIF):
         """
 
         self.time_sim += 1
-        I_for_each_neuron = torch.zeros([self.n_neurons],
+        I_for_each_neuron = torch.zeros([self.n_neurons_out],
                                         dtype=torch.float)
         for idx, i in enumerate(U_in, start=0):   # compute dU for each neuron
             for j in conn_matrix:
@@ -143,7 +168,7 @@ class NeuronLIF(NeuronIF):
 
         self.U_mem_all_neurons = torch.add(I_for_each_neuron, self.U_mem_all_neurons)  # U + dU
 
-        for i in range(self.n_neurons):   #decrese refractory count
+        for i in range(self.n_neurons_out):   #decrese refractory count
             if self.refractor_count[i][1] > 0:
                 self.refractor_count[i][1] -= 1
 
@@ -164,25 +189,25 @@ class NeuronLIF(NeuronIF):
             Initialized values
         """
 
-        self.U_mem_all_neurons = torch.zeros([self.n_neurons],
+        self.U_mem_all_neurons = torch.zeros([self.n_neurons_out],
                                              dtype=torch.float)
         self.U_mem_all_neurons.fill_(self.U_mem)
 
-        self.refractor_count = torch.zeros([self.n_neurons, 2],
+        self.refractor_count = torch.zeros([self.n_neurons_out, 2],
                                            dtype=torch.float)
-        self.spikes = torch.zeros([self.n_neurons, 2],
+        self.spikes = torch.zeros([self.n_neurons_out, 2],
                                   dtype=torch.float)
         self.time_sim = 0
 
-        for i in range(self.n_neurons):
+        for i in range(self.n_neurons_out):
             self.refractor_count[i][0] = i  # вид [индекс, значение]
             self.spikes[i][0] = i
 
         if self.traces:
-            self.U_mem_trace = torch.zeros([1, self.n_neurons],
+            self.U_mem_trace = torch.zeros([1, self.n_neurons_out],
                                            dtype=torch.float)
             self.spikes_trace_in = torch.zeros([self.n_neurons_in],
                                                dtype=torch.float)
-            self.spikes_trace_out = torch.zeros([self.n_neurons],
+            self.spikes_trace_out = torch.zeros([self.n_neurons_out],
                                                 dtype=torch.float)
 '''

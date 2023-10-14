@@ -22,7 +22,7 @@ conn.inicialize_weights()
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
-out_neurons = NeuronLIF(n_neurons_out, n_neurons_in, decay=0.97, U_tr=100, U_rest=-20, refr_time= 5, traces=True)
+out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.97, U_tr=100, U_rest=-20, refr_time= 5, traces=True)
 
 
 plt.ion()

@@ -2,21 +2,24 @@ from math import exp
 from random import random as rand, random, randrange
 
 import torch
+from matplotlib import pyplot as plt
 from pyvis.network import Network
 from torchvision.datasets import MNIST
 
+from anddudkin_mem_project.topology import Connections
+from anddudkin_mem_project.visuals import plot_U_mem
 from compute_crossbar import compute_ideal
 import time
 from datasets import MNIST_train_test
 # print(MNIST_train_test())
 
-from NeuronModels import Neuron_IFf
+from NeuronModels import NeuronLIF
 # g = Neuron_IFf(100,10,10,10,10)
 
 import plotly.graph_objects as go
 
-
 import plotly.graph_objects as go
+
 
 # print(g.initialization())
 # print(g.spikes)
@@ -47,3 +50,5 @@ import plotly.graph_objects as go
 # print(torch.split(a,1))
 # print(h)
 # print(hh)
+
+
