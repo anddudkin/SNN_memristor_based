@@ -47,7 +47,7 @@ for i in tqdm(range(n_train),desc='Outer Loop',colour='green',position=0):
 
     plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
     plt.show()
-    plt.pause(20)
+    plt.pause(20 )
 
 if test:
     for i in range(n_test):
