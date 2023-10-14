@@ -11,7 +11,7 @@ def lif_neuron_test():
     lif_test = NeuronLIF(4, 2, decay=0.97, U_tr=100, U_rest=-20, refr_time=5, traces=True, U_mem_min=0)
     conn = Connections(4, 2, "all_to_all")
     conn.all_to_all_conn()
-    conn.inicialize_weights()
+    conn.inicialize_weights( )
 
 
     U = torch.tensor([1, 1, 1, 1], dtype=torch.float)
