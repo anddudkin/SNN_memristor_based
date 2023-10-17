@@ -7,13 +7,15 @@ import math
 
 def plot_U_mem(n_neurons_out, U_mem):
     x = []
+    f, ax = plt.subplots()
     for i in range(len(U_mem)):
         x.append(i)
 
     for i in range(n_neurons_out):
-        plt.plot(x, U_mem[:, i])
+        ax.plot(x, U_mem[:, i])
 
-    plt.plot()
+    return ax
+
 
 
 def plot_weights(n_in, n_out, weights):

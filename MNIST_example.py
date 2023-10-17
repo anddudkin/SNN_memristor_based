@@ -9,11 +9,11 @@ from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_trai
 from NeuronModels import NeuronIF, NeuronLIF
 import matplotlib.pyplot as plt
 
-n_neurons_out = 20
+n_neurons_out = 15
 n_neurons_in = 196
-n_train = 10
+n_train = 30
 n_test = 100
-time = 80
+time = 15
 test = False
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
@@ -25,8 +25,10 @@ data_test = MNIST_train_test_14x14()[1]
 out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.97, U_tr=100, U_rest=-20, refr_time=5, traces=True)
 
 plt.ion()
-fig = plt.figure()
-fig1 = plt.figure()
+
+fig, (ax1, ax2) = plt.subplots(2)
+
+
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
     input_spikes = encoding_to_spikes(data_train[i][0], time)
     for j in range(time):
@@ -35,18 +37,24 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
         # print("spikes_trace_in\n", out_neurons.spikes_trace_in)
         # print("spikes_trace_out\n", out_neurons.spikes_trace_out)
         conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out)
-        ax1 = fig1.add_subplot(111)
-        ax1.matshow(input_spikes.reshape(196, 80), cmap="gray")
-        b = plot_weights(n_neurons_in, n_neurons_out, conn.weights)
-        ax = fig.add_subplot(111)
-        ax.matshow(b, cmap='YlOrBr')
-        # plt.draw()
-        # plt.pause(0.5)
-        plt.clf()
 
-    plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
-    plt.show()
-    plt.pause(20)
+        #ax1 = fig1.add_subplot(111)
+        #ax1.matshow(input_spikes.reshape(196, 30), cmap="gray")
+    b = plot_weights(n_neurons_in, n_neurons_out, conn.weights)
+
+    ax1.matshow(b, cmap='YlOrBr')
+    ax2.imshow(torch.squeeze(data_train[i][0]))
+    plt.draw()
+    plt.pause(0.05)
+    
+    #plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
+
+
+
+
+    # plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
+    # plt.show()
+    # plt.pause(1)
 
 if test:
     for i in range(n_test):
