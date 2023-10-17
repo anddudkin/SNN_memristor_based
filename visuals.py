@@ -17,26 +17,28 @@ def plot_U_mem(n_neurons_out, U_mem):
     return ax
 
 
-
 def plot_weights(n_in, n_out, weights):
     c = []
     for i in range(n_out):
         c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
+        print(c)
     hh = torch.cat(c, 1)
     return hh  # проерить и переделать
 
+
 def plot_weights_pro(n_in, n_out, weights):
     if math.sqrt(n_out) % 2 == 0:
-        sq = int(math.sqrt(n_out))
+        rows = int(math.sqrt(n_out))
     else:
-        sq = int(math.sqrt(n_out)+1)
-    matr_w = torch.tensor([sq,sq])
+        rows = int(math.sqrt(n_out) + 1)
+
     c = []
     for i in range(n_out):
         c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
-
     hh = torch.cat(c, 1)
-    return hh.reshape(sq,sq)
+    return hh
+
+
 """
 matplotlib.use('Qt5Agg')
 

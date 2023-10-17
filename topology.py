@@ -54,7 +54,8 @@ class Connections:
                                                               self.n_out_neurons)  # makes matrix of weights [n_in_neurons x n_out_neurons]
         elif dis == "normal":
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
-            self.weights=self.weights.normal_(mean=0.3,std=0.1)
+            self.weights = self.weights.normal_(mean=0.3, std=0.05)
+
     def update_w(self, spike_traces_in, spike_traces_out):
 
         """ Take spike traces from Neuron_Model, compute dw and update weights )
@@ -67,6 +68,7 @@ class Connections:
         out_neurons = Neuron_IF(......)
         update_w(out_neurons.spikes_trace_in,out_neurons.spikes_trace_out
         """
+
         spike_traces_out = spike_traces_out.repeat(self.n_in_neurons, 1)
         spike_traces_in = spike_traces_in.reshape(self.n_in_neurons, 1).repeat(1, self.n_out_neurons)
         # matrix of dt values
