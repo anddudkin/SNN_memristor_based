@@ -23,9 +23,20 @@ def plot_weights(n_in, n_out, weights):
     for i in range(n_out):
         c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
     hh = torch.cat(c, 1)
-    return hh
+    return hh  # проерить и переделать
 
+def plot_weights_pro(n_in, n_out, weights):
+    if math.sqrt(n_out) % 2 == 0:
+        sq = int(math.sqrt(n_out))
+    else:
+        sq = int(math.sqrt(n_out)+1)
+    matr_w = torch.tensor([sq,sq])
+    c = []
+    for i in range(n_out):
+        c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
 
+    hh = torch.cat(c, 1)
+    return hh.reshape(sq,sq)
 """
 matplotlib.use('Qt5Agg')
 

@@ -9,9 +9,9 @@ from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_trai
 from NeuronModels import NeuronIF, NeuronLIF
 import matplotlib.pyplot as plt
 
-n_neurons_out = 15
+n_neurons_out = 16
 n_neurons_in = 196
-n_train = 30
+n_train = 500
 n_test = 100
 time = 15
 test = False
@@ -22,14 +22,16 @@ conn.initialize_weights("normal")
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
-out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.97, U_tr=100, U_rest=-20, refr_time=5, traces=True)
+out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.96, U_tr=100, U_rest=-20, refr_time=7, traces=True)
 
 plt.ion()
+fig = plt.figure(figsize=(10, 10))
 
-fig, (ax1, ax2) = plt.subplots(2)
-
+ax1 = fig.add_subplot(211)
+ax2 = fig.add_subplot(212)
 
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
+
     input_spikes = encoding_to_spikes(data_train[i][0], time)
     for j in range(time):
         out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
@@ -38,19 +40,16 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
         # print("spikes_trace_out\n", out_neurons.spikes_trace_out)
         conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out)
 
-        #ax1 = fig1.add_subplot(111)
-        #ax1.matshow(input_spikes.reshape(196, 30), cmap="gray")
+        # ax1 = fig1.add_subplot(111)
+        # ax1.matshow(input_spikes.reshape(196, 30), cmap="gray")
     b = plot_weights(n_neurons_in, n_neurons_out, conn.weights)
 
-    ax1.matshow(b, cmap='YlOrBr')
-    ax2.imshow(torch.squeeze(data_train[i][0]))
+    ax1.matshow(b, cmap='YlOrBr',)
+    ax2.imshow(torch.squeeze(data_train[i][0]),cmap='gray')
     plt.draw()
     plt.pause(0.05)
-    
-    #plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
 
-
-
+    # plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
 
     # plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
     # plt.show()

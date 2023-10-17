@@ -5,9 +5,9 @@ from matplotlib import pyplot as plt
 
 scale = 1
 A_plus = 0.01  # positive reinforcement
-A_minus = 0.001  # negative reinforcement
+A_minus = 0.003  # negative reinforcement
 tau_plus = 5
-tau_minus = 5
+tau_minus = 6
 w_max = 1.5 * scale
 w_min = -1.5 * scale
 
