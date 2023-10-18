@@ -127,7 +127,6 @@ class NeuronIF:
 
 
 class NeuronLIF(NeuronIF):
-
     """ Class for Leaky Integrate and Fire neuron model. Parent class - NeuronIF"""
 
     def __init__(self, n_neurons_in, n_neurons_out, decay, U_mem_min=0, U_mem=0, U_tr=100, U_rest=-20, refr_time=5,
@@ -142,10 +141,25 @@ class NeuronLIF(NeuronIF):
     def compute_U_mem(self, U_in, weights):
         super().compute_U_mem(U_in, weights)
         self.U_mem_all_neurons = torch.mul(self.U_mem_all_neurons, self.decay)
-        #for i in range(self.n_neurons_out):
-            #if self.U_mem_all_neurons[i] < 0 and self.spikes[i] == 0:
-                #pass
-        #self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem_min)
+        # for i in range(self.n_neurons_out):
+        # if self.U_mem_all_neurons[i] < 0 and self.spikes[i] == 0:
+        # pass
+        # self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem_min)
+
+
+class NeuronInhibitory:
+    def __init__(self, n_neurons, inh):
+        self.n_neurons = n_neurons
+        self.inh = inh
+
+    def compute_inhibition(self, spikes, U_mem_all_neurons):
+        for i in range(self.n_neurons):
+            if spikes[i] == 1:
+                for j in range(self.n_neurons):
+                    if i != j:
+                        U_mem_all_neurons[j] -= self.inh
+                break
+        return U_mem_all_neurons
 
 
 '''

@@ -6,14 +6,14 @@ from tqdm import trange
 from visuals import plot_U_mem, plot_weights
 from topology import Connections
 from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_train_test_9x9, MNIST_train_test_14x14
-from NeuronModels import NeuronIF, NeuronLIF
+from NeuronModels import NeuronIF, NeuronLIF, NeuronInhibitory
 import matplotlib.pyplot as plt
 
-n_neurons_out = 4
+n_neurons_out = 5
 n_neurons_in = 196
 n_train = 500
 n_test = 100
-time = 100
+time = 50
 test = False
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
@@ -23,7 +23,7 @@ data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
 out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.96, U_tr=120, U_rest=-20, refr_time=7, traces=True)
-
+inh_neurons = NeuronInhibitory(n_neurons_out,0)
 plt.ion()
 fig = plt.figure(figsize=(10, 10))
 
@@ -31,11 +31,12 @@ ax1 = fig.add_subplot(211)
 ax2 = fig.add_subplot(212)
 
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
-    if data_train[i][1] == 0:
+    if data_train[i][1] == 0 or data_train[i][1] == 1:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
         for j in range(time):
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes()
+            out_neurons.U_mem_all_neurons=inh_neurons.compute_inhibition(out_neurons.spikes,out_neurons.U_mem_all_neurons)
             # print("spikes_trace_in\n", out_neurons.spikes_trace_in)
             # print("spikes_trace_out\n", out_neurons.spikes_trace_out)
             if torch.sum(out_neurons.spikes_trace_out) != 0:
