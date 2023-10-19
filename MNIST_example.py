@@ -9,7 +9,7 @@ from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_trai
 from NeuronModels import NeuronIF, NeuronLIF, NeuronInhibitory
 import matplotlib.pyplot as plt
 
-n_neurons_out = 5
+n_neurons_out = 8
 n_neurons_in = 196
 n_train = 500
 n_test = 100
@@ -22,8 +22,8 @@ conn.initialize_weights("normal")
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
-out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.94, U_tr=10, U_rest=-10, refr_time=2, traces=True)
-inh_neurons = NeuronInhibitory(n_neurons_out,10)
+out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.94, U_tr=10, U_rest=-10, refr_time=5, traces=True)
+inh_neurons = NeuronInhibitory(n_neurons_out,20)
 plt.ion()
 fig = plt.figure(figsize=(10, 10))
 
@@ -50,7 +50,7 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
         ax1.matshow(b, cmap='YlOrBr')
         ax2.imshow(torch.squeeze(data_train[i][0]), cmap='gray')
         plt.draw()
-        plt.pause(0.005)
+        plt.pause(0.05)
 
     # plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
 

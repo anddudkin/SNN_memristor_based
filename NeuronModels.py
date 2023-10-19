@@ -144,7 +144,7 @@ class NeuronLIF(NeuronIF):
         # for i in range(self.n_neurons_out):
         # if self.U_mem_all_neurons[i] < 0 and self.spikes[i] == 0:
         # pass
-        # self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem_min)
+       !!!!! self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem)
 
 
 class NeuronInhibitory:
@@ -156,9 +156,9 @@ class NeuronInhibitory:
         for i in range(self.n_neurons):
             if spikes[i] == 1:
                 for j in range(self.n_neurons):
-                    if i != j:
+                    if spikes[j] != 1:
                         U_mem_all_neurons[j] -= self.inh
-
+  !!!!!!!!!!!!!!!!!!
         return U_mem_all_neurons
 
 
