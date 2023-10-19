@@ -4,10 +4,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 scale = 1
-A_plus = 0.01  # positive reinforcement
-A_minus = 0.003  # negative reinforcement
-tau_plus = 4
-tau_minus = 6
+A_plus = 0.001  # positive reinforcement
+A_minus = 0.0003 # negative reinforcement
+tau_plus = 5
+tau_minus = 9
 w_max = 1.5 * scale
 w_min = -1.5 * scale
 

@@ -55,6 +55,10 @@ class Connections:
         elif dis == "normal":
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
             self.weights = self.weights.normal_(mean=0.3, std=0.05)
+            print(self.weights)
+
+        elif dis == "Chi2":
+            self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
 
     def update_w(self, spike_traces_in, spike_traces_out):
 

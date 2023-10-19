@@ -8,7 +8,7 @@ from compute_crossbar import compute_ideal
 class NeuronIF:
     """Base class for Integrate and Fire neuron model"""
 
-    def __init__(self, n_neurons_in, n_neurons_out, U_mem=0, U_tr=100, U_rest=-20, refr_time=5, traces=bool):
+    def __init__(self, n_neurons_in, n_neurons_out, U_mem=-10, U_tr=100, U_rest=-20, refr_time=5, traces=bool):
         """Compute I_out for each output neuron and updates U_mem of all neurons
 
         Args:
@@ -129,7 +129,7 @@ class NeuronIF:
 class NeuronLIF(NeuronIF):
     """ Class for Leaky Integrate and Fire neuron model. Parent class - NeuronIF"""
 
-    def __init__(self, n_neurons_in, n_neurons_out, decay, U_mem_min=0, U_mem=0, U_tr=100, U_rest=-20, refr_time=5,
+    def __init__(self, n_neurons_in, n_neurons_out, decay, U_mem_min=0, U_mem=-10, U_tr=10, U_rest=-10, refr_time=5,
                  traces=bool):
         super().__init__(n_neurons_in, n_neurons_out, U_mem, U_tr, U_rest, refr_time, traces)
         self.decay = decay
@@ -158,7 +158,7 @@ class NeuronInhibitory:
                 for j in range(self.n_neurons):
                     if i != j:
                         U_mem_all_neurons[j] -= self.inh
-                break
+
         return U_mem_all_neurons
 
 
