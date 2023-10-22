@@ -50,7 +50,7 @@ Implemented one of the basic SNN learning rules - STDP (Spike-timing dependent p
 <p align="center">
   <img src="images/stag.png?raw=true" 
        width="400" 
-       height="500"/>
+       height="580"/>
 </p>
 ## Credits
 
