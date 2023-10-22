@@ -1,6 +1,6 @@
 
 
-# <anddudkin_mem_project>
+# anddudkin_mem_project
 
 ## Description
 Spiking neural network simulator based on memristor characteristics
