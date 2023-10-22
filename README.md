@@ -49,8 +49,8 @@ Implemented one of the basic SNN learning rules - STDP (Spike-timing dependent p
 ## Build_network
 <p align="center">
   <img src="images/stag.png?raw=true" 
-       width="300" 
-       height="400"/>
+       width="400" 
+       height="500"/>
 </p>
 ## Credits
 
