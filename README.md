@@ -22,24 +22,32 @@ Run git clone https://github.com/anddudkin/anddudkin_mem_project.git
 Spiking neural network (SNN) operates with spikes. SNN takes spikes as input and produce output spikes with respect to learning rule.
 
 <p align="center">
-  <img src="images/snn.png?raw=true"/>
+  <img src="images/snn.png?raw=true"
+       width="400" 
+       height="200"/>
 </p>
 
 We can use different types of neurons (IF,LIF, etc.)
 
 <p align="center">
-  <img src="images/lif.png?raw=true" />
+  <img src="images/lif.png?raw=true"
+       width="350" 
+       height="250"/>
 </p>
 
 <p align="center">
-  <img src="images/stdp.png?raw=true" />
+  <img src="images/stdp.png?raw=true" 
+       width="350" 
+       height="250"/>
 </p>
 ## Credits
 
 
 ## Build_network
 <p align="center">
-  <img src="images/stag.png?raw=true" />
+  <img src="images/stag.png?raw=true" 
+       width="300" 
+       height="400"/>
 </p>
 ## Credits
 
