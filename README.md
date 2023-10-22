@@ -15,9 +15,10 @@ Spiking neural network simulator based on memristor characteristics
 - [License](#license)
 
 ## Installation
-
-Run git clone https://github.com/anddudkin/anddudkin_mem_project.git
-
+If you whant to run some examples or construct your own SNN clone repo
+```
+git clone https://github.com/anddudkin/anddudkin_mem_project.git
+```
 ## Theory
 Spiking neural network (SNN) operates with spikes. SNN takes spikes as input and produce output spikes with respect to learning rule.
 
@@ -27,20 +28,22 @@ Spiking neural network (SNN) operates with spikes. SNN takes spikes as input and
        height="200"/>
 </p>
 
-We can use different types of neurons (IF,LIF, etc.)
+We can use different types of neurons (IF,LIF, etc.). Dinamics of Leaky Integrate and Fire (LIF) neuron membrance presented in the picture below.
 
 <p align="center">
   <img src="images/lif.png?raw=true"
        width="350" 
-       height="250"/>
+       height="280"/>
 </p>
+
+Implemented one of the basic SNN learning rules - STDP (Spike-timing dependent plasticity)
 
 <p align="center">
   <img src="images/stdp.png?raw=true" 
        width="350" 
-       height="250"/>
+       height="280"/>
 </p>
-## Credits
+
 
 
 ## Build_network
@@ -54,17 +57,6 @@ We can use different types of neurons (IF,LIF, etc.)
 None
 
 ## License
-
-The last section of a high-quality README file is the license. This lets other developers know what they can and cannot do with your project. If you need help choosing a license, refer to [https://choosealicense.com/](https://choosealicense.com/).
-
----
-
-
-
-
-
-
-
 
 ## How to Contribute
 
