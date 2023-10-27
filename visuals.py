@@ -21,7 +21,7 @@ def plot_weights(n_in, n_out, weights):
     c = []
     for i in range(n_out):
         c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
-        print(c)
+
     hh = torch.cat(c, 1)
     return hh  # проерить и переделать
 

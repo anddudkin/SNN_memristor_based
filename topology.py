@@ -54,7 +54,7 @@ class Connections:
                                                               self.n_out_neurons)  # makes matrix of weights [n_in_neurons x n_out_neurons]
         elif dis == "normal":
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
-            self.weights = self.weights.normal_(mean=0.3, std=0.05)
+            self.weights = self.weights.normal_(mean=0.2, std=0.1)
 
         elif dis == "Chi2":
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
