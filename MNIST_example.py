@@ -9,11 +9,11 @@ from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_trai
 from NeuronModels import NeuronIF, NeuronLIF, NeuronInhibitory
 import matplotlib.pyplot as plt
 
-n_neurons_out = 8
+n_neurons_out = 15
 n_neurons_in = 196
 n_train = 500
 n_test = 100
-time = 200
+time = 350
 test = False
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
@@ -22,40 +22,42 @@ conn.initialize_weights("normal")
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
-out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.94, U_tr=13, U_rest=13, refr_time=5, traces=True)
-inh_neurons = NeuronInhibitory(n_neurons_out,10)
+out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.97, U_tr=15, U_rest=0, refr_time=5, traces=True)
+inh_neurons = NeuronInhibitory(n_neurons_out, 13)
 plt.ion()
 fig = plt.figure(figsize=(10, 10))
+fig1 = plt.figure(figsize=(5, 5))
 
 ax1 = fig.add_subplot(311)
-ax2 = fig.add_subplot(312)
-ax3= fig.add_subplot(313)
+ax2 = fig1.add_subplot(211)
+ax3 = fig1.add_subplot(212)
 
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
-    if data_train[i][1] == 7 or data_train[i][1] == 1 or data_train[i][1] == 8:
+    if  True: #data_train[i][1] == 0 or data_train[i][1] == 2:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
 
         b = plot_weights(n_neurons_in, n_neurons_out, conn.weights)
         ax1.matshow(b, cmap='YlOrBr', vmin=0, vmax=1)
 
         ax2.imshow(torch.squeeze(data_train[i][0]), cmap='gray')
-        ax3.imshow(input_spikes.reshape(200,196).permute(1, 0),cmap='gray', vmin=0, vmax=1)
+        ax3.imshow(input_spikes.reshape(196, 350)[::4,::4], cmap='gray', vmin=0, vmax=1)
         plt.draw()
-        plt.pause(0.05)
+        plt.pause(0.5)
 
         for j in range(time):
+
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes()
-            #print(out_neurons.spikes)
-            out_neurons.U_mem_all_neurons=inh_neurons.compute_inhibition(out_neurons.spikes,out_neurons.U_mem_all_neurons)
+            # print(out_neurons.spikes)
+            out_neurons.U_mem_all_neurons = inh_neurons.compute_inhibition(out_neurons.spikes,
+                                                                           out_neurons.U_mem_all_neurons)
             # print("spikes_trace_in\n", out_neurons.spikes_trace_in)
             # print("spikes_trace_out\n", out_neurons.spikes_trace_out)
             if torch.sum(out_neurons.spikes_trace_out) != 0:
-                conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out)
+                conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,out_neurons.spikes)
 
             # ax1 = fig1.add_subplot(111)
             # ax1.matshow(input_spikes.reshape(196, 30), cmap="gray")
-
 
     # plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
 

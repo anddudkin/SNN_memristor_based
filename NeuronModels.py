@@ -8,7 +8,7 @@ from compute_crossbar import compute_ideal
 class NeuronIF:
     """Base class for Integrate and Fire neuron model"""
 
-    def __init__(self, n_neurons_in, n_neurons_out, U_mem=-10, U_tr=100, U_rest=-20, refr_time=5, traces=bool):
+    def __init__(self, n_neurons_in, n_neurons_out, U_mem=0, U_tr=13, U_rest=0, refr_time=5, traces=bool):
         """Compute I_out for each output neuron and updates U_mem of all neurons
 
         Args:
@@ -69,6 +69,7 @@ class NeuronIF:
                 if U_in[i] == 1:
                     self.spikes_trace_in[i] = self.time_sim  # times of spikes
             # stack traces of U_mem for plotting
+
             self.U_mem_trace = torch.cat(
                 (self.U_mem_trace, self.U_mem_all_neurons.reshape(1, len(self.U_mem_all_neurons))), 0)
 
@@ -92,6 +93,7 @@ class NeuronIF:
                     for j in range(self.n_neurons_out):
                         if self.spikes[j] == 1:
                             self.spikes_trace_out[j] = self.time_sim  # times of spikes
+
         return self.spikes
 
     def reset_variables(self):
@@ -101,20 +103,6 @@ class NeuronIF:
         self.U_mem_all_neurons = torch.zeros([self.n_neurons_out],
                                              dtype=torch.float).fill_(self.U_mem)
         self.U_mem_all_neurons.fill_(self.U_mem)
-
-        self.refractor_count = torch.zeros([self.n_neurons_out],
-                                           dtype=torch.float)
-        self.spikes = torch.zeros([self.n_neurons_out],
-                                  dtype=torch.float)
-        self.time_sim = 0
-
-        if self.traces:
-            self.U_mem_trace = torch.zeros([1, self.n_neurons_out],
-                                           dtype=torch.float)
-            self.spikes_trace_in = torch.zeros([self.n_neurons_in],
-                                               dtype=torch.float)
-            self.spikes_trace_out = torch.zeros([self.n_neurons_out],
-                                                dtype=torch.float)
 
     def update_w_slow(self, conn_matrix):
         self.dw_all = torch.zeros([len(conn_matrix)], dtype=torch.float)
@@ -140,11 +128,12 @@ class NeuronLIF(NeuronIF):
 
     def compute_U_mem(self, U_in, weights):
         super().compute_U_mem(U_in, weights)
+        self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem)
         self.U_mem_all_neurons = torch.mul(self.U_mem_all_neurons, self.decay)
         # for i in range(self.n_neurons_out):
         # if self.U_mem_all_neurons[i] < 0 and self.spikes[i] == 0:
         # pass
-        self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem)
+        print(self.U_mem_all_neurons)
 
 
 class NeuronInhibitory:
