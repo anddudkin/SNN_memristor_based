@@ -8,7 +8,7 @@ from compute_crossbar import compute_ideal
 class NeuronIF:
     """Base class for Integrate and Fire neuron model"""
 
-    def __init__(self, n_neurons_in, n_neurons_out, U_mem=0, U_tr=13, U_rest=0, refr_time=5, traces=bool):
+    def __init__(self, n_neurons_in, n_neurons_out, U_mem=0, U_tr=13, U_rest=0, refr_time=5, inh=True, traces=True):
         """Compute I_out for each output neuron and updates U_mem of all neurons
 
         Args:
@@ -19,13 +19,14 @@ class NeuronIF:
             refr_time (int) : refractory period time
         """
 
+        self.inh = inh
         self.n_neurons_in = n_neurons_in
         self.n_neurons_out = n_neurons_out
         self.U_mem = U_mem
         self.U_tr = U_tr
         self.U_rest = U_rest
         self.refr_time = refr_time
-        self.traces = True
+        self.traces = traces
 
         self.dw_all = None
         self.U_mem_trace = None
@@ -75,7 +76,7 @@ class NeuronIF:
 
     def check_spikes(self):
         """
-        Checks if neuron spikes
+        Checks if neuron spikes and reset U_mem
 
         :return: tensor [index of neuron, spike (0 or 1)]
         """
@@ -83,11 +84,16 @@ class NeuronIF:
             self.spikes[i] = 0  # обнуляем список импульсов
             if self.U_mem_all_neurons[i] >= self.U_tr:  # threshold check
 
-                self.U_mem_all_neurons[i] = self.U_rest  # if spikes rest
+                self.U_mem_all_neurons[i] = self.U_rest  # if spike occurs rest
 
                 self.spikes[i] = 1  # record spike
 
                 self.refractor_count[i] = self.refr_time  # start refractor period
+
+                if self.inh:  # inhibishion
+                    for j in range(self.n_neurons_out):
+                        if i != j:
+                            self.U_mem_all_neurons[j] -= 10
 
                 if self.traces:
                     for j in range(self.n_neurons_out):
@@ -118,8 +124,8 @@ class NeuronLIF(NeuronIF):
     """ Class for Leaky Integrate and Fire neuron model. Parent class - NeuronIF"""
 
     def __init__(self, n_neurons_in, n_neurons_out, decay, U_mem_min=0, U_mem=0, U_tr=13, U_rest=0, refr_time=5,
-                 traces=bool):
-        super().__init__(n_neurons_in, n_neurons_out, U_mem, U_tr, U_rest, refr_time, traces)
+                 traces=True, inh=True):
+        super().__init__(n_neurons_in, n_neurons_out, U_mem, U_tr, U_rest, refr_time, traces, inh)
         self.decay = decay
         self.U_mem_min = U_mem_min
 
@@ -133,7 +139,6 @@ class NeuronLIF(NeuronIF):
         # for i in range(self.n_neurons_out):
         # if self.U_mem_all_neurons[i] < 0 and self.spikes[i] == 0:
         # pass
-        print(self.U_mem_all_neurons)
 
 
 class NeuronInhibitory:

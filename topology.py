@@ -30,7 +30,7 @@ class Connections:
         self.matrix_conn = torch.zeros([self.n_in_neurons * self.n_out_neurons, 3], dtype=torch.float)
 
         if self.type == "all_to_all":
-            while self.matrix_conn[self.n_in_neurons * self.n_out_neurons - 1][0] == 0:
+            while self.matrix_conn[-1][0] == 0:
                 ind = 0
                 for i in range(self.n_in_neurons):
                     for j in range(self.n_out_neurons):
@@ -54,13 +54,14 @@ class Connections:
                                                               self.n_out_neurons)  # makes matrix of weights [n_in_neurons x n_out_neurons]
         elif dis == "normal":
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
-            self.weights = self.weights.normal_(mean=0.2, std=0.1)
+            self.weights = self.weights.normal_(mean=0.3, std=0.1)
+
 
         elif dis == "xavier":
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
             self.weights = torch.nn.init.xavier_uniform_(self.weights, gain=1.)
 
-    def update_w(self, spike_traces_in, spike_traces_out, spikes):
+    def update_w(self, spike_traces_in, spike_traces_out, spikes, sim):
 
         """ Take spike traces from Neuron_Model, compute dw and update weights )
 
@@ -86,18 +87,26 @@ class Connections:
                 time_diff[:, i].apply_(compute_dw)"""
 
         time_diff = torch.sub(spike_traces_in, spike_traces_out)
+
         # calling compute_dw function for each dt in matrix
-        time_diff.apply_(compute_dw)
+
         torch.set_printoptions(threshold=10_000)
 
         # updating weights (only weights of neuron that spiked)
-        for i, sp in enumerate(spikes, start=0):
-            if sp == 1:
-                self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
+        # for i, sp in enumerate(spikes, start=0):
+        #     if sp == 1:
+        #         print(time_diff[:, i])
+        #         time_diff[:, i].apply_(compute_dw)
+        #
+        #         self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
+        print(time_diff[:,3])
+        time_diff.apply_(compute_dw)
+        self.weights = torch.add(self.weights, time_diff)
 
-        self.weights = torch.mul(self.weights, 0.99985)  # weight decay
+        self.weights = torch.mul(self.weights, 0.9999)  # weight decay
 
         self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
+
 
 
 def compute_det_w(matrix_conn, I_in):

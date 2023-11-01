@@ -4,10 +4,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 scale = 1
-A_plus = 0.005  # positive reinforcement
-A_minus = 0.2  # negative reinforcement
+A_plus = 0.003  # positive reinforcement
+A_minus = 0.0005  # negative reinforcement
 tau_plus = 5
-tau_minus = 50
+tau_minus = 5
 w_max = 1.5 * scale
 w_min = -1.5 * scale
 
@@ -22,6 +22,7 @@ def compute_dw(t):
         return A_plus * np.exp(t / tau_plus)
     else:
         return -A_minus * np.exp(-t / tau_minus)
+
 
 
 def plot_stdp():

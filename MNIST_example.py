@@ -28,33 +28,35 @@ plt.ion()
 fig = plt.figure(figsize=(10, 10))
 fig1 = plt.figure(figsize=(5, 5))
 
-ax1 = fig.add_subplot(311)
+ax1 = fig.add_subplot(111)
 ax2 = fig1.add_subplot(211)
 ax3 = fig1.add_subplot(212)
 
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
-    if  True: #data_train[i][1] == 0 or data_train[i][1] == 2:
+    if True:  # data_train[i][1] == 0 or data_train[i][1] == 2:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
 
         b = plot_weights(n_neurons_in, n_neurons_out, conn.weights)
         ax1.matshow(b, cmap='YlOrBr', vmin=0, vmax=1)
+        plt.draw()
+        plt.pause(0.5)
 
         ax2.imshow(torch.squeeze(data_train[i][0]), cmap='gray')
         ax3.imshow(input_spikes.reshape(196, 350)[::4,::4], cmap='gray', vmin=0, vmax=1)
-        plt.draw()
-        plt.pause(0.5)
+
+        print(sum(conn.weights))
 
         for j in range(time):
 
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes()
             # print(out_neurons.spikes)
-            out_neurons.U_mem_all_neurons = inh_neurons.compute_inhibition(out_neurons.spikes,
-                                                                           out_neurons.U_mem_all_neurons)
+            # out_neurons.U_mem_all_neurons = inh_neurons.compute_inhibition(out_neurons.spikes,
+            # out_neurons.U_mem_all_neurons)
             # print("spikes_trace_in\n", out_neurons.spikes_trace_in)
             # print("spikes_trace_out\n", out_neurons.spikes_trace_out)
             if torch.sum(out_neurons.spikes_trace_out) != 0:
-                conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,out_neurons.spikes)
+                conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,out_neurons.time_sim)
 
             # ax1 = fig1.add_subplot(111)
             # ax1.matshow(input_spikes.reshape(196, 30), cmap="gray")
