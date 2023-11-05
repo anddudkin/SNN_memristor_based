@@ -73,4 +73,4 @@ def plot_mnist():
     plt.show()
 
 
-plot_mnist()
+

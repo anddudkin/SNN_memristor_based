@@ -20,7 +20,7 @@ def compute_dw(t):
     if -10 <= t <= 0:
         return A_plus * np.exp(t / tau_plus)
     else:
-        return -0.005
+        return -0.003
 
 
 
@@ -34,7 +34,7 @@ def plot_stdp():
         b.append(i)
     plt.plot(b, a, '.')
     plt.show()
-plot_stdp()
+
 
 # STDP weight update rule
 """def update(w, del_w):

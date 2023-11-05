@@ -8,8 +8,8 @@ from compute_crossbar import compute_ideal
 class NeuronIF:
     """Base class for Integrate and Fire neuron model"""
 
-    def __init__(self, n_neurons_in, n_neurons_out, U_mem=0, U_tr=13, U_rest=0, refr_time=5, inh=True, traces=True):
-        """Compute I_out for each output neuron and updates U_mem of all neurons
+    def __init__(self, n_neurons_in, n_neurons_out, inh=bool, traces=bool, U_mem=0, U_tr=13, U_rest=0, refr_time=5):
+        """C
 
         Args:
             n_neurons (int) : number of output IF neurons
@@ -33,6 +33,8 @@ class NeuronIF:
         # Initializing values
         self.U_mem_all_neurons = torch.zeros([self.n_neurons_out],
                                              dtype=torch.float).fill_(self.U_mem)
+        self.U_thresh_all_neurons = torch.zeros([self.n_neurons_out],
+                                                dtype=torch.float).fill_(self.U_tr)
         # self.U_mem_all_neurons.fill_(self.U_mem)
 
         self.refractor_count = torch.zeros([self.n_neurons_out],
@@ -81,7 +83,7 @@ class NeuronIF:
         :return: tensor [index of neuron, spike (0 or 1)]
         """
         for i in range(self.n_neurons_out):
-            self.spikes[i] = 0  # обнуляем список импульсов
+            self.spikes[i] = 0  # update spike values
             if self.U_mem_all_neurons[i] >= self.U_tr:  # threshold check
 
                 self.U_mem_all_neurons[i] = self.U_rest  # if spike occurs rest
@@ -90,19 +92,17 @@ class NeuronIF:
 
                 self.refractor_count[i] = self.refr_time  # start refractor period
 
-                if self.inh:  # inhibision
+                if self.inh:  # inhibition
                     for j in range(self.n_neurons_out):
                         if i != j:
-                            self.U_mem_all_neurons[j] -= 8
-                            self.refractor_count[j] = 3
+                            self.U_mem_all_neurons[j] -= 10
+                            self.refractor_count[j] = 6
                             self.spikes[j] = 0
 
                 if self.traces:
                     for j in range(self.n_neurons_out):
                         if self.spikes[j] == 1:
                             self.spikes_trace_out[j] = self.time_sim  # times of spikes
-
-        return self.spikes
 
     def reset_variables(self):
 
@@ -113,37 +113,68 @@ class NeuronIF:
         self.U_mem_all_neurons.fill_(self.U_mem)
 
         self.refractor_count = torch.zeros([self.n_neurons_out],
-                                             dtype=torch.float).fill_(self.U_mem)
-
-    def update_w_slow(self, conn_matrix):
-        self.dw_all = torch.zeros([len(conn_matrix)], dtype=torch.float)
-
-        for indx, i in enumerate(self.spikes_trace_out, start=0):
-            for k, j in enumerate(conn_matrix):
-                if j[0] == indx:
-                    conn_matrix[k][2] += compute_dw(self.spikes_trace_in[int(conn_matrix[k][1])] - i)
-                    # self.dw_all[k] = compute_dw(self.spikes_trace_in[int(conn_matrix[k][1])] - i)
+                                           dtype=torch.float).fill_(self.U_mem)
 
 
 class NeuronLIF(NeuronIF):
     """ Class for Leaky Integrate and Fire neuron model. Parent class - NeuronIF"""
 
-    def __init__(self, n_neurons_in, n_neurons_out, decay, U_mem_min=0, U_mem=0, U_tr=13, U_rest=0, refr_time=5,
-                 traces=True, inh=True):
-        super().__init__(n_neurons_in, n_neurons_out, U_mem, U_tr, U_rest, refr_time, traces, inh)
+    def __init__(self, n_neurons_in, n_neurons_out, decay, inh=bool, traces=bool, U_mem=0, U_tr=13, U_rest=0, refr_time=5):
+        super().__init__(n_neurons_in, n_neurons_out, inh, traces, U_mem, U_tr, U_rest, refr_time)
         self.decay = decay
-        self.U_mem_min = U_mem_min
-
-    def compute_decay(self):
-        pass
 
     def compute_U_mem(self, U_in, weights):
         super().compute_U_mem(U_in, weights)
+
         self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem)
         self.U_mem_all_neurons = torch.mul(self.U_mem_all_neurons, self.decay)
-        # for i in range(self.n_neurons_out):
-        # if self.U_mem_all_neurons[i] < 0 and self.spikes[i] == 0:
-        # pass
+
+
+class NeuronLifAdaptiveThresh(NeuronLIF):
+    def __init__(self, n_neurons_in, n_neurons_out, decay, inh=bool, traces=bool, U_mem=0, U_tr=13, U_rest=0, refr_time=5):
+        """ NeuronLifAdaptiveThresh
+
+            Args:
+                n_neurons_in (int) : number of input IF neurons
+                n_neurons_out (int) : number of output IF neurons
+                U_tr :  max capacity of neuron (Threshold). If U_mem > U_tr neuron spikes
+                U_mem :  initialized membrane potentials
+                U_rest  : membrane potential while resting (refractory), after neuron spikes
+                refr_time (int) : refractory period time
+        """
+        super().__init__(n_neurons_in, n_neurons_out, decay, inh, traces, U_mem, U_tr, U_rest, refr_time)
+
+    def check_spikes(self):
+        """
+        Checks if neuron spikes and reset U_mem
+
+        :return: tensor [index of neuron, spike (0 or 1)]
+        """
+        for i in range(self.n_neurons_out):
+            self.spikes[i] = 0  # update spike values
+            if self.U_mem_all_neurons[i] >= self.U_thresh_all_neurons[i]:  # threshold check
+
+                self.U_thresh_all_neurons[i] += 0.02
+                self.U_mem_all_neurons[i] = self.U_rest  # if spike occurs rest
+
+                self.spikes[i] = 1  # record spike
+
+                self.refractor_count[i] = self.refr_time  # start refractor period
+
+                if self.inh:  # inhibition
+                    for j in range(self.n_neurons_out):
+                        if i != j:
+                            self.U_mem_all_neurons[j] -= 5
+                            self.refractor_count[j] = 6
+                            self.spikes[j] = 0
+
+                if self.traces:
+                    for j in range(self.n_neurons_out):
+                        if self.spikes[j] == 1:
+                            self.spikes_trace_out[j] = self.time_sim  # times of spikes
+
+        self.U_thresh_all_neurons = torch.mul(self.U_thresh_all_neurons, 0.99999)
+        self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr, max=self.U_tr + self.U_tr * 0.2)
 
 
 class NeuronInhibitory:

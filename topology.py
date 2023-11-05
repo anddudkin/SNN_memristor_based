@@ -11,9 +11,10 @@ https://arxiv.org/ftp/arxiv/papers/1710/1710.04734.pdf
 
 
 class Connections:
-    def __init__(self, n_in_neurons, n_out_neurons, type_conn="all_to_all", w_min=0, w_max=1):
+    def __init__(self, n_in_neurons, n_out_neurons, type_conn="all_to_all", w_min=0, w_max=1, decay=(False, 0.9999)):
         """ type of connection: 1) "all_to_all" 2).....
                 """
+        self.decay = decay
         self.w_max = w_max
         self.w_min = w_min
         self.weights = None
@@ -61,7 +62,7 @@ class Connections:
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
             self.weights = torch.nn.init.xavier_uniform_(self.weights, gain=1.)
 
-    def update_w(self, spike_traces_in, spike_traces_out, spikes, sim):
+    def update_w(self, spike_traces_in, spike_traces_out, spikes):
 
         """ Take spike traces from Neuron_Model, compute dw and update weights )
 
@@ -91,24 +92,21 @@ class Connections:
 
         # calling compute_dw function for each dt in matrix
 
-        
-
-        #updating weights (only weights of neuron that spiked)
+        # updating weights (only weights of neuron that spiked)
         for i, sp in enumerate(spikes, start=0):
             if sp == 1:
-                print(time_diff[:, i])
+
                 time_diff[:, i].apply_(compute_dw)
 
                 self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
 
-        #print(time_diff[:,3])
+        # print(time_diff[:,3])
         # time_diff.apply_(compute_dw)
         # self.weights = torch.add(self.weights, time_diff)
-
-        self.weights = torch.mul(self.weights, 0.99999)  # weight decay
+        if self.decay[0]:
+            self.weights = torch.mul(self.weights, self.decay[1])  # weight decay
 
         self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
-
 
 
 def compute_det_w(matrix_conn, I_in):
