@@ -60,7 +60,7 @@ def MNIST_train_test_9x9():
     datasets.MNIST(root='./data', train=False, download=True, transform=None)
 
     transform = transforms.Compose([
-        transforms.ToTensor(), transforms.Resize((9, 9), antialias=False)])
+        transforms.ToTensor(), transforms.Resize((9, 9))])
     dataset1 = datasets.MNIST('../data', train=True, download=True,
                               transform=transform)
     dataset2 = datasets.MNIST('../data', train=False,
@@ -70,6 +70,9 @@ def MNIST_train_test_9x9():
 
 def encoding_to_spikes(data, time):
     return torch.bernoulli(data.repeat(time, 1, 1))
+
+
+
 
 # print(print(torch.bernoulli(a[0][0])))
 # print(a[1][0][::4, ::4])

@@ -90,10 +90,12 @@ class NeuronIF:
 
                 self.refractor_count[i] = self.refr_time  # start refractor period
 
-                if self.inh:  # inhibishion
+                if self.inh:  # inhibision
                     for j in range(self.n_neurons_out):
                         if i != j:
-                            self.U_mem_all_neurons[j] -= 10
+                            self.U_mem_all_neurons[j] -= 8
+                            self.refractor_count[j] = 3
+                            self.spikes[j] = 0
 
                 if self.traces:
                     for j in range(self.n_neurons_out):
@@ -109,6 +111,9 @@ class NeuronIF:
         self.U_mem_all_neurons = torch.zeros([self.n_neurons_out],
                                              dtype=torch.float).fill_(self.U_mem)
         self.U_mem_all_neurons.fill_(self.U_mem)
+
+        self.refractor_count = torch.zeros([self.n_neurons_out],
+                                             dtype=torch.float).fill_(self.U_mem)
 
     def update_w_slow(self, conn_matrix):
         self.dw_all = torch.zeros([len(conn_matrix)], dtype=torch.float)

@@ -1,6 +1,7 @@
 import torch
 from matplotlib import pyplot as plt
 from NeuronModels import NeuronLIF
+from datasets import MNIST_train_test_14x14, encoding_to_spikes
 from topology import Connections
 
 
@@ -11,8 +12,7 @@ def lif_neuron_test():
     lif_test = NeuronLIF(4, 2, decay=0.97, U_tr=100, U_rest=-20, refr_time=5, traces=True, U_mem_min=0)
     conn = Connections(4, 2, "all_to_all")
     conn.all_to_all_conn()
-    conn.inicialize_weights( )
-
+    conn.initialize_weights("normal")
 
     U = torch.tensor([1, 1, 1, 1], dtype=torch.float)
     U1 = torch.tensor([0, 0, 0, 0], dtype=torch.float)
@@ -43,3 +43,34 @@ def lif_neuron_test():
     plt.figure(2)
     plt.plot(x, y)
     plt.show()
+
+
+def plot_mnist():
+    bb = MNIST_train_test_14x14()[0]
+    print(bb[0][0])
+    b1 = bb[0][0] * 0.80
+    f = torch.squeeze(encoding_to_spikes(b1, 10))
+    print(f)
+    g = torch.zeros([14, 14], dtype=torch.float)
+    plt.ion()
+    fig = plt.figure(figsize=(4, 4))
+    ax1 = fig.add_subplot(111)
+
+    for i in f:
+        g += i
+        ax1.matshow(i, cmap='gray')
+        plt.draw()
+        plt.pause(0.0001)
+
+    plt.ioff()
+    print(g)
+    fig1 = plt.figure(figsize=(6, 6))
+    ax3 = fig1.add_subplot(121)
+    ax2 = fig1.add_subplot(122)
+    g = g / 10
+    ax3.imshow(torch.squeeze(bb[0][0]), cmap='gray', vmin=0, vmax=1)
+    ax2.imshow(g, cmap='gray', vmin=0, vmax=1)
+    plt.show()
+
+
+plot_mnist()

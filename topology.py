@@ -54,7 +54,7 @@ class Connections:
                                                               self.n_out_neurons)  # makes matrix of weights [n_in_neurons x n_out_neurons]
         elif dis == "normal":
             self.weights = self.matrix_conn[:, 2].reshape(self.n_in_neurons, self.n_out_neurons)
-            self.weights = self.weights.normal_(mean=0.3, std=0.1)
+            self.weights = self.weights.normal_(mean=0.7, std=0.2)
 
 
         elif dis == "xavier":
@@ -79,31 +79,33 @@ class Connections:
         # matrix of dt values
         """
         time_diff = torch.zeros([self.n_in_neurons, self.n_out_neurons])
-
+        
         for i, sp in enumerate(spikes, start=0):
             if sp == 1:
                 time_diff[:, i] = torch.sub(spike_traces_in[:, i], spike_traces_out[:, i])
                 print(time_diff)
-                time_diff[:, i].apply_(compute_dw)"""
-
+                time_diff[:, i].apply_(compute_dw)
+        torch.set_printoptions(threshold=10_000)
+        """
         time_diff = torch.sub(spike_traces_in, spike_traces_out)
 
         # calling compute_dw function for each dt in matrix
 
-        torch.set_printoptions(threshold=10_000)
+        
 
-        # updating weights (only weights of neuron that spiked)
-        # for i, sp in enumerate(spikes, start=0):
-        #     if sp == 1:
-        #         print(time_diff[:, i])
-        #         time_diff[:, i].apply_(compute_dw)
-        #
-        #         self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
-        print(time_diff[:,3])
-        time_diff.apply_(compute_dw)
-        self.weights = torch.add(self.weights, time_diff)
+        #updating weights (only weights of neuron that spiked)
+        for i, sp in enumerate(spikes, start=0):
+            if sp == 1:
+                print(time_diff[:, i])
+                time_diff[:, i].apply_(compute_dw)
 
-        self.weights = torch.mul(self.weights, 0.9999)  # weight decay
+                self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
+
+        #print(time_diff[:,3])
+        # time_diff.apply_(compute_dw)
+        # self.weights = torch.add(self.weights, time_diff)
+
+        self.weights = torch.mul(self.weights, 0.99999)  # weight decay
 
         self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
 

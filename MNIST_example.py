@@ -9,7 +9,7 @@ from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_trai
 from NeuronModels import NeuronIF, NeuronLIF, NeuronInhibitory
 import matplotlib.pyplot as plt
 
-n_neurons_out = 15
+n_neurons_out = 10
 n_neurons_in = 196
 n_train = 500
 n_test = 100
@@ -19,10 +19,10 @@ conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
 
-data_train = MNIST_train_test_14x14()[0]
+data_train = MNIST_train_test_14x14()[1]
 data_test = MNIST_train_test_14x14()[1]
 
-out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.97, U_tr=15, U_rest=0, refr_time=5, traces=True)
+out_neurons = NeuronLIF(n_neurons_in, n_neurons_out, decay=0.92, U_tr=20, U_rest=0, refr_time=6, traces=True)
 inh_neurons = NeuronInhibitory(n_neurons_out, 13)
 plt.ion()
 fig = plt.figure(figsize=(10, 10))
@@ -33,8 +33,9 @@ ax2 = fig1.add_subplot(211)
 ax3 = fig1.add_subplot(212)
 
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
-    if True:  # data_train[i][1] == 0 or data_train[i][1] == 2:
+    if data_train[i][1] == 1 or data_train[i][1] == 0 or data_train[i][1] == 9:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
+        print(data_train[i][0])
 
         b = plot_weights(n_neurons_in, n_neurons_out, conn.weights)
         ax1.matshow(b, cmap='YlOrBr', vmin=0, vmax=1)
@@ -50,6 +51,7 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
 
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes()
+            print(out_neurons.spikes)
             # print(out_neurons.spikes)
             # out_neurons.U_mem_all_neurons = inh_neurons.compute_inhibition(out_neurons.spikes,
             # out_neurons.U_mem_all_neurons)
