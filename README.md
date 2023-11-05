@@ -1,6 +1,6 @@
 
 
-# anddudkin_mem_project
+# SNN simulator 
 
 ## Description
 Spiking neural network simulator based on memristor characteristics
