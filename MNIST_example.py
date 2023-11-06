@@ -35,6 +35,8 @@ ax1 = fig.add_subplot(111)
 ax2 = fig1.add_subplot(211)
 ax3 = fig1.add_subplot(212)
 
+
+
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
     if data_train[i][1] == 1 or data_train[i][1] == 0 or data_train[i][1] == 9:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
@@ -50,12 +52,6 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
         for j in range(time):
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes()
-
-            # print(out_neurons.spikes)
-            # out_neurons.U_mem_all_neurons = inh_neurons.compute_inhibition(out_neurons.spikes,
-            # out_neurons.U_mem_all_neurons)
-            # print("spikes_trace_in\n", out_neurons.spikes_trace_in)
-            # print("spikes_trace_out\n", out_neurons.spikes_trace_out)
             if torch.sum(out_neurons.spikes_trace_out) != 0:
                 conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
             print(out_neurons.U_thresh_all_neurons)
