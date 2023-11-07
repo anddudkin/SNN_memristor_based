@@ -36,8 +36,9 @@ class NeuronIF:
         self.refractor_count = torch.zeros([self.n_neurons_out],
                                            dtype=torch.float)
         self.spikes = torch.zeros([self.n_neurons_out],
-                                  dtype=torch.float)
+                                  dtype=torch.int)
         self.time_sim = 0
+
 
         # Initializing trace record
         if self.traces:

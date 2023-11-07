@@ -68,11 +68,9 @@ def MNIST_train_test_9x9():
     return dataset1, dataset2
 
 
+
 def encoding_to_spikes(data, time):
     return torch.bernoulli(data.repeat(time, 1, 1))
-
-
-
 
 # print(print(torch.bernoulli(a[0][0])))
 # print(a[1][0][::4, ::4])
