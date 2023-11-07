@@ -35,8 +35,6 @@ ax1 = fig.add_subplot(111)
 ax2 = fig1.add_subplot(211)
 ax3 = fig1.add_subplot(212)
 
-
-
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
     if data_train[i][1] == 1 or data_train[i][1] == 0 or data_train[i][1] == 9:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
@@ -63,7 +61,8 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
 
 if test:
     for i in tqdm(range(n_test), desc='test', colour='green', position=0):
-        input_spikes = encoding_to_spikes(data_test[i][0], time)
+        if data_train[i][1] == 1 or data_train[i][1] == 0 or data_train[i][1] == 9:
+            input_spikes = encoding_to_spikes(data_train[i][0], time)
 
 print(conn)
 print("Umem\n", out_neurons.U_mem_all_neurons)
