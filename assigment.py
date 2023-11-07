@@ -48,4 +48,4 @@ class MnistEvaluation:
     def final(self):
         print("Correctly defined", self.good)
         print("Incorrectly defined", self.bad)
-        print("Final result", (self.good / (self.bad + self.good) * 100))
+        print("Final result", round((self.good / (self.bad + self.good) * 100), 2))
