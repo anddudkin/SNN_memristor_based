@@ -4,7 +4,7 @@ import torch
 from tqdm import tqdm
 from tqdm import trange
 import numpy as np
-from assigment import MnistAssigment, MnistEvaluation
+from assigment import MnistAssignment, MnistEvaluation
 from visuals import plot_U_mem, plot_weights_square
 from topology import Connections
 from datasets import MNIST_train_test, rand_in_U, encoding_to_spikes, MNIST_train_test_9x9, MNIST_train_test_14x14
@@ -38,7 +38,7 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       traces=True,
                                       inh=True)
 
-assig = MnistAssigment(n_neurons_out)
+assig = MnistAssignment(n_neurons_out)
 inh_neurons = NeuronInhibitory(n_neurons_out, 13)
 plt.ion()
 fig = plt.figure(figsize=(6, 6))
@@ -95,6 +95,6 @@ if test:
                 out_neurons.check_spikes()
                 evall.count_spikes(out_neurons.spikes)
 
-            evall.conclude(assig.assigments, data_train[i][1])
+            evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
