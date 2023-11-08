@@ -1,13 +1,7 @@
-import numpy as np
 import torch
-import torchvision
 from torchvision import datasets, transforms
-from torchvision.datasets import MNIST
-import matplotlib.pyplot as plt
 from torchvision.transforms import InterpolationMode
 
-
-# print(MNIST)
 
 def rand_in_U(n_in_neurons):  # [1., 1., 0., 0., 1., 1., 1., 0., 1., 0.]
     U = torch.bernoulli(torch.randn(n_in_neurons).uniform_())
@@ -21,7 +15,7 @@ def rand_values():
 
 
 def MNIST_train_test():
-    datasets.MNIST(root='./data', train=False, download=True, transform=None)
+    datasets.MNIST(root='./data', train=True, download=True, transform=None)
 
     transform = transforms.Compose([
         transforms.ToTensor()])
@@ -29,14 +23,8 @@ def MNIST_train_test():
                               transform=transform)
     dataset2 = datasets.MNIST('../data', train=False,
                               transform=transform)
-    train_loader = torch.utils.data.DataLoader(dataset1, batch_size=1)
-    test_loader = torch.utils.data.DataLoader(dataset2)
-    # print(train_loader)
-    return [train_loader, test_loader, dataset1, dataset2]
+    return dataset1, dataset2
 
-
-# for batch_idx, (data, target) in enumerate(train_loader):
-#     print(data, target)
 
 def MNIST_train_test_14x14():
     datasets.MNIST(root='./data', train=True, download=True, transform=None)
@@ -50,18 +38,11 @@ def MNIST_train_test_14x14():
     return dataset1, dataset2
 
 
-
-
-
-
-
-
-
 def MNIST_train_test_9x9():
-    datasets.MNIST(root='./data', train=False, download=True, transform=None)
+    datasets.MNIST(root='./data', train=True, download=True, transform=None)
 
     transform = transforms.Compose([
-        transforms.ToTensor(), transforms.Resize((9, 9))])
+        transforms.ToTensor(), transforms.Resize((9, 9), interpolation=InterpolationMode.NEAREST)])
     dataset1 = datasets.MNIST('../data', train=True, download=True,
                               transform=transform)
     dataset2 = datasets.MNIST('../data', train=False,

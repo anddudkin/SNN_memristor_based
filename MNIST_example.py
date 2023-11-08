@@ -14,8 +14,8 @@ from matplotlib.animation import FuncAnimation
 
 n_neurons_out = 12
 n_neurons_in = 196
-n_train = 15
-n_test = 600
+n_train = 5
+n_test = 5
 time = 350
 time_test = 200
 test = True
@@ -79,7 +79,6 @@ plt.ioff()
 
 plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0, vmax=1)
 plt.show()
-
 assig.get_assigment()
 evall = MnistEvaluation(n_neurons_out)
 out_neurons.train = False

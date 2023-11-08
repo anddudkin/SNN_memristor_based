@@ -14,9 +14,6 @@ conn.all_to_all_conn()
 conn.initialize_weights("normal")
 
 print(conn.weights)
-from visuals import plot_weights, plot_weights_pro
+
 
 b = conn.weights
-c= plot_weights_pro(16,5,conn.weights)
-print(plot_weights_pro(16,5,conn.weights))
-print(c.shape)

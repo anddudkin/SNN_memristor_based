@@ -54,6 +54,8 @@ class MnistEvaluation:
         self.spikes_counter.fill_(0)
 
     def final(self):
-        print("Correctly defined", self.good)
-        print("Incorrectly defined", self.bad)
-        print("Final result", round((self.good / (self.bad + self.good) * 100), 2))
+        """Prints test results"""
+        print("Test Completed")
+        print("Correctly defined images:", self.good)
+        print("Incorrectly defined images:", self.bad)
+        print(f"Final result: {round((self.good / (self.bad + self.good) * 100), 2)} %")
