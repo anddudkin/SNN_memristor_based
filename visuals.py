@@ -1,8 +1,6 @@
-import sys
+import math
 import matplotlib.pyplot as plt
 import torch
-import numpy as np
-import math
 
 
 def plot_U_mem(n_neurons_out, U_mem):
@@ -17,7 +15,7 @@ def plot_U_mem(n_neurons_out, U_mem):
     return ax
 
 
-def plot_weights(n_in, n_out, weights):
+def plot_weights_line(n_in, n_out, weights):
     c = []
     for i in range(n_out):
         c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
@@ -26,17 +24,25 @@ def plot_weights(n_in, n_out, weights):
     return hh  # проерить и переделать
 
 
-def plot_weights_pro(n_in, n_out, weights):
+def plot_weights_square(n_in, n_out, weights):
+    c = []
     if math.sqrt(n_out) % 2 == 0:
         rows = int(math.sqrt(n_out))
     else:
         rows = int(math.sqrt(n_out) + 1)
 
-    c = []
     for i in range(n_out):
         c.append(weights[:, i].reshape(int(math.sqrt(n_in)), int(math.sqrt(n_in))))
-    hh = torch.cat(c, 1)
-    return hh
+    hh = []
+    if len(c) < rows*rows:
+        while len(c) != rows*rows:
+            c.append(torch.zeros(14,14))
+    for i in range(rows):
+        hh.append(torch.cat(c[:rows], 1))
+        c = c[rows:]
+
+    h1 = torch.cat(hh, 0)
+    return h1
 
 
 """

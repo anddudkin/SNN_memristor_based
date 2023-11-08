@@ -67,12 +67,14 @@ class Connections:
         """ Take spike traces from Neuron_Model, compute dw and update weights )
 
         Args:
-            spike_traces_in :
-            spike_traces_out :
+            spike_traces_in : traces of input spikes_
+            spike_traces_out : traces of output spikes_
+            spikes: spikes of neurons each time step
 
         \n example:
         out_neurons = Neuron_IF(......)
         update_w(out_neurons.spikes_trace_in,out_neurons.spikes_trace_out
+
         """
 
         spike_traces_out = spike_traces_out.repeat(self.n_in_neurons, 1)
@@ -95,7 +97,6 @@ class Connections:
         # updating weights (only weights of neuron that spiked)
         for i, sp in enumerate(spikes, start=0):
             if sp == 1:
-
                 time_diff[:, i].apply_(compute_dw)
 
                 self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])

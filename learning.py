@@ -21,22 +21,22 @@ def compute_dw(t):
         return -0.003
 
 
-def compute_dw_plot(t, tau):
+def plot_simple_stdp():
     """
-    Computes dw
+    Plots simple STDP reinforcement learning curve
     """
-    # if t < -tau_plus:
-    #     return -0.0005
-    if -10 <= t <= 0:
-        return A_plus * np.exp(t / tau)
-    else:
-        return -0.003
 
+    def compute_dw_plot(t, tau):
+        """
+        Computes dw
+        """
+        # if t < -tau_plus:
+        #     return -0.0005
+        if -10 <= t <= 0:
+            return A_plus * np.exp(t / tau)
+        else:
+            return -0.003
 
-def plot_stdp():
-    """
-    Plots STDP reinforcement learning curve
-    """
     a, b = [], []
     for j in (1, 2, 4, 8, 10, 20, 30, 40, 10000):
         for i in range(-20, 10, 1):
@@ -46,12 +46,11 @@ def plot_stdp():
         a, b = [], []
     plt.axvline(x=0, color='k')
     plt.axhline(y=0, color='k')
-
     plt.legend()
     plt.show()
 
 
-plot_stdp()
+plot_simple_stdp()
 
 # STDP weight update rule
 """def update(w, del_w):

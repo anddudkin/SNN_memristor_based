@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import torchvision
 from torchvision import datasets, transforms
 from torchvision.datasets import MNIST
 import matplotlib.pyplot as plt
@@ -28,13 +29,6 @@ def MNIST_train_test():
                               transform=transform)
     dataset2 = datasets.MNIST('../data', train=False,
                               transform=transform)
-
-    # print(dataset1[0])
-    # print(dataset2)
-
-    # plt.imshow(dataset1.data[0])
-    # plt.title(dataset1[0][1])
-    # plt.show()
     train_loader = torch.utils.data.DataLoader(dataset1, batch_size=1)
     test_loader = torch.utils.data.DataLoader(dataset2)
     # print(train_loader)
@@ -45,7 +39,7 @@ def MNIST_train_test():
 #     print(data, target)
 
 def MNIST_train_test_14x14():
-    datasets.MNIST(root='./data', train=False, download=True, transform=None)
+    datasets.MNIST(root='./data', train=True, download=True, transform=None)
 
     transform = transforms.Compose([
         transforms.ToTensor(), transforms.Resize((14, 14), interpolation=InterpolationMode.NEAREST)])
@@ -54,6 +48,13 @@ def MNIST_train_test_14x14():
     dataset2 = datasets.MNIST('../data', train=False,
                               transform=transform)
     return dataset1, dataset2
+
+
+
+
+
+
+
 
 
 def MNIST_train_test_9x9():
@@ -66,7 +67,6 @@ def MNIST_train_test_9x9():
     dataset2 = datasets.MNIST('../data', train=False,
                               transform=transform)
     return dataset1, dataset2
-
 
 
 def encoding_to_spikes(data, time):
