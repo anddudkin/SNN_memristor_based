@@ -2,6 +2,7 @@ import math
 import matplotlib.pyplot as plt
 import torch
 
+""" Currently under development """
 
 
 class PlottingMnist:
@@ -17,7 +18,6 @@ def plot_U_mem(n_neurons_out, U_mem):
 
     for i in range(n_neurons_out):
         ax.plot(x, U_mem[:, i])
-
 
 
 def plot_weights_line(n_in, n_out, weights):

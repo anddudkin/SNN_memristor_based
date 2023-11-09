@@ -2,6 +2,8 @@ from math import exp
 from random import randrange
 import matplotlib.pyplot as plt
 
+""" Currently under development """
+
 l, g, k, f, f2, f1, f3 = [], [], [], [], [], [], []
 for i in range(100):
     g.append(i)

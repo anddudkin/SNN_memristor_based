@@ -9,7 +9,7 @@ def lif_neuron_test():
     """ Visualize how single LIF neuron works. decay corresponds to the amount of leakage of membrane potential
     https://snntorch.readthedocs.io/en/latest/tutorials/tutorial_2.html
     """
-    lif_test = NeuronLIF(4, 2, decay=0.97, U_tr=100, U_rest=-20, refr_time=5, traces=True, U_mem_min=0)
+    lif_test = NeuronLIF(4, 2, decay=0.97, U_tr=100, U_rest=-20, refr_time=5, traces=True, inh=False, train=True)
     conn = Connections(4, 2, "all_to_all")
     conn.all_to_all_conn()
     conn.initialize_weights("normal")
@@ -33,7 +33,7 @@ def lif_neuron_test():
 
     U2 = torch.tensor([0.8, 0.9, 0.9, 0.9], dtype=torch.float)
     y, x = [], []
-    lif_test.reset_variables()
+    lif_test.reset_variables(True, True, True)
 
     for i in range(1000):
         lif_test.compute_U_mem(torch.bernoulli(U2), conn.weights)
@@ -71,6 +71,3 @@ def plot_mnist():
     ax3.imshow(torch.squeeze(bb[0][0]), cmap='gray', vmin=0, vmax=1)
     ax2.imshow(g, cmap='gray', vmin=0, vmax=1)
     plt.show()
-
-
-

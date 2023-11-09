@@ -111,6 +111,7 @@ class NeuronIF:
             self.spikes_trace_in = torch.zeros([self.n_neurons_in], dtype=torch.float)
             self.spikes_trace_out = torch.zeros([self.n_neurons_out], dtype=torch.float)
 
+
 class NeuronLIF(NeuronIF):
     """ Class for Leaky Integrate and Fire neuron model. Parent class - NeuronIF"""
 
