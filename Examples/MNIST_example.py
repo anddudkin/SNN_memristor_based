@@ -23,7 +23,7 @@ conn.initialize_weights("normal")
 
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
-train_labels = [0, 1, 9]
+
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -50,6 +50,8 @@ if plot:
     ax3 = fig1.add_subplot(212)
     axim2 = ax2.imshow(torch.zeros([14,14]), cmap='gray',vmin=0, vmax=1)
     axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1)
+
+train_labels = [0, 1, 9]
 
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
 
