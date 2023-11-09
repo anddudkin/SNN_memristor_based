@@ -11,11 +11,12 @@ import matplotlib.pyplot as plt
 
 n_neurons_out = 12
 n_neurons_in = 196
-n_train = 5
+n_train = 100
 n_test = 5
 time = 350
 time_test = 200
 test = True
+
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
@@ -36,28 +37,30 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       inh=True)
 
 assig = MnistAssignment(n_neurons_out)
-inh_neurons = NeuronInhibitory(n_neurons_out, 13)
-plt.ion()
-fig = plt.figure(figsize=(6, 6))
-# fig1 = plt.figure(figsize=(5, 5))
 
-ax1 = fig.add_subplot(111)
-axim2 = ax1.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0, vmax=1)
-plt.colorbar(axim2, fraction=0.046, pad=0.04)
-fig.tight_layout()
-# ax2 = fig1.add_subplot(211)
-# ax3 = fig1.add_subplot(212)
+plt.ion()
+
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111)
+axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0, vmax=1)
+plt.colorbar(axim, fraction=0.046, pad=0.04)
+
+fig1 = plt.figure(figsize=(5, 5))
+ax2 = fig1.add_subplot(211)
+ax3 = fig1.add_subplot(212)
+axim2 = ax2.imshow(torch.zeros([14,14]), cmap='gray',vmin=0, vmax=1)
+axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1)
 
 for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
 
     if data_train[i][1] in train_labels:
+
         input_spikes = encoding_to_spikes(data_train[i][0], time)
 
-        axim2.set_data(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights))
+        axim.set_data(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights))
+        axim2.set_data(torch.squeeze(data_train[i][0]))
+        axim3.set_data(input_spikes.reshape(196, 350)[::4, ::4])
         fig.canvas.flush_events()
-
-        # ax2.imshow(torch.squeeze(data_train[i][0]), cmap='gray')
-        # ax3.imshow(input_spikes.reshape(196, 350)[::4, ::4], cmap='gray', vmin=0, vmax=1)
 
         for j in range(time):
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
@@ -66,18 +69,20 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
 
-        # plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
-        # plt.show()
-        # plt.pause(1)
-        # out_neurons.U_mem_trace = torch.zeros([1, n_neurons_out], dtype=torch.float)
-    # plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
+        plot_U_mem(n_neurons_out, out_neurons.U_mem_trace)
+        plt.show()
+        plt.pause(1)
+        out_neurons.U_mem_trace = torch.zeros([1, n_neurons_out], dtype=torch.float)
+
 plt.close()
 plt.ioff()
 
 plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0, vmax=1)
 plt.show()
+
 assig.get_assigment()
 evall = MnistEvaluation(n_neurons_out)
+
 out_neurons.train = False
 
 if test:

@@ -1,5 +1,5 @@
 from math import exp
-from random import random as rand, random, randrange
+from random import randrange
 import matplotlib.pyplot as plt
 
 l, g, k, f, f2, f1, f3 = [], [], [], [], [], [], []
