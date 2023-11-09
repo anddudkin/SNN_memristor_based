@@ -8,8 +8,20 @@ https://arxiv.org/ftp/arxiv/papers/1710/1710.04734.pdf
 
 
 class Connections:
+    """Class constructs connections (synapses) and operates with their wheights"""
     def __init__(self, n_in_neurons, n_out_neurons, type_conn="all_to_all", w_min=0, w_max=1, decay=(False, 0.9999)):
-        """ Type of connection: 1) "all_to_all" 2)....."""
+
+        """ Type of connection: 1) "all_to_all" 2).....
+
+            Args:
+                n_in_neurons (int) : number of input neurons
+                n_out_neurons (int) : number of output neurons
+                type_conn (str)  : connection type
+                w_min (float)  : minimum weights value
+                w_max (float) : maximum weights value
+                decay (tuple)  : weights decay (True/False, decay value)
+        """
+
         self.decay = decay
         self.w_max = w_max
         self.w_min = w_min
@@ -37,7 +49,7 @@ class Connections:
 
     def initialize_weights(self, dis="normal"):
 
-        """ initializing random weights
+        """ Initializing random weights
 
         Args:
             dis (str) : type of weights distribution

@@ -4,9 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 A_plus = 0.005  # positive reinforcement
-A_minus = 0.005  # negative reinforcement
 tau_plus = 10
-tau_minus = 10
 
 
 def compute_dw(t):
