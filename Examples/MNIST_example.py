@@ -4,7 +4,7 @@ from assigment import MnistAssignment, MnistEvaluation
 from visuals import plot_weights_square
 from topology import Connections
 from datasets import encoding_to_spikes, MNIST_train_test_14x14
-from NeuronModels import NeuronIF, NeuronLIF, NeuronLifAdaptiveThresh
+from NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
 n_neurons_out = 50

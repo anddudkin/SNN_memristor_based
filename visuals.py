@@ -2,22 +2,21 @@ import math
 import matplotlib.pyplot as plt
 import torch
 
-""" Currently under development """
-
-
+""" Currently under development 
 class PlottingMnist:
     def __init__(self, weights):
         pass
+"""
 
 
-def plot_U_mem(n_neurons_out, U_mem):
+def plot_U_mem(n_neurons_out, U_mem_trace):
     x = []
     f, ax = plt.subplots()
-    for i in range(len(U_mem)):
+    for i in range(len(U_mem_trace)):
         x.append(i)
 
     for i in range(n_neurons_out):
-        ax.plot(x, U_mem[:, i])
+        ax.plot(x, U_mem_trace[:, i])
 
 
 def plot_weights_line(n_in, n_out, weights):

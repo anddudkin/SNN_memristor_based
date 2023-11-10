@@ -10,8 +10,8 @@ class NeuronIF:
         Args:
             n_neurons_in (int) : number of input IF neurons
             n_neurons_in (int) : number of output IF neurons
-            inh (bool)  : activate inhibition ore not
-            traces (bool)  : activate traces ore not
+            inh (bool)  : activate inhibition or not
+            traces (bool)  : activate traces or not
             train (bool) : train or test
             U_tr :  max capacity of neuron (Threshold). If U_mem > U_tr neuron spikes
             U_mem :  initialized membrane potentials
@@ -120,11 +120,11 @@ class NeuronLIF(NeuronIF):
         """ NeuronLifAdaptiveThresh
 
             Args:
-                n_neurons_in (int) : number of input IF neurons
-                n_neurons_out (int) : number of output IF neurons
+                n_neurons_in (int) : number of input LIF neurons
+                n_neurons_out (int) : number of output LIF neurons
                 decay (float) : leak of membrane potential
-                inh (bool)  : activate inhibition ore not
-                traces (bool)  : activate traces ore not
+                inh (bool)  : activate inhibition or not
+                traces (bool)  : activate traces or not
                 U_tr  :  max capacity of neuron (Threshold). If U_mem > U_tr neuron spikes
                 U_mem :  initialized membrane potentials
                 U_rest  : membrane potential while resting (refractory), after neuron spikes
@@ -145,11 +145,11 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
         """ NeuronLifAdaptiveThresh
 
             Args:
-                n_neurons_in (int) : number of input IF neurons
-                n_neurons_out (int) : number of output IF neurons
+                n_neurons_in (int) : number of input LIF neurons with adaptive threshold
+                n_neurons_out (int) : number of output LIF neurons with adaptive threshold
                 decay (float) : leak of membrane potential
-                inh (bool)  : activate inhibition ore not
-                traces (bool)  : activate traces ore not
+                inh (bool)  : activate inhibition or not
+                traces (bool)  : activate traces or not
                 U_tr :  max capacity of neuron (Threshold). If U_mem > U_tr neuron spikes
                 U_mem :  initialized membrane potentials
                 U_rest  : membrane potential while resting (refractory), after neuron spikes
