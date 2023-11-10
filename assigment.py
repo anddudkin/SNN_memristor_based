@@ -3,6 +3,7 @@ import torch
 
 class MnistAssignment:
     """Class for lables assignment of SNN with MNIST dataset"""
+
     def __init__(self, n_neurons_out):
         self.dict_labels = {}
         self.n_neurons_out = n_neurons_out
@@ -31,6 +32,7 @@ class MnistAssignment:
 
 class MnistEvaluation:
     """Class for result evaluation of SNN with MNIST dataset"""
+
     def __init__(self, n_neurons_out):
         self.n_neurons_out = n_neurons_out
         self.spikes_counter = torch.zeros([self.n_neurons_out], dtype=torch.int)
@@ -47,10 +49,14 @@ class MnistEvaluation:
                 assigment : assignment for each neuron (from MnistAssignment.assignments )
                 label : current image label
         """
-        if assigment[int(torch.argmax(self.spikes_counter))] == int(label):
+        if assigment[int(torch.argmax(self.spikes_counter))] == int(label) and int(torch.max(self.spikes_counter)) != 0:
             self.good += 1
+        elif int(torch.max(self.spikes_counter)) == 0:
+            pass
         else:
             self.bad += 1
+            print(self.spikes_counter, int(label))
+
         self.spikes_counter.fill_(0)
 
     def final(self):

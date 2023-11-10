@@ -32,15 +32,50 @@ def plot_simple_stdp():
             return -0.003
 
     a, b = [], []
-    for j in (1, 2, 4, 8, 10, 20, 30, 40, 10000):
-        for i in range(-20, 10, 1):
+    gg = np.linspace(-20, 20, num=500)
+    for j in (1, 2, 4, 8, 10, 20, 30, 40):
+        for i in gg:
             a.append(compute_dw_plot(i, j))
             b.append(i)
         plt.plot(b, a, label=f'tau={j}')
         a, b = [], []
     plt.axvline(x=0, color='k')
     plt.axhline(y=0, color='k')
+    plt.xlabel(r't$_{\mathrm{pre}}$ - t$_{\mathrm{post}}$ (ms)')
+    plt.ylabel(r'$\Delta$W', fontsize=12)
     plt.legend()
     plt.show()
+
+
+
+
+
+def plot_classic_STDP():
+    A_plus_ = 0.005  # positive reinforcement
+    A_minus = 0.003  # negative reinforcement
+    gg = np.linspace(-20, 20, num=500)
+    def compute_dw_classic(t, tt):
+        """
+        Computes dw
+        """
+        if t <= 0:
+            return A_plus_ * np.exp(t / tt)
+        else:
+            return -A_minus * np.exp(-t / tt)
+
+    a, b = [], []
+    for j in (1, 4, 8, 10, 30):
+        for i in gg:
+            a.append(compute_dw_classic(i, j))
+            b.append(i)
+        plt.plot(b, a, "--", label=f'tau={j}')
+        a, b = [], []
+    plt.axvline(x=0, color='k')
+    plt.axhline(y=0, color='k')
+    plt.xlabel(r't$_{\mathrm{pre}}$ - t$_{\mathrm{post}}$ (ms)')
+    plt.ylabel(r'$\Delta$W', fontsize=12)
+    plt.legend()
+    plt.show()
+
 
 

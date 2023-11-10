@@ -1,4 +1,3 @@
-
 import torch
 from tqdm import tqdm
 from assigment import MnistAssignment, MnistEvaluation
@@ -8,10 +7,10 @@ from datasets import encoding_to_spikes, MNIST_train_test_14x14
 from NeuronModels import NeuronIF, NeuronLIF, NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
-n_neurons_out = 12
+n_neurons_out = 50
 n_neurons_in = 196
-n_train = 10
-n_test = 5
+n_train = 5000
+n_test = 800
 time = 350
 time_test = 200
 test = True
@@ -23,7 +22,6 @@ conn.initialize_weights("normal")
 
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
-
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -48,12 +46,12 @@ if plot:
     fig1 = plt.figure(figsize=(5, 5))
     ax2 = fig1.add_subplot(211)
     ax3 = fig1.add_subplot(212)
-    axim2 = ax2.imshow(torch.zeros([14,14]), cmap='gray',vmin=0, vmax=1)
+    axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1)
     axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1)
 
-train_labels = [0, 1, 9]
+train_labels = [0, 1, 2, 9, 5]
 
-for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
+for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 
     if data_train[i][1] in train_labels:
 
@@ -71,10 +69,13 @@ for i in tqdm(range(n_train), desc='Outer Loop', colour='green', position=0):
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
 
+fig.savefig('foo.png')
+fig1.savefig('fooo.png')
 assig.get_assigment()
 evall = MnistEvaluation(n_neurons_out)
 
 out_neurons.train = False
+out_neurons.reset_variables(True, True, True)
 
 if test:
     for i in tqdm(range(n_test), desc='test', colour='green', position=0):
@@ -86,7 +87,6 @@ if test:
                 out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
                 out_neurons.check_spikes()
                 evall.count_spikes(out_neurons.spikes)
-
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
