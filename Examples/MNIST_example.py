@@ -7,21 +7,14 @@ from datasets import encoding_to_spikes, MNIST_train_test_14x14
 from NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
-n_neurons_out = 50
-n_neurons_in = 196
-n_train = 5000
-n_test = 800
-time = 350
-time_test = 200
-test = True
-plot = True
-
-conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
-conn.all_to_all_conn()
-conn.initialize_weights("normal")
-
-data_train = MNIST_train_test_14x14()[0]
-data_test = MNIST_train_test_14x14()[1]
+n_neurons_out = 50  # number of neurons in input layer
+n_neurons_in = 196  # number of output in input layer
+n_train = 5000  # number of images for training
+n_test = 800  # number of images for testing
+time = 350  # time of each image presentation during training
+time_test = 200  # time of each image presentation during testing
+test = True  # do testing or not
+plot = True  # plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -32,7 +25,14 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       U_rest=0,
                                       refr_time=5,
                                       traces=True,
-                                      inh=True)
+                                      inh=True)  # activate literal inhibition
+
+conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
+conn.all_to_all_conn()
+conn.initialize_weights("normal")
+
+data_train = MNIST_train_test_14x14()[0]
+data_test = MNIST_train_test_14x14()[1]
 
 assig = MnistAssignment(n_neurons_out)
 
@@ -69,8 +69,6 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
 
-fig.savefig('foo.png')
-fig1.savefig('fooo.png')
 assig.get_assigment()
 evall = MnistEvaluation(n_neurons_out)
 

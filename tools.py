@@ -5,12 +5,12 @@ from datasets import MNIST_train_test_14x14, encoding_to_spikes
 from topology import Connections
 
 
-def plot_mnist():
+def plot_mnist_test():
     bb = MNIST_train_test_14x14()[0]
-    print(bb[0][0])
-    b1 = bb[0][0] * 0.80
-    f = torch.squeeze(encoding_to_spikes(b1, 10))
-    print(f)
+    spike_intensity = 1
+    b1 = bb[0][0] * spike_intensity
+    f = torch.squeeze(encoding_to_spikes(b1, 50))
+
     g = torch.zeros([14, 14], dtype=torch.float)
     plt.ion()
     fig = plt.figure(figsize=(4, 4))
@@ -23,16 +23,18 @@ def plot_mnist():
         plt.pause(0.0001)
 
     plt.ioff()
-    print(g)
+
     fig1 = plt.figure(figsize=(6, 6))
     ax3 = fig1.add_subplot(121)
     ax2 = fig1.add_subplot(122)
-    g = g / 10
+    g = g / 50
+    ax3.set_title('Image Sample')
+    ax2.set_title('Recreated image from spike train')
     ax3.imshow(torch.squeeze(bb[0][0]), cmap='gray', vmin=0, vmax=1)
     ax2.imshow(g, cmap='gray', vmin=0, vmax=1)
     plt.show()
 
-
+plot_mnist_test()
 def if_neuron_test():
     """ Visualize how single IF neuron works.
     """
@@ -165,4 +167,3 @@ def lif_thresh_neuron_test():
     plt.axhline(y=lif_test.U_tr, color='k')
     plt.show()
 
-lif_thresh_neuron_test()
