@@ -1,8 +1,8 @@
 import torch
 from matplotlib import pyplot as plt
-from NeuronModels import NeuronLIF, NeuronIF, NeuronLifAdaptiveThresh
-from datasets import MNIST_train_test_14x14, encoding_to_spikes
-from topology import Connections
+from Network.NeuronModels import NeuronLIF, NeuronIF, NeuronLifAdaptiveThresh
+from Network.datasets import MNIST_train_test_14x14, encoding_to_spikes
+from Network.topology import Connections
 
 
 def plot_mnist_test():

@@ -1,10 +1,10 @@
 import torch
 from tqdm import tqdm
-from assigment import MnistAssignment, MnistEvaluation
-from visuals import plot_weights_square
-from topology import Connections
-from datasets import encoding_to_spikes, MNIST_train_test_14x14
-from NeuronModels import NeuronLifAdaptiveThresh
+from Network.assigment import MnistAssignment, MnistEvaluation
+from Network.visuals import plot_weights_square
+from Network.topology import Connections
+from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
+from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
 n_neurons_out = 50  # number of neurons in input layer

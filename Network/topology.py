@@ -1,6 +1,6 @@
 from random import random
 import torch
-from learning import compute_dw
+from Network.learning import compute_dw
 
 """
 https://arxiv.org/ftp/arxiv/papers/1710/1710.04734.pdf

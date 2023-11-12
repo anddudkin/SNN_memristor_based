@@ -47,13 +47,11 @@ def plot_simple_stdp():
     plt.show()
 
 
-
-
-
 def plot_classic_STDP():
     A_plus_ = 0.005  # positive reinforcement
     A_minus = 0.003  # negative reinforcement
     gg = np.linspace(-20, 20, num=500)
+
     def compute_dw_classic(t, tt):
         """
         Computes dw
@@ -76,6 +74,3 @@ def plot_classic_STDP():
     plt.ylabel(r'$\Delta$W', fontsize=12)
     plt.legend()
     plt.show()
-
-
-
