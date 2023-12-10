@@ -21,5 +21,6 @@ solution = badcrossbar.compute(applied_voltages, resistances, r_i)
 
 # Printing the current through the word line segment to the left of device in
 # the second row and fourth column (Python uses zero-based indexing).
-current = solution.currents.word_line[1, 3]
-print(f"\nThe current through the word line segment is ~{current:.3g} A.")
+current = solution
+print(solution[0][1])
+print(solution.voltages)
