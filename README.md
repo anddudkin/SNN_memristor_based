@@ -44,9 +44,16 @@ Implemented one of the basic SNN learning rules - STDP (Spike-timing dependent p
        height="280"/>
 </p>
 
+Weights plot from MNIST_example.py
 
+<p align="center">
+  <img src="images/example_mnist.png?raw=true" 
+       width="350" 
+       height="350"/>
+</p>
 
 ## Build_network
+Baseline for constructing your own network
 <p align="center">
   <img src="images/stag.png?raw=true" 
        width="400" 
@@ -54,7 +61,6 @@ Implemented one of the basic SNN learning rules - STDP (Spike-timing dependent p
 </p>
 ## Credits
 
-None
 
 ## License
 
@@ -62,6 +68,6 @@ None
 
  [Contributor Covenant](https://www.contributor-covenant.org/) 
 
-## Tests
+
 
 
