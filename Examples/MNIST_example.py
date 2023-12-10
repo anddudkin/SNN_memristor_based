@@ -72,6 +72,9 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 assig.get_assigment()
 evall = MnistEvaluation(n_neurons_out)
 
+conn.save_weights()
+out_neurons.save_U_thresh()
+
 out_neurons.train = False
 out_neurons.reset_variables(True, True, True)
 

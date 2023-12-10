@@ -96,3 +96,9 @@ class Connections:
             self.weights = torch.mul(self.weights, self.decay[1])  # weight decay
 
         self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
+
+    def save_weights(self, path='weights_tensor.pt'):
+        torch.save(self.weights, path)
+
+    def load_weights(self, path='weights_tensor.pt'):
+        self.weights = torch.load(path)

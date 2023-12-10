@@ -199,6 +199,12 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
             self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
                                                     max=self.U_tr + self.U_tr * 0.2)
 
+    def save_U_thresh(self, path='thresh.pt'):
+        torch.save(self.U_thresh_all_neurons, path)
+
+    def load_U_thresh(self, path='thresh.pt'):
+        self.U_thresh_all_neurons = torch.load(path)
+
 
 class NeuronInhibitory:
     def __init__(self, n_neurons, inh):
