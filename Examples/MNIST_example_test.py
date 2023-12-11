@@ -7,14 +7,14 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
-n_neurons_out = 50  # number of neurons in input layer
+n_neurons_out = 100  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 5000  # number of images for training
-n_test = 800  # number of images for testing
+n_train = 5  # number of images for training
+n_test = 10  # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200  # time of each image presentation during testing
 test = True  # do testing or not
-plot = True  # plot graphics or not
+plot = False  # plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -49,11 +49,12 @@ if plot:
     axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1)
     axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1)
 
-train_labels = [0, 1, 2, 9, 5]
-
+train_labels = [0, 1, 2, 9]
+count =0
 for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 
     if data_train[i][1] in train_labels:
+        count+=1
 
         input_spikes = encoding_to_spikes(data_train[i][0], time)
 
@@ -68,7 +69,11 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             out_neurons.check_spikes()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
-
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111)
+axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0, vmax=1)
+plt.colorbar(axim, fraction=0.046, pad=0.04)
+fig.savefig("weights")
 assig.get_assigment()
 evall = MnistEvaluation(n_neurons_out)
 
@@ -77,11 +82,12 @@ out_neurons.save_U_thresh()
 
 out_neurons.train = False
 out_neurons.reset_variables(True, True, True)
-
+count2=0
 if test:
     for i in tqdm(range(n_test), desc='test', colour='green', position=0):
 
         if data_train[i][1] in train_labels:
+            count2+=1
             input_spikes = encoding_to_spikes(data_train[i][0], time_test)
 
             for j in range(time_test):
@@ -91,3 +97,10 @@ if test:
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
+with open('result.txt', 'w+') as f:
+    f.write("\nneurons out: " + str(n_neurons_out))
+    f.write("\ntrain images: " + str(count))
+    f.write("\ntest images: " + str(count2))
+    f.write(evall.final())
+
+

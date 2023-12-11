@@ -1,0 +1,8 @@
+
+neurons out100
+train images 3
+test images 6
+Test Completed
+Correctly defined images:3
+Incorrectly defined images:3
+Final result:50.0

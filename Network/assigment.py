@@ -55,7 +55,7 @@ class MnistEvaluation:
             pass
         else:
             self.bad += 1
-            print(self.spikes_counter, int(label))
+            # print(self.spikes_counter, int(label))
 
         self.spikes_counter.fill_(0)
 
@@ -65,3 +65,5 @@ class MnistEvaluation:
         print("Correctly defined images:", self.good)
         print("Incorrectly defined images:", self.bad)
         print(f"Final result: {round((self.good / (self.bad + self.good) * 100), 2)} %")
+        return "\nTest Completed\n" + "Correctly defined images:" + str(self.good) + "\nIncorrectly defined images:" + str(self.bad) + "\nFinal result:" + str(round((self.good / (self.bad + self.good) * 100), 2))
+
