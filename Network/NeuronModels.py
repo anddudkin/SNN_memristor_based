@@ -31,17 +31,17 @@ class NeuronIF:
         self.dw_all = None
         self.U_mem_trace = None
 
-        self.U_mem_all_neurons = torch.zeros([self.n_neurons_out], dtype=torch.float16).fill_(self.U_mem)
-        self.U_thresh_all_neurons = torch.zeros([self.n_neurons_out], dtype=torch.float16).fill_(self.U_tr)
-        self.refractor_count = torch.zeros([self.n_neurons_out], dtype=torch.float16)
+        self.U_mem_all_neurons = torch.zeros([self.n_neurons_out], dtype=torch.float).fill_(self.U_mem)
+        self.U_thresh_all_neurons = torch.zeros([self.n_neurons_out], dtype=torch.float).fill_(self.U_tr)
+        self.refractor_count = torch.zeros([self.n_neurons_out], dtype=torch.float)
         self.spikes = torch.zeros([self.n_neurons_out], dtype=torch.int)
         self.time_sim = 0
 
         # Initializing trace record
         if self.traces:
-            self.U_mem_trace = torch.zeros([1, self.n_neurons_out], dtype=torch.float16)
-            self.spikes_trace_in = torch.zeros([self.n_neurons_in], dtype=torch.float16)
-            self.spikes_trace_out = torch.zeros([self.n_neurons_out], dtype=torch.float16)
+            self.U_mem_trace = torch.zeros([1, self.n_neurons_out], dtype=torch.float)
+            self.spikes_trace_in = torch.zeros([self.n_neurons_in], dtype=torch.float)
+            self.spikes_trace_out = torch.zeros([self.n_neurons_out], dtype=torch.float)
 
     def compute_U_mem(self, U_in, weights):
         """Compute I_out for each output neuron and updates U_mem of all neurons

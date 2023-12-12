@@ -37,7 +37,7 @@ class Connections:
     def all_to_all_conn(self):
         """Construct matrix with id of IN/OUT neurons and weights [out,in,w]"""
 
-        self.matrix_conn = torch.zeros([self.n_in_neurons * self.n_out_neurons, 3], dtype=torch.float16)
+        self.matrix_conn = torch.zeros([self.n_in_neurons * self.n_out_neurons, 3], dtype=torch.float)
 
         if self.type == "all_to_all":
             while self.matrix_conn[-1][0] == 0:
