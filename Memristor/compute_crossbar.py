@@ -3,6 +3,20 @@ import time
 import torch
 import matplotlib.pyplot as plt
 import numpy as np
+import badcrossbar
+
+
+class TransformToCrossbarBase:
+    def __init__(self, weights, R_min, R_max, r_line):
+        self.r_line = r_line
+        self.R_max = R_max
+        self.R_min = R_min
+        self.weights = weights
+        self.n_neurons_in = len(weights)
+        self.n_neurons_out = len(weights[0])
+
+    def plot_crossbar(self):
+        pass
 
 
 # def weights_inicialization_inferens(G: torch.tensor):
@@ -43,6 +57,6 @@ def compute_ideal(V_in: torch.tensor, G: torch.tensor):
 
     return [I_out, G]
 
-def compute_weight_change (U_in):
-    pass
 
+def compute_weight_change(U_in):
+    pass
