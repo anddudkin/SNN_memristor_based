@@ -31,7 +31,7 @@ class TransformToCrossbarBase:
         self.weights.apply_(GtoR)
 
     def compute_crossbar(self, U_in):
-        solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, self.r_line)
+        solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, r_i = self.r_line)
         self.I_out = solution.currents.output
         self.U_drop = solution.voltages.word_line
 
