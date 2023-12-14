@@ -8,15 +8,40 @@ import badcrossbar
 
 class TransformToCrossbarBase:
     def __init__(self, weights, R_min, R_max, r_line):
+        self.U_drop = None
+        self.V_drop = None
+        self.I_out = None
         self.r_line = r_line
         self.R_max = R_max
         self.R_min = R_min
         self.weights = weights
         self.n_neurons_in = len(weights)
         self.n_neurons_out = len(weights[0])
+        self.G_max = 1 / self.R_min
+        self.G_min = 1 / self.R_max
 
-    def plot_crossbar(self):
-        pass
+        def GtoR(x):
+            if x < self.G_min:
+                return self.R_max
+            elif x > self.G_max:
+                return self.R_min
+            else:
+                return 1 / x
+
+        self.weights.apply_(GtoR)
+
+    def compute_crossbar(self, U_in):
+        solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, self.r_line)
+        self.I_out = solution.currents.output
+        self.U_drop = solution.voltages.word_line
+
+    def plot_crossbar_U(self, U_in):
+        plt.imshow(self.U_drop, cmap='gray_r', vmin=torch.min(U_in), vmax=torch.max(U_in), interpolation='None')
+        plt.show()
+
+    def plot_crossbar_weights(self):
+        plt.imshow(self.weights, cmap='gray_r', vmin=torch.min(self.weights), vmax=torch.max(self.weights), interpolation='None')
+        plt.show()
 
 
 # def weights_inicialization_inferens(G: torch.tensor):

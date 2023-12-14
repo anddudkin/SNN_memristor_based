@@ -9,8 +9,8 @@ torch.set_printoptions(threshold=10_000)
 # Applied voltages in volts.
 applied_voltages = np.ones([196, 1])
 print(applied_voltages)
-# w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
-w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
+w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
+#w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
 print(torch.matmul(torch.ones([196]), w))
 fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(131)
@@ -26,7 +26,7 @@ plt.colorbar(axim2, ax=ax1, fraction=0.12, pad=0.04)
 resistances = w
 
 # Interconnect resistance in ohms.
-r_i = 0.5
+r_i = 0.1
 
 
 # plt.imshow(w, cmap='gray_r', vmin=0, vmax=torch.max(w))
@@ -50,7 +50,17 @@ axim1 = ax2.imshow(solution.voltages.word_line, cmap='gray_r', vmin=0, vmax=1, i
 plt.colorbar(axim1, ax=ax2, fraction=0.12, pad=0.04)
 plt.tight_layout()
 plt.show()
-d=plt.imshow(w,cmap='gray', vmin=float(torch.min(w)), vmax=float(torch.max(w)), interpolation='None')
+d = plt.imshow(w, cmap='gray', vmin=float(torch.min(w)), vmax=float(torch.max(w)), interpolation='None')
 plt.colorbar(d)
 plt.show()
 print(torch.tensor(solution.currents.output))
+
+from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
+
+data_train = MNIST_train_test_14x14()[0]
+input_spikes = encoding_to_spikes(data_train[0][0], 2)
+print(input_spikes[1].reshape(196, 1))
+solution3 = badcrossbar.compute(input_spikes[1].reshape(196, 1), w, r_i)
+plt.imshow(solution3.voltages.word_line, cmap='gray_r', vmin=0, vmax=1, interpolation='None')
+plt.show()
+print(torch.tensor(solution3.currents.output))

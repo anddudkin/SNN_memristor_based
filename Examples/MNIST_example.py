@@ -46,8 +46,8 @@ if plot:
     fig1 = plt.figure(figsize=(5, 5))
     ax2 = fig1.add_subplot(211)
     ax3 = fig1.add_subplot(212)
-    axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1)
-    axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1)
+    axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
+    axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 
 train_labels = [0, 1, 2, 9, 5]
 
