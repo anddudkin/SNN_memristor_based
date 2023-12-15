@@ -53,6 +53,8 @@ class NeuronIF:
         I_for_each_neuron = torch.matmul(U_in, weights)
 
         self.time_sim += 1
+        if self.time_sim > 10000:
+            self.time_sim = 0
         for i in range(self.n_neurons_out):
             if self.refractor_count[i] == 0:
                 self.U_mem_all_neurons[i] += I_for_each_neuron[i]
