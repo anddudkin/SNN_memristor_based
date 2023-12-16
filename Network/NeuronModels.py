@@ -165,11 +165,11 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
 
         :return: tensor [index of neuron, spike (0 or 1)]
         """
-        if self.traces and self.train:
-            self.U_mem_trace = torch.cat(
-                (self.U_mem_trace,
-                 torch.clamp(self.U_mem_all_neurons.reshape(1, self.n_neurons_out), max=self.U_tr + self.U_tr * 0.2)),
-                0)
+        # if self.traces and self.train:
+        #     self.U_mem_trace = torch.cat(
+        #         (self.U_mem_trace,
+        #          torch.clamp(self.U_mem_all_neurons.reshape(1, self.n_neurons_out), max=self.U_tr + self.U_tr * 0.2)),
+        #         0)
         for i in range(self.n_neurons_out):
             self.spikes[i] = 0  # update spike values
             if self.U_mem_all_neurons[i] >= self.U_thresh_all_neurons[i]:  # threshold check

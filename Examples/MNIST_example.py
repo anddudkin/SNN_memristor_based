@@ -7,14 +7,14 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
-n_neurons_out = 40  # number of neurons in input layer
+n_neurons_out = 20  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 5000  # number of images for training
+n_train = 100  # number of images for training
 n_test = 800  # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200  # time of each image presentation during testing
 test = True  # do testing or not
-plot = True  # plot graphics or not
+plot = False  # plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -54,7 +54,6 @@ train_labels = [0, 1, 2, 9, 5]
 for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 
     if data_train[i][1] in train_labels:
-        print(out_neurons.time_sim)
         input_spikes = encoding_to_spikes(data_train[i][0], time)
 
         if plot:
