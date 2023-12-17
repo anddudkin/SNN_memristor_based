@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 n_neurons_out = 20  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 100  # number of images for training
+n_train = 30  # number of images for training
 n_test = 800  # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200  # time of each image presentation during testing
@@ -68,7 +68,8 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
 
-assig.get_assigment()
+assig.get_assignment()
+assig.save_assignment()
 evall = MnistEvaluation(n_neurons_out)
 
 conn.save_weights()

@@ -1,4 +1,5 @@
 import torch
+import pickle
 
 
 class MnistAssignment:
@@ -23,11 +24,19 @@ class MnistAssignment:
             if i == 1:
                 self.dict_labels[j][int(label)] += 1
 
-    def get_assigment(self):
+    def get_assignment(self):
         """Return assigned label for each neuron expl: {0: 9, 1: 1, 2: 1, 3: 0, 4: 1, 5: 1}"""
         for n in range(self.n_neurons_out):
             self.assignments[n] = list(self.dict_labels[n].keys())[
                 list(self.dict_labels[n].values()).index(max(self.dict_labels[n].values()))]
+
+    def save_assignment(self):
+        with open('assignments.pkl', 'wb') as f:
+            pickle.dump(self.assignments, f)
+
+    def load_assignment(self, path="assignments.pkl"):
+        with open(path, 'rb') as f:
+            self.assignments = pickle.load(f)
 
 
 class MnistEvaluation:
@@ -65,5 +74,6 @@ class MnistEvaluation:
         print("Correctly defined images:", self.good)
         print("Incorrectly defined images:", self.bad)
         print(f"Final result: {round((self.good / (self.bad + self.good) * 100), 2)} %")
-        return "\nTest Completed\n" + "Correctly defined images:" + str(self.good) + "\nIncorrectly defined images:" + str(self.bad) + "\nFinal result:" + str(round((self.good / (self.bad + self.good) * 100), 2))
-
+        return "\nTest Completed\n" + "Correctly defined images:" + str(
+            self.good) + "\nIncorrectly defined images:" + str(self.bad) + "\nFinal result:" + str(
+            round((self.good / (self.bad + self.good) * 100), 2))
