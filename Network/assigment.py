@@ -30,8 +30,8 @@ class MnistAssignment:
             self.assignments[n] = list(self.dict_labels[n].keys())[
                 list(self.dict_labels[n].values()).index(max(self.dict_labels[n].values()))]
 
-    def save_assignment(self):
-        with open('assignments.pkl', 'wb') as f:
+    def save_assignment(self, path='assignments.pkl'):
+        with open(path, 'wb') as f:
             pickle.dump(self.assignments, f)
 
     def load_assignment(self, path="assignments.pkl"):
