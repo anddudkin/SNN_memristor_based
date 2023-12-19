@@ -9,15 +9,15 @@ torch.set_printoptions(threshold=10_000)
 # Applied voltages in volts.
 applied_voltages = np.ones([196, 1])
 print(applied_voltages)
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
-#w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
+w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/weights_tensor.pt")
+# w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
 print(torch.matmul(torch.ones([196]), w))
 fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(131)
 ax1 = fig.add_subplot(132)
 ax2 = fig.add_subplot(133)
 
-axim = ax.imshow(plot_weights_square(196, 70, w), cmap='YlOrBr', vmin=0, vmax=1, interpolation='None')
+axim = ax.imshow(plot_weights_square(196, 50, w), cmap='YlOrBr', vmin=0, vmax=1, interpolation='None')
 plt.colorbar(axim, ax=ax, fraction=0.045, pad=0.04)
 axim2 = ax1.imshow(w, cmap='YlOrBr', vmin=0, vmax=1, interpolation='None')
 plt.colorbar(axim2, ax=ax1, fraction=0.12, pad=0.04)
@@ -26,14 +26,14 @@ plt.colorbar(axim2, ax=ax1, fraction=0.12, pad=0.04)
 resistances = w
 
 # Interconnect resistance in ohms.
-r_i = 0.1
+r_i = 0
 
 
 # plt.imshow(w, cmap='gray_r', vmin=0, vmax=torch.max(w))
 # plt.show()
 def g(x):
     if x < 0.00005:
-        return 1 / 0.00005
+        return 1 / 0.000005
     else:
         return 1 / x
 
@@ -59,7 +59,6 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 
 data_train = MNIST_train_test_14x14()[0]
 input_spikes = encoding_to_spikes(data_train[0][0], 2)
-print(input_spikes[1].reshape(196, 1))
 solution3 = badcrossbar.compute(input_spikes[1].reshape(196, 1), w, r_i)
 plt.imshow(solution3.voltages.word_line, cmap='gray_r', vmin=0, vmax=1, interpolation='None')
 plt.show()

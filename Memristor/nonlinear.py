@@ -32,10 +32,11 @@ for i in range(100):
 
 plt.xlim(0, 210)
 
-plt.plot(g, l, "--", f1)
+plt.plot(g, l, ":", f1,"--")
 plt.plot(g, f, f2)
-plt.plot(g, f3)
-plt.plot(gg, j1, "--")
+plt.plot(g, f3,"--", color="orange")
+plt.plot(gg, j1, ":")
 plt.plot(gg, j2)
+
 
 plt.show()

@@ -1,4 +1,5 @@
 import torch
+import badcrossbar
 
 
 class NeuronIF:
@@ -43,14 +44,17 @@ class NeuronIF:
             self.spikes_trace_in = torch.zeros([self.n_neurons_in], dtype=torch.float)
             self.spikes_trace_out = torch.zeros([self.n_neurons_out], dtype=torch.float)
 
-    def compute_U_mem(self, U_in, weights):
+    def compute_U_mem(self, U_in, weights, r_line=None, crossbar=False):
         """Compute I_out for each output neuron and updates U_mem of all neurons
 
         Args:
             U_in (Tensor): input vector of voltages
             weights(Tensor): matrix of network weights (Connections.weights)
         """
-        I_for_each_neuron = torch.matmul(U_in, weights)
+        if not crossbar:
+            I_for_each_neuron = torch.matmul(U_in, weights)
+        else:
+            I_for_each_neuron = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line)
 
         self.time_sim += 1
         if self.time_sim > 10000:
@@ -135,8 +139,8 @@ class NeuronLIF(NeuronIF):
         super().__init__(n_neurons_in, n_neurons_out, inh, traces, train, U_mem, U_tr, U_rest, refr_time)
         self.decay = decay
 
-    def compute_U_mem(self, U_in, weights):
-        super().compute_U_mem(U_in, weights)
+    def compute_U_mem(self, U_in, weights, r_line=None, crossbar=False):
+        super().compute_U_mem(U_in, weights, r_line, crossbar)
         self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem)
         self.U_mem_all_neurons = torch.mul(self.U_mem_all_neurons, self.decay)
 
@@ -199,7 +203,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
         if self.train:
             self.U_thresh_all_neurons = torch.mul(self.U_thresh_all_neurons, 0.99999)
             self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
-                                                    max=self.U_tr + self.U_tr * 0.2)
+                                                    max=self.U_tr * 1.2)
 
     def save_U_thresh(self, path='thresh.pt'):
         torch.save(self.U_thresh_all_neurons, path)

@@ -20,31 +20,56 @@ class TransformToCrossbarBase:
         self.G_max = 1 / self.R_min
         self.G_min = 1 / self.R_max
 
+        self.w_min = torch.min(self.weights)
+        self.w_max = torch.max(self.weights)
+
+        if 1 / self.w_max < self.R_min:
+            self.k = self.R_min / self.w_max
+        else:
+            self.k = 1
+
         def GtoR(x):
-            if x < self.G_min:
+            if x <= self.G_min * 10000:
                 return self.R_max
-            elif x > self.G_max:
-                return self.R_min
             else:
-                return 1 / x
+                return 1 / (x / self.k)
 
         self.weights.apply_(GtoR)
 
     def compute_crossbar(self, U_in):
-        solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, r_i = self.r_line)
+        solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, r_i=self.r_line)
         self.I_out = solution.currents.output
         self.U_drop = solution.voltages.word_line
 
     def plot_crossbar_U(self, U_in):
-        plt.imshow(self.U_drop, cmap='gray_r', vmin=torch.min(U_in), vmax=torch.max(U_in), interpolation='None')
+        j = plt.imshow(self.U_drop, cmap='gray_r', vmin=torch.min(U_in), vmax=torch.max(U_in), interpolation='None')
+        plt.colorbar(j, fraction=0.12, pad=0.04)
         plt.show()
 
     def plot_crossbar_weights(self):
-        plt.imshow(self.weights, cmap='gray_r', vmin=torch.min(self.weights), vmax=torch.max(self.weights), interpolation='None')
+        j1 = plt.imshow(self.weights, cmap='gray', vmin=self.R_min, vmax=self.R_max,
+                        interpolation='None')
+        plt.colorbar(j1, fraction=0.12, pad=0.04)
         plt.show()
 
 
 # def weights_inicialization_inferens(G: torch.tensor):
+class CrossbarLearn:
+    def __init__(self, n_neurons_in, n_neurons_out, R_min,R_max, r_line):
+        self.r_line = r_line
+        self.weights = None
+        self.n_neurons_in = n_neurons_in
+        self.n_neurons_out = n_neurons_out
+        self.R_min = R_min
+        self.R_max = R_max
+        self.G_min=1/self.R_max
+        self.G_max=1/self.R_min
+
+    def init_weights(self):
+        self.weights=torch.tensor((self.n_neurons_in,self.n_neurons_out),dtype=torch.float)
+
+    def compute_I_out(self, U_in):
+        solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, r_i=self.r_line)
 
 def compute_ideal(V_in: torch.tensor, G: torch.tensor):
     '''  Compute ideal crossbar
