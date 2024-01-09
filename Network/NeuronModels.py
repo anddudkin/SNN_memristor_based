@@ -54,9 +54,11 @@ class NeuronIF:
         if not crossbar:
             I_for_each_neuron = torch.matmul(U_in, weights)
         else:
-            I_for_each_neuron = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line)
+
+            I_for_each_neuron = torch.squeeze(torch.tensor(badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line).currents.output))
 
         self.time_sim += 1
+
         if self.time_sim > 10000:
             self.time_sim = 0
         for i in range(self.n_neurons_out):
