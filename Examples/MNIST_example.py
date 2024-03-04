@@ -6,8 +6,9 @@ from Network.topology import Connections
 from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
+import time as t
 
-n_neurons_out = 20  # number of neurons in input layer
+n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 30  # number of images for training
 n_test = 800  # number of images for testing
@@ -63,10 +64,22 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             fig.canvas.flush_events()
 
         for j in range(time):
+            s = t.time()
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
+            e = t.time() - s
+            print("1 ",e)
+            s = t.time()
             out_neurons.check_spikes()
+            e = t.time() - s
+            print("2 ", e)
+            s = t.time()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
+            e = t.time() - s
+            print("3 ", e)
+            s = t.time()
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
+            e = t.time() - s
+            print("4 ", e)
 
 assig.get_assignment()
 assig.save_assignment()
