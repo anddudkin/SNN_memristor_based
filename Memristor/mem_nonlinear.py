@@ -2,7 +2,8 @@ import torch
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/weights_tensor.pt")
+#w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/weights_tensor.pt")
+w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 w = torch.squeeze(w.reshape(1, 9800))
 sns.histplot(w, stat="percent",bins = 100)
 plt.show()
