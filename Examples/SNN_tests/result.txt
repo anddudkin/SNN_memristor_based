@@ -1,0 +1,8 @@
+
+neurons out: 50
+train images: 2025
+test images: 500
+Test Completed
+Correctly defined images:429
+Incorrectly defined images:71
+Final result:85.8
