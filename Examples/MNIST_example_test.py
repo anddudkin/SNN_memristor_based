@@ -75,6 +75,7 @@ axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights),
 plt.colorbar(axim, fraction=0.046, pad=0.04)
 fig.savefig("weights")
 assig.get_assignment()
+assig.save_assignment()
 evall = MnistEvaluation(n_neurons_out)
 
 conn.save_weights()
