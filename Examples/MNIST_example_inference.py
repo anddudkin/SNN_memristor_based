@@ -28,16 +28,6 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       traces=True,
                                       inh=True)  # activate literal inhibition
 
-out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
-                                      n_neurons_out,
-                                      train=False,
-                                      U_mem=0,
-                                      decay=0.92,
-                                      U_tr=2,
-                                      U_rest=0,
-                                      refr_time=5,
-                                      traces=True,
-                                      inh=True)  # activate literal inhibition
 
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
@@ -49,9 +39,8 @@ data_test = MNIST_train_test_14x14()[1]
 assig = MnistAssignment(n_neurons_out)
 assig.load_assignment('assignments.pkl')
 
-train_labels = [0, 1, 2, 3, 5, 9]
+train_labels = [0, 1, 2, 9]
 
-assig.get_assignment()
 evall = MnistEvaluation(n_neurons_out)
 
 conn.load_weights('weights_tensor.pt')
