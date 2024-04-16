@@ -38,6 +38,9 @@ class MnistAssignment:
         with open(path, 'rb') as f:
             self.assignments = pickle.load(f)
 
+    def print_assignment(self):
+        print(list(self.assignments.values()))
+
 
 class MnistEvaluation:
     """Class for result evaluation of SNN with MNIST dataset"""
