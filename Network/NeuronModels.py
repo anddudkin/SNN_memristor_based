@@ -44,12 +44,13 @@ class NeuronIF:
             self.spikes_trace_in = torch.zeros([self.n_neurons_in], dtype=torch.float)
             self.spikes_trace_out = torch.zeros([self.n_neurons_out], dtype=torch.float)
 
-    def compute_U_mem(self, U_in, weights, r_line=None, crossbar=False):
+    def compute_U_mem(self, U_in, weights, k=1, r_line=None, crossbar=False):
         """Compute I_out for each output neuron and updates U_mem of all neurons
 
         Args:
             U_in (Tensor): input vector of voltages
             weights(Tensor): matrix of network weights (Connections.weights)
+
         """
         if not crossbar:
             I_for_each_neuron = torch.matmul(U_in, weights)
@@ -62,9 +63,10 @@ class NeuronIF:
 
         if self.time_sim > 10000:
             self.time_sim = 0
+
         for i in range(self.n_neurons_out):
             if self.refractor_count[i] == 0:
-                self.U_mem_all_neurons[i] += I_for_each_neuron[i]
+                self.U_mem_all_neurons[i] += I_for_each_neuron[i] * k
             else:
                 self.refractor_count[i] -= 1
 
@@ -142,8 +144,8 @@ class NeuronLIF(NeuronIF):
         super().__init__(n_neurons_in, n_neurons_out, inh, traces, train, U_mem, U_tr, U_rest, refr_time)
         self.decay = decay
 
-    def compute_U_mem(self, U_in, weights, r_line=None, crossbar=False):
-        super().compute_U_mem(U_in, weights, r_line, crossbar)
+    def compute_U_mem(self, U_in, weights, k=1, r_line=None, crossbar=False):
+        super().compute_U_mem(U_in, weights, k, r_line, crossbar)
         self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem)
         self.U_mem_all_neurons = torch.mul(self.U_mem_all_neurons, self.decay)
 

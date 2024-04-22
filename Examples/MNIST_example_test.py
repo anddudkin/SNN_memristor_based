@@ -99,8 +99,13 @@ if test:
 
 evall.final()
 with open('result.txt', 'w+') as f:
+    f.write("\ntrain: " + str(train_labels))
+    f.write("\ntrain: " + str(n_train))
+    f.write("\ntest: " + str(n_test))
+    f.write("\ntime_train: " + str(time))
+    f.write("\ntime_train: " + str(time_test))
     f.write("\nneurons out: " + str(n_neurons_out))
-    f.write("\ntrain images: " + str(count))
+    f.write("\ntrain images: " + str(0))
     f.write("\ntest images: " + str(count2))
     f.write(evall.final())
 
