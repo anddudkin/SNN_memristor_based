@@ -66,8 +66,10 @@ def rtog(x):
 
 def gtor(x):
     return 1 / float(x)
-V = np.ones([196, 1])/2
-cr = TransformToCrossbarBase(w,5000,25000,1).weights
+
+
+V = np.ones([196, 1]) / 2
+cr = TransformToCrossbarBase(w, 5000, 25000, 1).weights
 # V = [[0.4], [0.2], [0.3], [0.5], [0.5]]
 # cr = torch.tensor([[15000, 24000, 10000, 7000, 19000],
 #                    [15000, 24000, 10000, 7000, 19000],

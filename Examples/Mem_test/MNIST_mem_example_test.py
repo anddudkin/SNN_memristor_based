@@ -7,7 +7,7 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
-n_neurons_out = 51  # number of neurons in input layer
+n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 5  # number of images for training
 n_test = 1000  # number of images for testing
@@ -39,7 +39,6 @@ assig.load_assignment('assignments.pkl')
 
 train_labels = [0, 1, 2, 9]
 
-assig.get_assignment()
 evall = MnistEvaluation(n_neurons_out)
 
 conn.load_weights('weights_tensor.pt')
