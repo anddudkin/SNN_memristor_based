@@ -55,7 +55,8 @@ class NeuronIF:
             I_for_each_neuron = torch.matmul(U_in, weights)
         else:
 
-            I_for_each_neuron = torch.squeeze(torch.tensor(badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line).currents.output))
+            I_for_each_neuron = torch.squeeze(torch.tensor(
+                badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line).currents.output))
 
         self.time_sim += 1
 

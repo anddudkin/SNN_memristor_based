@@ -1,5 +1,3 @@
-import badcrossbar
-import matplotlib.pyplot as plt
 import torch
 
 from Network.datasets import MNIST_train_test_14x14, encoding_to_spikes

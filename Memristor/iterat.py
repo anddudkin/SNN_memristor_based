@@ -3,7 +3,6 @@ import math
 import badcrossbar
 import numpy as np
 import torch
-import matplotlib.pyplot as plt
 from compute_crossbar import TransformToCrossbarBase
 
 applied_voltages = np.ones([196, 1])
