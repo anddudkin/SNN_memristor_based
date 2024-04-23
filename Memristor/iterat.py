@@ -4,11 +4,11 @@ import badcrossbar
 import numpy as np
 import torch
 from compute_crossbar import TransformToCrossbarBase
-
+import matplotlib.pyplot as plt
 applied_voltages = np.ones([196, 1])
 torch.set_printoptions(threshold=10_000)
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
-# w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
+#w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 
 # plt.imshow(w,cmap='gray', vmin=0, vmax=1, interpolation='None')
 # plt.show()
@@ -62,14 +62,16 @@ cur = solution.currents.device
 
 def rtog(x):
     return 1 / float(x)
-
-
 def gtor(x):
     return 1 / float(x)
 
 
 V = np.ones([196, 1]) / 2
-cr = TransformToCrossbarBase(w, 5000, 25000, 1).weights
+G= TransformToCrossbarBase(w, 5000, 25000, 1)
+cr=G.weights
+print(G.weights)
+print(G.weights_Om)
+
 # V = [[0.4], [0.2], [0.3], [0.5], [0.5]]
 # cr = torch.tensor([[15000, 24000, 10000, 7000, 19000],
 #                    [15000, 24000, 10000, 7000, 19000],
@@ -81,9 +83,10 @@ crG.apply_(rtog)
 o = 10 ** (-6)
 k = 0
 eps = 0
-print("iterar")
+print("iterations stars......")
 cr0 = torch.clone(crG)
 flag = True
+ll = []
 while flag:
     if cr0[0][0] > 1:
         g_g = torch.clone(cr0)
@@ -95,7 +98,7 @@ while flag:
     for i in range(len(cr0)):
         for j in range(len(cr0[0])):
             cr0[i][j] = 2 * 1 / crG[i][j] * 0.1 * math.exp(5 * math.sqrt(voltage[i][j] / 4))
-
+    ll.append(solution.currents.device[1][1])
     det_g = torch.subtract(cr0, g_g)
 
     det_g = torch.abs(det_g)
@@ -106,7 +109,9 @@ while flag:
 
     if eps < o:
         flag = False
-        print(solution.voltages.word_line)
+        #print(solution.voltages.word_line)
         print(solution.currents.device)
+plt.semilogy(ll[1:])
+plt.show()
 
-print(solution.currents.device)
+#print(solution.currents.device)
