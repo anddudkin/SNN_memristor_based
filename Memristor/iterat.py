@@ -27,7 +27,6 @@ volt = solution.voltages.word_line
 volt1 = solution.voltages.bit_line
 cur = solution.currents.device
 
-
 # print(cur)
 # print(volt)
 # print(torch.div(torch.tensor(volt), torch.tensor(cur)))
@@ -61,18 +60,22 @@ cur = solution.currents.device
 # plt.show()
 
 
-u, ii, i_lin = [], [], []
-for i in range(0, 500):
-    i = i / 1000
+u, ii, i_lin,g = [], [], [],[]
+for i in range(1, 500000):
+    i = i / 1000000
     u.append(i)
 
-    i_lin.append(1 / 25000 * i * 10 ** (-1) * math.exp(5 * math.sqrt(i / 4)))
-    ii.append(i/25000)
-plt.plot(u, ii)
+    ii.append(1 / 25000 * i * 10 ** (-1) * math.exp(5 * math.sqrt(i / 4)))
+    i_lin.append(i / 25000)
+    g.append((1 / 25000 * i * 10 ** (-1) * math.exp(5 * math.sqrt(i / 4)))/i)
+vax=dict(zip(u, ii))
+print(vax.keys())
+# plt.plot(u, ii)
 plt.plot(u, i_lin)
+plt.plot(u,ii)
+
 # plt.plot(u,ii)
-plt.legend(loc="upper left")
-plt.show()
+
 
 def rtog(x):
     return 1 / float(x)
@@ -84,8 +87,8 @@ def gtor(x):
 
 V = np.ones([196, 1]) / 2
 # w = torch.tensor(np.random.rand(196, 50),dtype=torch.float)
-G = TransformToCrossbarBase(w, 5000, 25000, 1)
-cr = G.weights_Om
+G = TransformToCrossbarBase(w, 5000, 25000, 0)
+
 # print(G.weights_Siemens)
 # print(G.weights_Om)
 # print("1111")
@@ -96,33 +99,36 @@ cr = G.weights_Om
 #                    [15000, 24000, 10000, 7000, 19000],
 #                    [15000, 24000, 10000, 7000, 19000],
 #                    [15000, 24000, 10000, 7000, 19000]], dtype=torch.float)
-crG = torch.clone(cr)
-crG.apply_(rtog)
-o = 10 ** (-6)
+crR = G.weights_Om
+o = 10 ** (-5)
 k = 0
 eps = 0
 print("iterations stars......")
-cr0 = torch.clone(crG)
+cr0 = crR.clone().detach()
 flag = True
 sol = None
 g_iter = None
-gr_v,gr_i,gr_g=[],[],[]
+gr_v, gr_i, gr_g = [], [], []
+
+
 while flag:
     if cr0[0][0] > 1:
-        g_g = torch.clone(cr0)
+        g_g = cr0.clone().detach()
     else:
-        g_g = torch.clone(cr0.apply_(gtor))
+        g_g = (cr0.apply_(gtor)).clone().detach()
     solution = badcrossbar.compute(V, g_g, 1)
     voltage = torch.subtract(torch.tensor(solution.voltages.word_line, dtype=torch.float),
                              torch.tensor(solution.voltages.bit_line, dtype=torch.float))
-    currents = solution.currents.device
+    currents = torch.tensor(solution.currents.device, dtype=torch.float)
     ####
     gr_v.append(voltage[0][0])
-    gr_i.append(currents)
+    gr_i.append(currents[0][0])
     for i in range(len(cr0)):
         for j in range(len(cr0[0])):
-            cr0[i][j] = 2 * 1 / crG[i][j] * 0.1 * math.exp(5 * math.sqrt(voltage[i][j] / 4))
-
+            # i_lin.append(1 / 25000 * i * 10 ** (-1) * math.exp(5 * math.sqrt(i / 4)))
+            #cr0[i][j] = (crR[i][j]* 0.1 * math.exp(5 * math.sqrt(voltage[i][j] / 4)))/voltage[i][j]
+            cr0[i][j] = voltage[i][j]/vax[round(float(voltage[i][j]),6)]
+    gr_g.append(cr0[0][0])
     det_g = torch.subtract(cr0, g_g)
 
     det_g = torch.abs(det_g)
@@ -138,7 +144,13 @@ while flag:
         g_iter = cr0
         print(solution.currents.device)
         print(g_iter)
-
+plt.plot(gr_v, gr_i,"--")
+n=[]
+for i in range(len(gr_v)):
+    n.append(i)
+for i, txt in enumerate(n):
+    plt.annotate(txt, (gr_v[i], gr_i[i]),fontsize=12)
+plt.show()
 print(torch.add(torch.tensor(solution.voltages.word_line, dtype=torch.float),
                 torch.tensor(solution.voltages.bit_line, dtype=torch.float)))
 print(torch.mul(torch.tensor(solution.currents.device, dtype=torch.float), torch.tensor(g_iter, dtype=torch.float)))
