@@ -8,12 +8,12 @@ logger = logging.getLogger(__name__)
 
 
 def compute(
-    applied_voltages: npt.ArrayLike,
-    resistances: npt.ArrayLike,
-    r_i: float = None,
-    r_i_word_line: float = None,
-    r_i_bit_line: float = None,
-    **kwargs
+        applied_voltages: npt.ArrayLike,
+        resistances: npt.ArrayLike,
+        r_i: float = None,
+        r_i_word_line: float = None,
+        r_i_bit_line: float = None,
+        **kwargs
 ) -> computing.Solution:
     """Computes branch currents and node voltages of a crossbar.
 
@@ -51,13 +51,10 @@ def compute(
         r_i_word_line = r_i_bit_line = r_i
 
     resistances, applied_voltages = check.crossbar_requirements(
-        resistances, applied_voltages, r_i_word_line, r_i_bit_line
-    )
-
-
+        resistances, applied_voltages, r_i_word_line, r_i_bit_line)
 
     solution = computing.extract.solution(
-        resistances, r_i_word_line, r_i_bit_line, applied_voltages, **kwargs
-    )
+        resistances, r_i_word_line, r_i_bit_line, applied_voltages, **kwargs )
+
 
     return solution

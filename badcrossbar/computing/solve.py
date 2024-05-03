@@ -24,6 +24,7 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         i = fill.i(applied_voltages, resistances, r_i)
 
 
+
         v_matrix = linalg.spsolve(g.tocsc(), i)
 
 

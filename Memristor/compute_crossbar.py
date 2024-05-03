@@ -35,7 +35,7 @@ class TransformToCrossbarBase:
                 return 1 / (x / self.k)
 
         self.weights_Siemens = torch.clone(self.weights) # in siemens
-        self.weights.apply_(GtoR) #in Oms
+        self.weights_Om=self.weights.apply_(GtoR) #in Oms
 
     def compute_crossbar(self, U_in):
         solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, r_i=self.r_line)
