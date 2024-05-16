@@ -78,7 +78,7 @@ print(ii)
 plt.plot(mean_V, mean_I, "--", linewidth=1, color="black")
 plt.plot(v,ii, label="y = a * x^2 + b * x + c")
 ########
-args, covar = curve_fit(mapping2, mean_V, mean_I)
+args1, covar = curve_fit(mapping2, mean_V, mean_I)
 print("Arguments: ", args)
 ii=[]
 for i in v:
@@ -86,22 +86,25 @@ for i in v:
 print(ii)
 plt.plot(v,ii,label="y = a * x^3 + b * x + c")
 #############
-args, covar = curve_fit(mapping3, mean_V, mean_I)
+args1, covar = curve_fit(mapping3, mean_V, mean_I)
 
 ii=[]
 for i in v:
-    ii.append(args[0] * i ** 3 + args[1] * i ** 2 + args[2])
+
+    ii.append(args[0] * (i ** 3) + args[1] * i + args[2])
 print(ii)
 plt.plot(v,ii,label="y = a * x^3 + b * x^2 * c")
 ###########
 
-plt.legend()
 
-plt.show()
+
+
 args, covar = curve_fit(mapping2, mean_I, mean_V)
 print("Arguments: ", args)
 ii=[]
 for i in v:
-    ii.append((args[0]) * i ** 3 + args[1] * i + args[2])
+    ii.append((args1[0]) * (i) ** 3 + args1[1] * (i) + args1[2])
 print(ii)
-plt.plot(v,ii,label="y = a * x^3 + b * x + c")
+plt.plot(v,ii,label="x")
+plt.legend()
+plt.show()
