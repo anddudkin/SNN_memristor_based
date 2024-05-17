@@ -1,7 +1,7 @@
 import math
 import pickle
 import statistics
-
+import numpy as np
 import matplotlib.pyplot as plt
 from numpy import exp
 
@@ -62,49 +62,57 @@ def mapping3(values_x, a, b, c):
 
 
 def mapping4(values_x, a, b, c):
-    return a * exp(b * values_x) + c
-v=[]
+    return a * np.exp(b * values_x) + c
+
+
+v = []
 
 for i in range(700):
-    v.append(i/1000)
+    v.append(i / 1000)
 print(v)
 #######
-args, covar = curve_fit(mapping1, mean_V, mean_I)
+args1, covar = curve_fit(mapping1, mean_V, mean_I)
 
-ii=[]
+v1 = []
 for i in v:
-    ii.append(args[0] * i ** 2 + args[1] * i + args[2])
-print(ii)
+    v1.append(args1[0] * i ** 2 + args1[1] * i + args1[2])
+print(v1)
 plt.plot(mean_V, mean_I, "--", linewidth=1, color="black")
-plt.plot(v,ii, label="y = a * x^2 + b * x + c")
+plt.plot(v, v1, label="y = a * x^2 + b * x + c")
 ########
-args1, covar = curve_fit(mapping2, mean_V, mean_I)
-print("Arguments: ", args)
-ii=[]
+args2, covar = curve_fit(mapping2, mean_V, mean_I)
+print("Arguments: ", args2)
+v2 = []
 for i in v:
-    ii.append((args[0]) * i ** 3 + args[1] * i + args[2])
-print(ii)
-plt.plot(v,ii,label="y = a * x^3 + b * x + c")
+    v2.append((args2[0]) * i ** 3 + args2[1] * i + args2[2])
+print(v2)
+plt.plot(v, v2, label="y = a * x^3 + b * x + c")
 #############
-args1, covar = curve_fit(mapping3, mean_V, mean_I)
+args3, covar = curve_fit(mapping3, mean_V, mean_I)
 
-ii=[]
+v3 = []
 for i in v:
-
-    ii.append(args[0] * (i ** 3) + args[1] * i + args[2])
-print(ii)
-plt.plot(v,ii,label="y = a * x^3 + b * x^2 * c")
-###########
-
-
-
-
-args, covar = curve_fit(mapping2, mean_I, mean_V)
-print("Arguments: ", args)
-ii=[]
-for i in v:
-    ii.append((args1[0]) * (i) ** 3 + args1[1] * (i) + args1[2])
-print(ii)
-plt.plot(v,ii,label="x")
+    v3.append(args3[0] * i ** 3 + args3[1] * i ** 2 + args3[2])
+print(v3)
+plt.plot(v, v3, label="y = a * x^3 + b * x^2 * c")
 plt.legend()
+plt.show()
+###########
+# args4, covar = curve_fit(mapping4, mean_V, mean_I)
+#
+# v4 = []
+# for i in v:
+#     v4.append(args4[0] * np.exp(args4[1]*i) + args4[2])
+# print(v4)
+# plt.plot(v, v4, label="..........")
+############
+k = 0
+for j in range(50):
+    ii = []
+    for i in v:
+        ii.append((args2[0]+k) * (i) ** 3 + args2[1] * (i) + args2[2])
+
+    plt.plot(v, ii, label="x")
+    k += res_std
+
 plt.show()
