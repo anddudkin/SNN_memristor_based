@@ -7,9 +7,10 @@ import pandas
 current, voltage = [], []
 for i in range(20):
     excel_data = pandas.read_excel("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/эксп вах/3.xls",
-                                   sheet_name='Append' + str(i))
+                                  sheet_name='Append' + str(i))
     current.append(excel_data["AI"].tolist())
     voltage.append(excel_data["AV"].tolist())
+    voltage.append(excel_data["RES"].tolist())
 for i, j in enumerate(voltage):
     # plt.semilogy(j, current[i])
     #plt.plot(j[:250], current[i][:250])
