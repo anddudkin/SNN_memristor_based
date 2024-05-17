@@ -110,9 +110,9 @@ k = 0
 for j in range(50):
     ii = []
     for i in v:
-        ii.append((args2[0]+k) * (i) ** 3 + args2[1] * (i) + args2[2])
+        ii.append(i/((args2[0]+k) * (i) ** 3 + args2[1] * (i) + args2[2]))
 
-    plt.plot(v, ii, label="x")
+    plt.semilogy(v, ii, label="x")
     k += res_std
 
 plt.show()
