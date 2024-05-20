@@ -113,9 +113,9 @@ k=0
 for j in range(5):
     ii=[]
     for i in v:
-        ii.append((args1[0]) * (i+k) ** 2 + args1[1] * (i) + args1[2])
+        ii.append((args1[0] * (i) ** 2 + args1[1] * (i) + args1[2])+k)
     print(ii)
     plt.plot(ii, v, label="x")
-    k+=1.33*10**-5
+    k+=2*1.33*10**-6
 plt.legend()
 plt.show()

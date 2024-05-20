@@ -16,8 +16,8 @@ for i, j in enumerate(voltage):
 s, s1 = [], []
 
 for i in range(10):
-    s.append(current[i][50])
-    s1.append(voltage[i][50])
+    s.append(current[i][20])
+    s1.append(voltage[i][20])
 plt.plot(s1, s, "--", linewidth=3)
 
 print(s)
@@ -97,7 +97,30 @@ print(v3)
 plt.plot(v, v3, label="y = a * x^3 + b * x^2 * c")
 plt.legend()
 plt.show()
-###########
+k = 0
+for i in range(200):
+    v4 = []
+    for i in v:
+        v4.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2]+k)
+    k += 2*res_std
+    plt.semilogy(v, v4)
+
+plt.show()
+t1,t2,t3=[],[],[]
+for i in v:
+    t1.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2]+res_std)
+for i in v:
+    t2.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2]+10*res_std)
+for i in v:
+    t3.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2]+20*res_std)
+for i in range(len(v)):
+    print(t2[i]-t1[i])
+fig, ax = plt.subplots()
+ax.plot(v, t2, '-')
+ax.fill_between(v, t1, t3, alpha=0.2)
+plt.show()
+
+###########.
 # args4, covar = curve_fit(mapping4, mean_V, mean_I)
 #
 # v4 = []
@@ -106,13 +129,13 @@ plt.show()
 # print(v4)
 # plt.plot(v, v4, label="..........")
 ############
-k = 0
-for j in range(50):
-    ii = []
-    for i in v:
-        ii.append(i/((args2[0]+k) * (i) ** 3 + args2[1] * (i) + args2[2]))
-
-    plt.semilogy(v, ii, label="x")
-    k += res_std
-
-plt.show()
+# k = 0
+# for j in range(50):
+#     ii = []
+#     for i in v:
+#         ii.append(i/((args2[0]+k) * (i) ** 3 + args2[1] * (i) + args2[2]))
+#
+#     plt.semilogy(v, ii, label="x")
+#     k += res_std
+#
+# plt.show()
