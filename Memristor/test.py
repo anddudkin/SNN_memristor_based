@@ -21,7 +21,7 @@ for i in range(10):
 plt.plot(s1, s, "--", linewidth=3)
 
 print(s)
-res_std = statistics.stdev(s)/100
+res_std = statistics.stdev(s)
 res_v = statistics.stdev(s1)
 print(res_std)
 mean_I = []
@@ -69,14 +69,14 @@ v = []
 
 for i in range(700):
     v.append(i / 1000)
-print(v)
+
 #######
 args1, covar = curve_fit(mapping1, mean_V, mean_I)
 
 v1 = []
 for i in v:
     v1.append(args1[0] * i ** 2 + args1[1] * i + args1[2])
-print(v1)
+
 plt.plot(mean_V, mean_I, "--", linewidth=1, color="black")
 plt.plot(v, v1, label="y = a * x^2 + b * x + c")
 ########
@@ -85,7 +85,7 @@ print("Arguments: ", args2)
 v2 = []
 for i in v:
     v2.append((args2[0]) * i ** 3 + args2[1] * i + args2[2])
-print(v2)
+
 plt.plot(v, v2, label="y = a * x^3 + b * x + c")
 #############
 args3, covar = curve_fit(mapping3, mean_V, mean_I)
@@ -93,7 +93,7 @@ args3, covar = curve_fit(mapping3, mean_V, mean_I)
 v3 = []
 for i in v:
     v3.append(args3[0] * i ** 3 + args3[1] * i ** 2 + args3[2])
-print(v3)
+
 plt.plot(v, v3, label="y = a * x^3 + b * x^2 * c")
 plt.legend()
 plt.show()
@@ -106,29 +106,7 @@ for i in range(80):
     plt.semilogy(v, v4, '-', linewidth=0.5)
 
 plt.show()
-t1, t2, t3 = [], [], []
-t11, t22, t33 = [], [], []
-t111, t222, t333 = [], [], []
-for i in v:
-    t1.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + res_std)
-for i in v:
-    t2.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 2 * res_std)
-for i in v:
-    t3.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 4 * res_std)
 
-for i in v:
-    t11.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 4 * res_std)
-for i in v:
-    t22.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 6 * res_std)
-for i in v:
-    t33.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 8 * res_std)
-
-for i in v:
-    t111.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 8 * res_std)
-for i in v:
-    t222.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 10 * res_std)
-for i in v:
-    t333.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 12 * res_std)
 
 # for i in v:
 #     t111.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + 12*res_std)
@@ -151,15 +129,14 @@ k1 = 1
 k2 = 1
 x = np.array(range(100))
 new,new1=[],[]
-for i in range(100):
+for i in range(20):
     t1, t2, t3, t4,t5,t6 = [], [], [],[], [], []
     for i in v:
         t1.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + (k1-1) * res_std)
     for i in v:
         t2.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + k1 * res_std)
-        #t4.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] - k1 * res_std/2)
     new.append(t2)
-    new1.append(t4)
+
     for i in v:
         t3.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + (k1+1) * res_std)
     r,g,b=None,None,None
@@ -169,7 +146,7 @@ for i in range(100):
         b = np.round(np.random.rand(), 1)
         y = ggg + np.random.rand(100) * 0.25
     #ax.semilogy(v, t4, '--', color="black", linewidth=0.5)
-    ax.plot(v, t2, '--', color="black", linewidth=0.5)
+    ax.semilogy(v, t2, '--', color="black", linewidth=0.5)
     ax.fill_between(v, t2, t1, alpha=0.1,color=[r,g,b])
     ax.fill_between(v, t3, t2, alpha=0.1,color=[r,g,b])
 
@@ -183,7 +160,7 @@ for i in new:
     for j in range(len(v)):
        h.append(v[j]/i[j])
     new_r.append(h)
-print(new_r)
+
 for i in new_r:
     print(i[20])
 for i in new_r:

@@ -6,7 +6,7 @@ import badcrossbar
 
 
 class TransformToCrossbarBase:
-    def __init__(self, weights, R_min, R_max, r_line):
+    def __init__(self, weights, R_min=5000, R_max=25000, r_line=1):
         self.U_drop = None
         self.V_drop = None
         self.I_out = None
@@ -34,13 +34,42 @@ class TransformToCrossbarBase:
             else:
                 return 1 / (x / self.k)
 
-        self.weights_Siemens = torch.clone(self.weights) # in siemens
-        self.weights_Om=self.weights.apply_(GtoR) #in Oms
+        self.weights_Siemens = torch.clone(self.weights).detach()  # in siemens
+        self.weights_Om = self.weights.apply_(GtoR)  # in Oms
 
     def compute_crossbar(self, U_in):
         solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), self.weights, r_i=self.r_line)
         self.I_out = solution.currents.output
         self.U_drop = solution.voltages.word_line
+
+    def transform_with_experemental_data(self, data_R):
+        def f(x):  # перерасчет с коэффициентов в диапазон эксперементальных сопротивлений
+            return x / (self.R_max / max(data_R))
+
+        self.weights_Om = self.weights_Om.apply_(f)
+        self.R_max = torch.max(self.weights_Om)
+        self.R_min = torch.min(self.weights_Om)
+
+        data_R.sort()
+
+        def nearest_value(value):
+            '''Поиск ближайшего значения до value в списке items'''
+            found = data_R[0]  # найденное значение (первоначально первое)
+            for item in data_R:
+                if value <= 1000:
+                    return data_R[0]
+                if abs(item - value) < abs(found - value):
+                    found = item
+            return found
+
+        self.weights_Om = self.weights_Om.apply_(nearest_value)
+        self.R_max = torch.max(self.weights_Om)
+        self.R_min = torch.min(self.weights_Om)
+        self.weights_Siemens = None
+        self.G_max = None
+        self.G_min = None
+        self.w_min = None
+        self.w_max = None
 
     def compute_crossbar_nonlinear(self, U_in, ):
         def rtog(x):

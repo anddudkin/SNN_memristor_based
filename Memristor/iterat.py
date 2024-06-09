@@ -28,38 +28,6 @@ volt = solution.voltages.word_line
 volt1 = solution.voltages.bit_line
 cur = solution.currents.device
 
-# print(cur)
-# print(volt)
-# print(torch.div(torch.tensor(volt), torch.tensor(cur)))
-#
-# for r in range(5000, 25000, 1000):
-#     u, ii, i_lin = [], [], []
-#     for i in range(0, 500):
-#         i = i / 1000
-#         u.append(i)
-#         i_lin.append(i / r)
-#         ii.append(2 / r * i * 10 ** (-1) * math.exp(5 * math.sqrt(i / 4)))
-#     plt.plot(u, ii, color="k")
-#     plt.plot(u, i_lin, "--", label=r)
-# # plt.plot(u,ii)
-# plt.legend(loc="upper left")
-# plt.show()
-
-
-# for r in range(5000, 25000, 1000):
-#     u, ii, i_lin = [], [], []
-#     for i in range(0, 500):
-#         i = i / 1000
-#         u.append(i)
-#
-#         i_lin.append(1 / r * i * 10 ** (-1) * math.exp(5 * math.sqrt(i / 4)))
-#         ii.append(i/r)
-#     plt.plot(u, ii, label=r)
-#     plt.plot(u, i_lin, label=r)
-# # plt.plot(u,ii)
-# plt.legend(loc="upper left")
-# plt.show()
-
 
 u, ii, i_lin, g = [], [], [], []
 for i in range(1, 500000):
