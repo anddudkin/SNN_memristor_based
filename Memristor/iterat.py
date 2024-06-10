@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 
 applied_voltages = np.ones([196, 1])
 torch.set_printoptions(threshold=10_000)
-# w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
-w = torch.load(
-    "G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+#w = torch.load(
+#    "G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 
 # plt.imshow(w,cmap='gray', vmin=0, vmax=1, interpolation='None')
 # plt.show()

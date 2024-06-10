@@ -71,7 +71,7 @@ class TransformToCrossbarBase:
         self.w_min = None
         self.w_max = None
 
-    def compute_crossbar_nonlinear(self, U_in, ):
+    def compute_crossbar_nonlinear(self, U_in, U_I_data):
         def rtog(x):
             return 1 / float(x)
 
