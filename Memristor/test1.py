@@ -26,13 +26,13 @@ with open('Res_states.pkl', 'rb') as f:
     r = pickle.load(f)
 with open('Volt_Amper.pkl', 'rb') as f:
     U_I = pickle.load(f)
-c = TransformToCrossbarBase(w, 5000, 25000, 1)
+c = TransformToCrossbarBase(w, 5000, 25000, 0)
 print(c.weights_Om)
-c.plot_crossbar_weights()
+#c.plot_crossbar_weights()
 
 c.transform_with_experemental_data(r)
 print(c.weights_Om)
-c.plot_crossbar_weights()
+#c.plot_crossbar_weights()
 print(r)
 g = []
 for i in range(len(c.weights_Om)):
@@ -45,7 +45,7 @@ print("в кроссбаре: ", sorted(g))
 print("использовано состояний", len(g) / len(r) * 100, " ->", len(g), "/", len(r))
 V = np.ones([196, 1]) / 2
 crR = c.weights_Om
-o = 6*10 ** (-4)
+o = 7*10 ** (-4)
 k = 0
 eps = 0
 print("iterations stars......")
@@ -58,6 +58,7 @@ print(cr0)
 torch.set_printoptions(threshold=10_000)
 for i in U_I:
     plt.semilogy(U_I[i].keys(),U_I[i].values())
+    print(U_I[i].keys())
 plt.show()
 while flag:
     # if cr0[0][0] > 1:
@@ -70,19 +71,19 @@ while flag:
                              torch.tensor(solution.voltages.bit_line, dtype=torch.float))
     currents = torch.tensor(solution.currents.device, dtype=torch.float)
     ####
-    gr_v.append(voltage[1][1])
-    gr_i.append(currents[1][1])
+
+    gr_v.append(voltage[43][43])
+    gr_i.append(currents[43][43])
     for i in range(len(cr0)):
         for j in range(len(cr0[0])):
-            cr0[i][j] = voltage[i][j] / (U_I[round(float(crR[i][j]), 0)][round(float(voltage[i][j]), 4)])
+            cr0[i][j] = voltage[i][j] / (U_I[round(float(crR[i][j]), 0)][round(float(voltage[i][j]), 5)])
             #print(cr0[i][j])
 
-    gr_g.append(cr0[0][0])
+    gr_g.append(cr0[43][43])
     det_g = torch.subtract(cr0, g_g)
 
     det_g = torch.abs(det_g)
-    print(torch.max(det_g))
-    print(torch.max(g_g))
+
     eps = torch.mean(det_g) / (torch.mean(g_g))
 
     print(eps)
@@ -94,8 +95,14 @@ while flag:
         g_iter = cr0
         # print(solution.currents.device)
         # print(g_iter)
-
-plt.semilogy(U_I[round(float(crR[1][1]),0)].keys(),U_I[round(float(crR[1][1]),0)].values())
+        f1=plt.imshow(solution.currents.device,cmap='gray_r', interpolation='None')
+        plt.colorbar(f1, fraction=0.12, pad=0.04)
+        plt.show()
+        f2=plt.imshow(voltage,cmap='gray_r', vmin=0, vmax=0.5, interpolation='None')
+        plt.colorbar(f2, fraction=0.12, pad=0.04)
+        plt.show()
+        print(solution.currents.output)
+plt.semilogy(U_I[round(float(crR[43][43]),0)].keys(),U_I[round(float(crR[43][43]),0)].values())
 plt.semilogy(gr_v, gr_i, "--")
 n = []
 for i in range(len(gr_v)):

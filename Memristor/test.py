@@ -67,8 +67,8 @@ def mapping4(values_x, a, b, c):
 
 v = []
 
-for i in range(7000):
-    v.append(i / 10000)
+for i in range(70000):
+    v.append(i / 100000)
 
 #######
 args1, covar = curve_fit(mapping1, mean_V, mean_I)
@@ -154,16 +154,16 @@ for i in new:
         else:
             h.append(v[j] / i[j])
     new_r.append(h)
-print(v[2000])
-print(v[4000])
-print(len(v[2000:3000]))
+print(v[20000])
+print(v[40000])
+print(len(v[20000:30000]))
 print(len(new_r))
 for i in new_r:
     print(i[20])
 R_list = []
 
 for i in new_r:
-    R_list.append(round(sum(i[2000:2500]) / 500, 0))
+    R_list.append(round(sum(i[20000:25000]) / 5000, 0))
 
 print(R_list)
 with open("Res_states.pkl", 'wb') as f:
