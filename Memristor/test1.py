@@ -12,8 +12,8 @@ import badcrossbar
 def gtor(x):
     return 1 / float(x)
 
-
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+#w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 # j1 = plt.imshow(w, cmap='gray_r', vmin=0, vmax=1,
 #                 interpolation='None')
 # plt.colorbar(j1, fraction=0.12, pad=0.04)
@@ -29,7 +29,7 @@ with open('Volt_Amper.pkl', 'rb') as f:
 c = TransformToCrossbarBase(w, 5000, 25000, 0)
 
 # c.plot_crossbar_weights()
-
+import  torch
 c.transform_with_experemental_data(r)
 print(c.weights_Om)
 # c.plot_crossbar_weights()
@@ -50,7 +50,7 @@ data_train = MNIST_train_test_14x14()[0]
 input_spikes = encoding_to_spikes(data_train[0][0], 2)
 V = np.ones([196, 1]) / 2
 crR = c.weights_Om
-o = 4 * 10 ** (-4)
+o = 4 * 10 ** (-3)
 k = 0
 eps = 0
 print("iterations stars......")
@@ -65,7 +65,7 @@ V1 = input_spikes[0].reshape(196, 1) / 2
 # for i in range(len(V1)):
 #     if V1[i][0] == 0:
 #         V1[i][0] = 0.
-print(V1)
+#print(V1)
 # for i in U_I:
 #     plt.semilogy(U_I[i].keys(),U_I[i].values())
 #     #print(U_I[i].keys())
@@ -92,6 +92,7 @@ while flag:
     # else:
     #     g_g = (cr0.apply_(gtor)).clone().detach()
     g_g = cr0.clone().detach()
+    g_g = torch.add(g_g, torch.subtract(cr0,g_g) * 10)
     solution = badcrossbar.compute(V1, g_g, 1)
 
     # voltage = torch.subtract(torch.tensor(solution.voltages.word_line, dtype=torch.float),
@@ -127,7 +128,7 @@ while flag:
     print()
     print(torch.mean(det_g))
     print(torch.mean(g_g))
-    eps = torch.mean(det_g) / (torch.mean(g_g))
+    eps = torch.max(det_g) / (torch.max(g_g))
 
     print(eps)
 
@@ -147,6 +148,7 @@ while flag:
         print(solution.currents.output)
         voltage_nonlin = torch.tensor(voltage, dtype=torch.float)
         currents_nonlin = torch.tensor(solution.currents.device, dtype=torch.float)
+        print(solution.voltages.bit_line)
 
 plt.semilogy(U_I[round(float(crR[n][n]), 0)].keys(), U_I[round(float(crR[n][n]), 0)].values())
 plt.semilogy(U_I[round(float(crR[n][n]), 0)].keys(), U_I[round(float(crR[n][n]), 0)].values())

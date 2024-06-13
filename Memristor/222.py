@@ -12,8 +12,8 @@ import badcrossbar
 def gtor(x):
     return 1 / float(x)
 
-
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+#w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 # j1 = plt.imshow(w, cmap='gray_r', vmin=0, vmax=1,
 #                 interpolation='None')
 # plt.colorbar(j1, fraction=0.12, pad=0.04)
@@ -52,8 +52,6 @@ V = np.ones([196, 1]) / 2
 crR = c.weights_Om
 
 V1 = np.array(input_spikes[0].reshape(196, 1) / 2)
-for i in range(len(V1)):
-    if V1[i][0] == 0:
-        V1[i][0] = 0.01
-solution = badcrossbar.compute(V1*10, crR, 1)
+
+solution = badcrossbar.compute(V1, crR, 1)
 print(solution)

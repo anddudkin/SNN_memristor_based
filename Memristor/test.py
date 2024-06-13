@@ -137,7 +137,7 @@ for i in range(20):
         b = np.round(np.random.rand(), 1)
         y = ggg + np.random.rand(100) * 0.25
     # ax.semilogy(v, t4, '--', color="black", linewidth=0.5)
-    ax.semilogy(v, t2, '--', color="black", linewidth=0.5)
+    ax.plot(v, t2, '--', color="black", linewidth=0.5)
     ax.fill_between(v, t2, t1, alpha=0.1, color=[r, g, b])
     ax.fill_between(v, t3, t2, alpha=0.1, color=[r, g, b])
 
