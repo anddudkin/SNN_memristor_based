@@ -6,6 +6,8 @@ from Network.topology import Connections
 from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
+from Memristor import  compute_crossbar
+
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
@@ -40,7 +42,7 @@ assig.load_assignment('assignments.pkl')
 train_labels = [0, 1, 2, 9]
 
 evall = MnistEvaluation(n_neurons_out)
-
+torch.set_printoptions(threshold=10_000)
 conn.load_weights('weights_tensor.pt')
 out_neurons.load_U_thresh('thresh.pt')
 
