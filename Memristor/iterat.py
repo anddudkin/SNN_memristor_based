@@ -20,7 +20,7 @@ w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-base
 #
 # print(w1.weights)
 
-V = [[0.5], [0.5], [0.5], [0.5]]
+V = [[0.3], [0.5], [0.3], [0.5]]
 cr = [[15000, 24000], [18000, 22000], [18000, 22000], [18000, 22000]]
 
 solution = badcrossbar.compute(V, cr, 500)
@@ -56,6 +56,7 @@ def gtor(x):
 
 
 V = np.ones([196, 1]) / 2
+
 # w = torch.tensor(np.random.rand(196, 50),dtype=torch.float)
 G = TransformToCrossbarBase(w, 5000, 25000, 0)
 

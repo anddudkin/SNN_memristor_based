@@ -67,8 +67,8 @@ def mapping4(values_x, a, b, c):
 
 v = []
 
-for i in range(70000):
-    v.append(i / 100000)
+for i in range(700000):
+    v.append(i / 1000000)
 
 #######
 args1, covar = curve_fit(mapping1, mean_V, mean_I)
@@ -104,7 +104,7 @@ for i in range(80):
         v4.append(args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + k)
     k += 2 * res_std
     v4[0] = 0
-    plt.semilogy(v, v4, '-', linewidth=0.5)
+    # plt.semilogy(v, v4, '-', linewidth=0.5)
 
 # plt.show()
 
@@ -137,9 +137,9 @@ for i in range(20):
         b = np.round(np.random.rand(), 1)
         y = ggg + np.random.rand(100) * 0.25
     # ax.semilogy(v, t4, '--', color="black", linewidth=0.5)
-    ax.plot(v, t2, '--', color="black", linewidth=0.5)
-    ax.fill_between(v, t2, t1, alpha=0.1, color=[r, g, b])
-    ax.fill_between(v, t3, t2, alpha=0.1, color=[r, g, b])
+    # ax.plot(v, t2, '--', color="black", linewidth=0.5)
+    # ax.fill_between(v, t2, t1, alpha=0.1, color=[r, g, b])
+    # ax.fill_between(v, t3, t2, alpha=0.1, color=[r, g, b])
 
     k1 += 2
 
@@ -163,7 +163,7 @@ for i in new_r:
 R_list = []
 
 for i in new_r:
-    R_list.append(round(sum(i[20000:25000]) / 5000, 0))
+    R_list.append(round(sum(i[200000:250000]) / 50000, 0))
 
 print(R_list)
 with open("Res_states.pkl", 'wb') as f:
@@ -181,11 +181,11 @@ for k in range(20):
         d_u[i] = args2[0] * (i) ** 3 + args2[1] * (i) + args2[2] + k1 * res_std
     t2[0] = 0
     new.append(t2)
-    plt.semilogy(v, t2)
+    # plt.semilogy(v, t2)
     d_u[0]=0
     d_r[R_list[k]] = d_u
     k1 += 2
-plt.show()
+# plt.show()
 """словари {R : {U : I, U:I, U:I}, R : {U : I, U:I, U:I} }"""
 with open("Volt_Amper.pkl", 'wb') as f:
     pickle.dump(d_r, f)
