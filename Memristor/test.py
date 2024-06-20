@@ -1,6 +1,8 @@
 import math
 import pickle
 import statistics
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy import exp
@@ -85,6 +87,8 @@ print("Arguments: ", args2)
 v2 = []
 for i in v:
     v2.append((args2[0]) * i ** 3 + args2[1] * i + args2[2])
+with open("interp_coeff.pkl", 'wb') as f:
+    pickle.dump(args2, f)
 
 plt.plot(v, v2, label="y = a * x^3 + b * x + c")
 #############
@@ -168,9 +172,16 @@ for i in new_r:
 print(R_list)
 with open("Res_states.pkl", 'wb') as f:
     pickle.dump(R_list, f)
-
+r_k ={}
+l=1
+for i in range(len(R_list)):
+    r_k[R_list[i]]=res_std*l
+    l+=2
+with open("Res_coeff.pkl", 'wb') as f:
+    pickle.dump(r_k, f)
 d_r = {}
 k1 = 0
+sys.exit()
 for k in range(20):
     t1, t2, t3, t4, t5, t6 = [], [], [], [], [], []
 
