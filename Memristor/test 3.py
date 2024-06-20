@@ -18,8 +18,8 @@ def gtor(x):
     return 1 / float(x)
 
 
-# w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+#w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 
 d = {}
 
@@ -70,8 +70,8 @@ gr_v, gr_i, gr_g = [], [], []
 torch.set_printoptions(threshold=10_000)
 V1 = input_spikes[0].reshape(196, 1) / 2
 
-n1 = 170
-n2=15
+n1 = 172
+n2=16
 print("spectate memrisor ", n1, n2, "Res=", cr0[n1][n2])
 o = 5* 10 ** (-3)
 torch.set_printoptions(precision=6)
