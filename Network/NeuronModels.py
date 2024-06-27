@@ -68,7 +68,6 @@ class NeuronIF:
             I_for_each_neuron = torch.squeeze(torch.tensor(
                 badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line).currents.output))
         else:
-            print("1111")
             flag = True
             o = 8 * 10 ** (-3)
             torch.set_printoptions(precision=6)
