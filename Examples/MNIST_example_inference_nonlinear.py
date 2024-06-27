@@ -6,15 +6,14 @@ from Network.topology import Connections
 from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
-from Memristor import  compute_crossbar
-
+import time as t
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 5  # number of images for training
-n_test = 1000  # number of images for testing
+n_train = 30  # number of images for training
+n_test = 800  # number of images for testing
 time = 350  # time of each image presentation during training
-time_test = 50  # time of each image presentation during testing
+time_test = 200  # time of each image presentation during testing
 test = True  # do testing or not
 plot = False  # plot graphics or not
 
@@ -23,11 +22,12 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       train=False,
                                       U_mem=0,
                                       decay=0.92,
-                                      U_tr=2,
+                                      U_tr=20,
                                       U_rest=0,
                                       refr_time=5,
                                       traces=True,
                                       inh=True)  # activate literal inhibition
+
 
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
@@ -42,14 +42,10 @@ assig.load_assignment('assignments.pkl')
 train_labels = [0, 1, 2, 9]
 
 evall = MnistEvaluation(n_neurons_out)
-torch.set_printoptions(threshold=10_000)
+
 conn.load_weights('weights_tensor.pt')
 out_neurons.load_U_thresh('thresh.pt')
 
-from Memristor.compute_crossbar import TransformToCrossbarBase
-
-cbw = TransformToCrossbarBase(conn.weights, 5000, 25000, 1)
-#cbw.plot_crossbar_weights()
 out_neurons.train = False
 out_neurons.reset_variables(True, True, True)
 count2 = 0
@@ -58,15 +54,10 @@ if test:
 
         if data_train[i][1] in train_labels:
             input_spikes = encoding_to_spikes(data_train[i][0], time_test)
-            out_neurons.reset_variables(True, True, True)
+
             for j in range(time_test):
-                out_neurons.compute_U_mem(input_spikes[j], cbw.weights,k=100000, crossbar=True, r_line=1)
-                cbw.compute_crossbar(input_spikes[j])
-                print(cbw.I_out)
-                #cbw.plot_crossbar_U(input_spikes[j])
+                out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
                 out_neurons.check_spikes()
-                if 1 in out_neurons.spikes:
-                    print(out_neurons.spikes)
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])
 

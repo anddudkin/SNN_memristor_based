@@ -1,3 +1,5 @@
+import pickle
+
 import torch
 from tqdm import tqdm
 from Network.assigment import MnistAssignment, MnistEvaluation
@@ -6,15 +8,14 @@ from Network.topology import Connections
 from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
-from Memristor import  compute_crossbar
-
+from Memristor import compute_crossbar
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 5  # number of images for training
 n_test = 1000  # number of images for testing
 time = 350  # time of each image presentation during training
-time_test = 50  # time of each image presentation during testing
+time_test = 20  # time of each image presentation during testing
 test = True  # do testing or not
 plot = False  # plot graphics or not
 
@@ -48,8 +49,11 @@ out_neurons.load_U_thresh('thresh.pt')
 
 from Memristor.compute_crossbar import TransformToCrossbarBase
 
+with open('Res_states.pkl', 'rb') as f:
+    r = pickle.load(f)
 cbw = TransformToCrossbarBase(conn.weights, 5000, 25000, 1)
-#cbw.plot_crossbar_weights()
+cbw.transform_with_experemental_data(r)
+# cbw.plot_crossbar_weights()
 out_neurons.train = False
 out_neurons.reset_variables(True, True, True)
 count2 = 0
@@ -60,13 +64,11 @@ if test:
             input_spikes = encoding_to_spikes(data_train[i][0], time_test)
             out_neurons.reset_variables(True, True, True)
             for j in range(time_test):
-                out_neurons.compute_U_mem(input_spikes[j], cbw.weights,k=100000, crossbar=True, r_line=1)
-                cbw.compute_crossbar(input_spikes[j])
-                print(cbw.I_out)
-                #cbw.plot_crossbar_U(input_spikes[j])
+                out_neurons.compute_U_mem(input_spikes[j] / 2, cbw.weights_Om, k=100000, crossbar=True, r_line=1,
+                                          nonlin=True)
                 out_neurons.check_spikes()
-                if 1 in out_neurons.spikes:
-                    print(out_neurons.spikes)
+                # if 1 in out_neurons.spikes:
+                #     print(out_neurons.spikes)
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])
 

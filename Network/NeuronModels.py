@@ -1,3 +1,5 @@
+import pickle
+
 import torch
 import badcrossbar
 
@@ -31,6 +33,8 @@ class NeuronIF:
         self.traces = traces
         self.dw_all = None
         self.U_mem_trace = None
+        self.R_coef = None
+        self.Int_coef = None
 
         self.U_mem_all_neurons = torch.zeros([self.n_neurons_out], dtype=torch.float).fill_(self.U_mem)
         self.U_thresh_all_neurons = torch.zeros([self.n_neurons_out], dtype=torch.float).fill_(self.U_tr)
@@ -44,7 +48,12 @@ class NeuronIF:
             self.spikes_trace_in = torch.zeros([self.n_neurons_in], dtype=torch.float)
             self.spikes_trace_out = torch.zeros([self.n_neurons_out], dtype=torch.float)
 
-    def compute_U_mem(self, U_in, weights, k=1, r_line=None, crossbar=False):
+        with open('Res_coeff.pkl', 'rb') as f:
+            self.R_coef = pickle.load(f)
+        with open('interp_coeff.pkl', 'rb') as f:
+            self.Int_coef = pickle.load(f)
+
+    def compute_U_mem(self, U_in, weights, k=1, r_line=None, crossbar=False, nonlin=False):
         """Compute I_out for each output neuron and updates U_mem of all neurons
 
         Args:
@@ -52,12 +61,46 @@ class NeuronIF:
             weights(Tensor): matrix of network weights (Connections.weights)
 
         """
-        if not crossbar:
+        if not crossbar and not nonlin:
             I_for_each_neuron = torch.matmul(U_in, weights)
-        else:
 
+        elif crossbar and not nonlin:
             I_for_each_neuron = torch.squeeze(torch.tensor(
                 badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line).currents.output))
+        else:
+            print("1111")
+            flag = True
+            o = 8 * 10 ** (-3)
+            torch.set_printoptions(precision=6)
+            cr0 = weights
+            while flag:
+
+                solution = badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), cr0, 1)
+                g_g = torch.clone(cr0).detach()
+                currents = torch.tensor(solution.currents.device, dtype=torch.float)
+                voltage = torch.mul(torch.abs(currents), cr0)
+
+                for i in range(len(cr0)):
+                    for j in range(len(cr0[0])):
+
+                        if torch.abs(currents[i][j]) >= 1 * 10 ** (-9) and voltage[i][j] >= 1 * 10 ** -9:
+                            g_g[i][j] = voltage[i][j] / (
+                                    self.Int_coef[0] * voltage[i][j] ** 3 + self.Int_coef[1] * voltage[i][j] +
+                                    self.Int_coef[2] +
+                                    self.R_coef[float(weights[i][j])])
+
+                det_g = torch.subtract(g_g, cr0)
+                det_g = torch.abs(det_g)
+                # print()
+                # print(torch.max(det_g))
+                # print(torch.max(g_g))
+                eps = torch.max(det_g) / (torch.max(cr0))
+                #print(eps)
+                cr0 = torch.add(cr0, torch.mul(torch.subtract(g_g, cr0), 1))
+                if eps < o:
+                    flag = False
+                    print(solution.currents.output)
+                    I_for_each_neuron = torch.squeeze(torch.tensor(solution.currents.output))
 
         self.time_sim += 1
 
@@ -144,8 +187,8 @@ class NeuronLIF(NeuronIF):
         super().__init__(n_neurons_in, n_neurons_out, inh, traces, train, U_mem, U_tr, U_rest, refr_time)
         self.decay = decay
 
-    def compute_U_mem(self, U_in, weights, k=1, r_line=None, crossbar=False):
-        super().compute_U_mem(U_in, weights, k, r_line, crossbar)
+    def compute_U_mem(self, U_in, weights, k=1, r_line=None, crossbar=False, nonlin=False):
+        super().compute_U_mem(U_in, weights, k, r_line, crossbar,nonlin)
         self.U_mem_all_neurons = torch.clamp(self.U_mem_all_neurons, min=self.U_mem)
         self.U_mem_all_neurons = torch.mul(self.U_mem_all_neurons, self.decay)
 
