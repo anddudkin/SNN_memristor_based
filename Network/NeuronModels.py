@@ -98,7 +98,7 @@ class NeuronIF:
                 cr0 = torch.add(cr0, torch.mul(torch.subtract(g_g, cr0), 1))
                 if eps < o:
                     flag = False
-                    print(solution.currents.output)
+                    #print(solution.currents.output)
                     I_for_each_neuron = torch.squeeze(torch.tensor(solution.currents.output))
 
         self.time_sim += 1
