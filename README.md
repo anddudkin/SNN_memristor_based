@@ -1,9 +1,9 @@
 
 
-# SNN simulator 
+# Memristor crossbar & SNN simulator 
 
 ## Description
-Spiking neural network simulator based on memristor characteristics
+Spiking neural network simulator based on memristor characteristics and crossbar architecture
 
 
 ## Table of Contents 
@@ -11,7 +11,6 @@ Spiking neural network simulator based on memristor characteristics
 - [Installation](#installation)
 - [Theory](#Theory)
 - [Build_network](#Build_network)
-- [Credits](#credits)
 - [License](#license)
 
 ## Installation
@@ -59,7 +58,7 @@ Baseline for constructing your own network
        width="400" 
        height="580"/>
 </p>
-## Credits
+
 
 
 ## License
