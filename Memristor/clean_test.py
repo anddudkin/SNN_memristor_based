@@ -16,8 +16,8 @@ def gtor(x):
     return 1 / float(x)
 
 
-# w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+#w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 
 d = {}
 
@@ -141,6 +141,15 @@ while flag:
         flag = False
         sol = solution
         g_iter = cr0
+        f1 = plt.imshow(solution.currents.device, cmap='gray_r', interpolation='None')
+        plt.colorbar(f1, fraction=0.12, pad=0.04)
+        plt.show()
+        f1 = plt.imshow(solution.currents.device, cmap="gnuplot2", interpolation='None')
+        plt.colorbar(f1, fraction=0.12, pad=0.04)
+        plt.show()
+        f1 = plt.imshow(torch.abs(torch.tensor(solution.currents.device, dtype=torch.float)), interpolation='None')
+        plt.colorbar(f1, fraction=0.12, pad=0.04)
+        plt.show()
         print(solution.currents.output)
 
 plt.semilogy(U_I[round(float(crR[n][n]), 0)].keys(), U_I[round(float(crR[n][n]), 0)].values())

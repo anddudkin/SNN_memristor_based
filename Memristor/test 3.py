@@ -2,7 +2,7 @@ import math
 import pickle
 import statistics
 import sys
-
+### ИТГОВЫЙ ВАРИАНТЬ
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
@@ -18,8 +18,8 @@ def gtor(x):
     return 1 / float(x)
 
 
-#w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
-w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
+#w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/4 класаа/50_3000/tau 4/weights_tensor.pt")
 
 d = {}
 
@@ -54,7 +54,9 @@ print("использовано состояний", len(g) / len(r) * 100, " ->
 from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 
 data_train = MNIST_train_test_14x14()[0]
-input_spikes = encoding_to_spikes(data_train[0][0], 2)
+#input_spikes = encoding_to_spikes(data_train[0][0], 2)
+with open("spikes.pt", 'rb') as f:
+    input_spikes= pickle.load(f)
 V = np.ones([196, 1]) / 2
 crR = c.weights_Om
 
@@ -112,6 +114,15 @@ while flag:
         flag = False
         sol = solution
         g_iter = cr0
+        f1 = plt.imshow(solution.currents.device, cmap='gray_r', vmin=-0.000085,vmax=0.00025,interpolation='None')
+        plt.colorbar(f1, fraction=0.12, pad=0.04)
+        plt.show()
+        f1 = plt.imshow(solution.currents.device, cmap="gnuplot2" ,vmin=-0.000085,vmax=0.00025, interpolation='None')
+        plt.colorbar(f1, fraction=0.12, pad=0.04)
+        plt.show()
+        f1 = plt.imshow(torch.abs(torch.tensor(solution.currents.device,dtype=torch.float)), vmax=0.00025,interpolation='None')
+        plt.colorbar(f1, fraction=0.12, pad=0.04)
+        plt.show()
         print(solution.currents.output)
 
 v=[]
