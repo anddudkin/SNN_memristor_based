@@ -10,7 +10,8 @@ Spiking neural network simulator based on memristor characteristics and crossbar
 
 - [Installation](#installation)
 - [Theory](#Theory)
-- [Build_network](#Build_network)
+- [Build_network](#Build-network)
+- [Crossbar architecture](#Crossbar-architecture)
 - [License](#license)
 
 ## Installation
@@ -59,7 +60,19 @@ Baseline for constructing your own network
        height="580"/>
 </p>
 
-
+## Crossbar architecture
+Implemented crossbar takes into account impact of wire resistance
+<p align="center">
+  <img src="images/crossbar.png?raw=true" 
+       width="450" 
+       height="450"/>
+</p>
+Also descrete conductance states were extracted from real memristive device and used in following simulations
+<p align="center">
+  <img src="images/stages.jpg?raw=true" 
+       width="500" 
+       height="400"/>
+</p>
 
 ## License
 
