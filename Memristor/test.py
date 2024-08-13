@@ -13,18 +13,23 @@ with open('I_0_07.pkl', 'rb') as f:
     current = pickle.load(f)
 for i, j in enumerate(voltage):
     # plt.semilogy(j, current[i])
-    plt.semilogy(j, current[i])
+    #.tick_params(direction="in")
 
+    plt.semilogy(j, current[i])
+    plt.tick_params(axis="y", direction="in")
+    plt.tick_params(axis="x", direction="in")
+    plt.tick_params(which='minor', direction="in")
 s, s1 = [], []
 
 for i in range(10):
     s.append(current[i][20])
     s1.append(voltage[i][20])
-plt.plot(s1, s, "--", linewidth=3)
+#plt.plot(s1, s, "--", linewidth=3)
 
 print(s)
 res_std = statistics.stdev(s)
 res_v = statistics.stdev(s1)
+print(statistics.mean(s))
 print(res_std)
 mean_I = []
 mean_V = []
@@ -45,7 +50,13 @@ print(mean_V)
 for j in range(70):
     mean_V[j] = mean_V[j] / 10.0
     mean_I[j] = mean_I[j] / 10.0
-plt.plot(mean_V, mean_I, "--", linewidth=4, color="black")
+plt.plot(mean_V, mean_I, "--", linewidth=3, color="black", label="Усредненное значение")
+plt.tick_params(direction="in")
+plt.legend()
+plt.xlabel("Напряжение, В")
+plt.ylabel("Ток, А")
+plt.tight_layout()
+plt.savefig("5", dpi=300)
 plt.show()
 print(list(mean_V))
 from scipy.optimize import curve_fit
@@ -87,8 +98,8 @@ print("Arguments: ", args2)
 v2 = []
 for i in v:
     v2.append((args2[0]) * i ** 3 + args2[1] * i + args2[2])
-with open("interp_coeff.pkl", 'wb') as f:
-    pickle.dump(args2, f)
+# with open("interp_coeff.pkl", 'wb') as f:
+#     pickle.dump(args2, f)
 
 plt.plot(v, v2, label="y = a * x^3 + b * x + c")
 #############
@@ -140,10 +151,10 @@ for i in range(20):
         g = np.round(np.random.rand(), 1)
         b = np.round(np.random.rand(), 1)
         y = ggg + np.random.rand(100) * 0.25
-    # ax.semilogy(v, t4, '--', color="black", linewidth=0.5)
-    # ax.plot(v, t2, '--', color="black", linewidth=0.5)
-    # ax.fill_between(v, t2, t1, alpha=0.1, color=[r, g, b])
-    # ax.fill_between(v, t3, t2, alpha=0.1, color=[r, g, b])
+    ax.semilogy(v, t4, '--', color="black", linewidth=0.5)
+    ax.plot(v, t2, '--', color="black", linewidth=0.5)
+    ax.fill_between(v, t2, t1, alpha=0.1, color=[r, g, b])
+    ax.fill_between(v, t3, t2, alpha=0.1, color=[r, g, b])
 
     k1 += 2
 
@@ -170,15 +181,15 @@ for i in new_r:
     R_list.append(round(sum(i[200000:250000]) / 50000, 0))
 
 print(R_list)
-with open("Res_states.pkl", 'wb') as f:
-    pickle.dump(R_list, f)
+# with open("Res_states.pkl", 'wb') as f:
+#     pickle.dump(R_list, f)
 r_k ={}
 l=1
 for i in range(len(R_list)):
     r_k[R_list[i]]=res_std*l
     l+=2
-with open("Res_coeff.pkl", 'wb') as f:
-    pickle.dump(r_k, f)
+# with open("Res_coeff.pkl", 'wb') as f:
+#     pickle.dump(r_k, f)
 d_r = {}
 k1 = 0
 sys.exit()

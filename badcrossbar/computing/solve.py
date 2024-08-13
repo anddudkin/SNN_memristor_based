@@ -23,10 +23,7 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         g = fill.g(resistances, r_i)
         i = fill.i(applied_voltages, resistances, r_i)
 
-
-
         v_matrix = linalg.spsolve(g.tocsc(), i)
-
 
         # if `num_examples == 1`, it can result in 1D array.
         if v_matrix.ndim == 1:
@@ -38,16 +35,16 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         if r_i.word_line == 0:
             new_v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
             new_v_matrix[
-                : resistances.size,
+            : resistances.size,
             ] = np.repeat(applied_voltages, resistances.shape[1], axis=0)
             new_v_matrix[
-                resistances.size :,
+            resistances.size:,
             ] = v_matrix
             v_matrix = new_v_matrix
         if r_i.bit_line == 0:
             new_v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
             new_v_matrix[
-                : resistances.size,
+            : resistances.size,
             ] = v_matrix
             v_matrix = new_v_matrix
     else:
@@ -55,7 +52,7 @@ def v(resistances: npt.NDArray, r_i, applied_voltages: npt.NDArray):
         # known.
         v_matrix = np.zeros((2 * resistances.size, applied_voltages.shape[1]))
         v_matrix[
-            : resistances.size,
+        : resistances.size,
         ] = np.repeat(applied_voltages, resistances.shape[1], axis=0)
 
     return v_matrix

@@ -152,11 +152,18 @@ while flag:
         plt.show()
         print(solution.currents.output)
 
-plt.semilogy(U_I[round(float(crR[n][n]), 0)].keys(), U_I[round(float(crR[n][n]), 0)].values())
-plt.semilogy(gr_v, gr_i, "--")
+plt.semilogy(U_I[round(float(crR[n][n]), 0)].keys(), U_I[round(float(crR[n][n]), 0)].values(), label="Нелинейная ВАХ")
+plt.semilogy(gr_v, gr_i, "--", label="Последовательное приближение")
 n = []
 for i in range(len(gr_v)):
     n.append(i)
 for i, txt in enumerate(n):
-    plt.annotate(txt, (gr_v[i], gr_i[i]), fontsize=12)
+    if i<6:
+        plt.annotate(txt, (gr_v[i], gr_i[i]), fontsize=12)
+plt.tick_params(axis="y", direction="in")
+plt.tick_params(axis="x", direction="in")
+plt.tick_params(which='minor', direction="in")
+plt.xlabel("Напряжение, В")
+plt.ylabel("Ток, А")
+plt.legend()
 plt.show()

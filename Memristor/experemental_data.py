@@ -4,19 +4,26 @@ import torch
 import matplotlib.pyplot as plt
 import pandas
 
-current, voltage = [], []
+current, voltage, res = [], [],[]
 for i in range(20):
     excel_data = pandas.read_excel("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-based/test/эксп вах/3.xls",
                                   sheet_name='Append' + str(i))
     current.append(excel_data["AI"].tolist())
     voltage.append(excel_data["AV"].tolist())
-    voltage.append(excel_data["RES"].tolist())
+    res.append(excel_data["RES"].tolist())
+print(len(voltage))
 for i, j in enumerate(voltage):
-    # plt.semilogy(j, current[i])
-    #plt.plot(j[:250], current[i][:250])
-    pass
+    ii = [abs(ele) for ele in current[i]]
+    plt.semilogy(j, ii, nonpositive='clip')
+    plt.plot(j[:250], current[i][:250])
 
-# plt.show()
+plt.xlabel("Напряжение, В")
+plt.ylabel("Ток, А")
+plt.tick_params(axis="y", direction="in")
+plt.tick_params(axis="x", direction="in")
+plt.tick_params(which='minor', direction="in")
+#plt.xlim (-0.1, 3.3)
+plt.show()
 
 for i, j in enumerate(voltage):
     # plt.semilogy(j, current[i])
@@ -54,10 +61,10 @@ for i, j in enumerate(voltage):
         current1.append(current[i])
 voltage1=voltage1[1:]
 current1=current1[1:]
-with open("V_0_07.pkl", 'wb') as f:
-    pickle.dump(voltage1, f)
-with open("I_0_07.pkl", 'wb') as f:
-    pickle.dump(current1, f)
+# with open("V_0_07.pkl", 'wb') as f:
+#     pickle.dump(voltage1, f)
+# with open("I_0_07.pkl", 'wb') as f:
+#     pickle.dump(current1, f)
 for i, j in enumerate(voltage1):
     # plt.semilogy(j, current[i])
     plt.semilogy(j[:70], current1[i][:70])
