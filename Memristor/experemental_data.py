@@ -16,13 +16,16 @@ for i, j in enumerate(voltage):
     ii = [abs(ele) for ele in current[i]]
     plt.semilogy(j, ii, nonpositive='clip')
     plt.plot(j[:250], current[i][:250])
-
-plt.xlabel("Напряжение, В")
-plt.ylabel("Ток, А")
+plt.rc('axes', labelsize=50)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.xlabel("Напряжение, В",fontsize=14)
+plt.ylabel("Ток, А",fontsize=14)
 plt.tick_params(axis="y", direction="in")
 plt.tick_params(axis="x", direction="in")
 plt.tick_params(which='minor', direction="in")
-#plt.xlim (-0.1, 3.3)
+
+plt.ylim(10**-6)
 plt.show()
 
 for i, j in enumerate(voltage):
@@ -68,4 +71,8 @@ current1=current1[1:]
 for i, j in enumerate(voltage1):
     # plt.semilogy(j, current[i])
     plt.semilogy(j[:70], current1[i][:70])
+plt.ylim(10**-6)
+plt.rc('axes', labelsize=50)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
 plt.show()

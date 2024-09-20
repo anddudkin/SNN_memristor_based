@@ -15,7 +15,7 @@ n_test = 800  # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200  # time of each image presentation during testing
 test = True  # do testing or not
-plot = False  # plot graphics or not
+plot = True # plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -64,22 +64,11 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             fig.canvas.flush_events()
 
         for j in range(time):
-            s = t.time()
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
-            e = t.time() - s
-            print("1 ",e)
-            s = t.time()
             out_neurons.check_spikes()
-            e = t.time() - s
-            print("2 ", e)
-            s = t.time()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
-            e = t.time() - s
-            print("3 ", e)
-            s = t.time()
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
-            e = t.time() - s
-            print("4 ", e)
+
 
 assig.get_assignment()
 assig.save_assignment()

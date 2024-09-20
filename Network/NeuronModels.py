@@ -48,10 +48,13 @@ class NeuronIF:
             self.spikes_trace_in = torch.zeros([self.n_neurons_in], dtype=torch.float)
             self.spikes_trace_out = torch.zeros([self.n_neurons_out], dtype=torch.float)
 
-        with open('Res_coeff.pkl', 'rb') as f:
-            self.R_coef = pickle.load(f)
-        with open('interp_coeff.pkl', 'rb') as f:
-            self.Int_coef = pickle.load(f)
+        try:
+            with open('Res_coeff.pkl', 'rb') as f:
+                self.R_coef = pickle.load(f)
+            with open('interp_coeff.pkl', 'rb') as f:
+                self.Int_coef = pickle.load(f)
+        except:
+            pass
 
     def compute_U_mem(self, U_in, weights, k=1, r_line=None, crossbar=False, nonlin=False):
         """Compute I_out for each output neuron and updates U_mem of all neurons
