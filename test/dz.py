@@ -13,10 +13,11 @@ for i in excel_data:
     print(i)
     print(excel_data[i].tolist())
 for i in excel_data:
-    if i != "channel"  and "H" in i:
+    if i != "channel":
         plt.plot(excel_data["channel"].tolist(), excel_data[i].tolist(), label = i)
         #plt.semilogy(excel_data["channel"].tolist(), excel_data[i].tolist(), label=i) #log
 plt.xlim(0, 2000)
+plt.minorticks_on()
 plt.xticks(np.linspace(0, 2000, 30))
 plt.legend()
 plt.show()
