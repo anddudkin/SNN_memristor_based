@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas
-
+''' #dz1
 #excel_data = pandas.read_excel("G:/Другие компьютеры/Ноутбук/7сем/1_Магистратура/3 сем/Методы анализа микро- и наносистем/5.xls")
 excel_data = pandas.read_excel("C:/Users/anddu/Desktop/7сем/1_Магистратура/3 сем/Методы анализа микро- и наносистем/5.xls")
 print(excel_data)
@@ -18,6 +18,7 @@ for i in excel_data:
         #plt.semilogy(excel_data["channel"].tolist(), excel_data[i].tolist(), label=i) #log
 plt.xlim(0, 2000)
 plt.minorticks_on()
-plt.xticks(np.linspace(0, 2000, 30))
+#plt.xticks(np.linspace(0, 2000, 30))
 plt.legend()
 plt.show()
+'''
