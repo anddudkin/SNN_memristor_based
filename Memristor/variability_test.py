@@ -1,10 +1,16 @@
 import pickle
 import statistics
 import sys
+import badcrossbar
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-
+c = np.random.normal(0, 1, [10,5])
+w =np.random.normal(10000, 1000, [10,5])
+applied_voltages = np.ones([196, 1])
+#solution = badcrossbar.compute(applied_voltages, w, r_i)
+print(c)
+#print(c1)
 x=torch.normal(mean=torch.arange(1., 11.), std=torch.arange(1, 0, -0.1))
 x=torch.normal(1000, 0.05, size= [1000])
 x = np.random.normal(1000, 10, 5000)
