@@ -11,7 +11,7 @@ import time as t
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 30  # number of images for training
-n_test = 800  # number of images for testing
+n_test = 2025 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200  # time of each image presentation during testing
 test = True  # do testing or not

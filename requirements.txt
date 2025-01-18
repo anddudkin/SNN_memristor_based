@@ -100,3 +100,9 @@ wheel==0.42.0
 xdg==5
 xkit==0.0.0
 xyzservices==0.0.0
+
+pandas~=2.2.3
+torch~=2.5.1
+torchvision~=0.20.1
+tqdm~=4.67.1
+pathvalidate~=3.2.3

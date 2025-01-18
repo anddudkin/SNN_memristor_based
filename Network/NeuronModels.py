@@ -2,6 +2,7 @@ import pickle
 
 import torch
 import badcrossbar
+from badcrossbar.compute import compute
 
 
 class NeuronIF:
@@ -97,6 +98,7 @@ class NeuronIF:
                 # print(torch.max(det_g))
                 # print(torch.max(g_g))
                 eps = torch.max(det_g) / (torch.max(cr0))
+                print(eps)
                 #print(eps)
                 cr0 = torch.add(cr0, torch.mul(torch.subtract(g_g, cr0), 1))
                 if eps < o:
