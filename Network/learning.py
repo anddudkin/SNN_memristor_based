@@ -16,7 +16,12 @@ def compute_dw(t):
     else:
         return -0.003
 
-
+def compute_dw1(t):
+    """ Computes dw """
+    if -10 <= t <= 0:
+        return 0.00005 * np.exp(t / tau_plus)
+    else:
+        return -0.00003
 def plot_simple_stdp():
     """Plots simple STDP reinforcement learning curve"""
 
