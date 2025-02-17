@@ -39,6 +39,8 @@ data_test = MNIST_train_test_14x14()[1]
 
 assig = MnistAssignment(n_neurons_out)
 
+
+
 if plot:
     plt.ion()
     fig = plt.figure(figsize=(6, 6))
@@ -74,6 +76,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 
 assig.get_assignment()
 assig.save_assignment()
+
 evall = MnistEvaluation(n_neurons_out)
 
 conn.save_weights()
@@ -90,7 +93,7 @@ if test:
 
             for j in range(time_test):
                 out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
-                out_neurons.check_spikes()
+                out_neurons.check_spikes1()
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])
 
