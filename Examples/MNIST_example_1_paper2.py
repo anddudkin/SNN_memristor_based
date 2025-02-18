@@ -10,12 +10,12 @@ import time as t
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 5000 # number of images for training
+n_train =2000# number of images for training
 n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
-plot = True # plot graphics or not
+plot = False # plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -77,6 +77,11 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 assig.get_assignment()
 assig.save_assignment()
 
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111)
+axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
+plt.colorbar(axim, fraction=0.046, pad=0.04)
+fig.savefig("weights")
 evall = MnistEvaluation(n_neurons_out)
 
 conn.save_weights()
@@ -98,7 +103,7 @@ if test:
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
-with open('result.txt', 'w+') as f:
+with open('paper2_base/11/result.txt', 'w+') as f:
     f.write("\ntrain: " + str(train_labels))
     f.write("\ntrain: " + str(n_train))
     f.write("\ntest: " + str(n_test))

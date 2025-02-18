@@ -8,7 +8,7 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 
-n_neurons_out = 50  # number of neurons in input layer
+n_neurons_out = 100  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 5000 # number of images for training
 n_test = 1000 # number of images for testing
@@ -50,7 +50,7 @@ if plot:
     axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
     axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 
-train_labels = [0, 1, 2, 9, 5]
+train_labels = [0, 1, 2, 3,4,5,6,7,8,9]
 
 for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 
@@ -74,6 +74,12 @@ assig.get_assignment()
 assig.save_assignment()
 evall = MnistEvaluation(n_neurons_out)
 
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111)
+axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0, vmax=1)
+plt.colorbar(axim, fraction=0.046, pad=0.04)
+fig.savefig("weights")
+
 conn.save_weights()
 out_neurons.save_U_thresh()
 
@@ -93,7 +99,7 @@ if test:
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
-with open('result.txt', 'w+') as f:
+with open('paper2_base/11/result.txt', 'w+') as f:
     f.write("\ntrain: " + str(train_labels))
     f.write("\ntrain: " + str(n_train))
     f.write("\ntest: " + str(n_test))
