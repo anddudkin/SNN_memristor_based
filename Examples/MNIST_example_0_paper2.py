@@ -7,7 +7,7 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
-
+# абстрактная модель
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 5000 # number of images for training
@@ -93,7 +93,7 @@ if test:
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
-with open('paper2_base/11/result.txt', 'w+') as f:
+with open('paper2_0/11/result.txt', 'w+') as f:
     f.write("\ntrain: " + str(train_labels))
     f.write("\ntrain: " + str(n_train))
     f.write("\ntest: " + str(n_test))

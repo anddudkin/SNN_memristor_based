@@ -7,7 +7,7 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
-# модель с реальными физическими величинами
+
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train =2000# number of images for training
@@ -16,13 +16,14 @@ time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
 plot = False # plot graphics or not
-
+# модель с реальными физическими величинами и линейно
+# дискретным диапазоном значений проводимости и падением напряжений в кроссбар-массиве
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
                                       train=True,
                                       U_mem=0,
                                       decay=0.92,
-                                      U_tr=20/100,
+                                      U_tr=20/10000,
                                       U_rest=0,
                                       refr_time=5,
                                       traces=True,
@@ -56,7 +57,8 @@ if plot:
 
 train_labels = [0, 1, 2, 9, 5]
 
-for i in tqdm(range(n_train), desc='training', colour='green', position=0):
+for i in range(n_train):
+    print("Image № ", i, "of ", n_train)
 
     if data_train[i][1] in train_labels:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
@@ -67,11 +69,13 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             axim3.set_data(input_spikes.reshape(196, 350)[::4, ::4])
             fig.canvas.flush_events()
 
-        for j in range(time):
-            out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
-            out_neurons.check_spikes1()
+        for j in tqdm(range(time),leave=False):
+            out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
+            if 1 in out_neurons.spikes:
+                print(out_neurons.spikes)
+            out_neurons.check_spikes3()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
-            conn.update_w1(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
+            conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,0.00005,0.01,100)
 
 
 assig.get_assignment()

@@ -98,7 +98,7 @@ if test:
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
-with open('paper2_base/11/result.txt', 'w+') as f:
+with open('paper2_0/11/result.txt', 'w+') as f:
     f.write("\ntrain: " + str(train_labels))
     f.write("\ntrain: " + str(n_train))
     f.write("\ntest: " + str(n_test))

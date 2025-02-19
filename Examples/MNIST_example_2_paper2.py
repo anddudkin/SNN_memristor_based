@@ -15,8 +15,9 @@ n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
-plot = True # plot graphics or not
-
+plot = False # plot graphics or not
+# модель с реальными физическими величинами и линейно
+# дискретным диапазоном значений проводимости
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
                                       train=True,
@@ -103,7 +104,7 @@ if test:
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
-with open('paper2_base/11/result.txt', 'w+') as f:
+with open('paper2_0/11/result.txt', 'w+') as f:
     f.write("\ntrain: " + str(train_labels))
     f.write("\ntrain: " + str(n_train))
     f.write("\ntest: " + str(n_test))

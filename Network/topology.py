@@ -1,3 +1,4 @@
+from multiprocessing import Pool
 from random import random
 
 import numpy as np
@@ -190,7 +191,7 @@ class Connections:
                 self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
 
                 for j in range(len(self.weights[:, i])):  #приводим к ближайшему дискретному состоянию
-                    self.weights[:, i][j] = find_nearest(discrete_states, self.weights[:, i][j])
+                    self.weights[:, i][j] = bisection(discrete_states, self.weights[:, i][j])
 
 
 

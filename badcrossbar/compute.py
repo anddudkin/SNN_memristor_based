@@ -51,7 +51,7 @@ def compute(
         r_i_word_line = r_i_bit_line = r_i
 
     resistances, applied_voltages = check.crossbar_requirements(
-        resistances, applied_voltages, r_i_word_line, r_i_bit_line)
+         resistances, applied_voltages, r_i_word_line, r_i_bit_line)
 
     solution = computing.extract.solution(
         resistances, r_i_word_line, r_i_bit_line, applied_voltages, **kwargs )
