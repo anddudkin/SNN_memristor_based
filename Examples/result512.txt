@@ -1,0 +1,12 @@
+
+train: [0, 1, 2, 9, 5]
+train: 2000
+test: 350
+time_train: 200
+time_train: 1
+neurons out: 50
+train images: 0
+Test Completed
+Correctly defined images:6
+Incorrectly defined images:21
+Final result:22.22

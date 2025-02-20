@@ -10,12 +10,12 @@ import time as t
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train =2000# number of images for training
+n_train =2500# number of images for training
 n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
-plot = False # plot graphics or not
+plot = True # plot graphics or not
 # модель с реальными физическими величинами и линейно
 # дискретным диапазоном значений проводимости
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
@@ -72,7 +72,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes1()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
-            conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,0.00005,0.01,100)
+            conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,0.00005,0.01,1024)
 
 
 assig.get_assignment()
@@ -104,7 +104,7 @@ if test:
             evall.conclude(assig.assignments, data_train[i][1])
 
 evall.final()
-with open('paper2_0/11/result.txt', 'w+') as f:
+with open('result.txt', 'w+') as f:
     f.write("\ntrain: " + str(train_labels))
     f.write("\ntrain: " + str(n_train))
     f.write("\ntest: " + str(n_test))
