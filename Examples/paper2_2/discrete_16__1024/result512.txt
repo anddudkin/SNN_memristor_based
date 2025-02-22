@@ -7,6 +7,6 @@ time_train: 200
 neurons out: 50
 train images: 0
 Test Completed
-Correctly defined images:377
-Incorrectly defined images:127
-Final result:74.8
+Correctly defined images:247
+Incorrectly defined images:257
+Final result:49.01

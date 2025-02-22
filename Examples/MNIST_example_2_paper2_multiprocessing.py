@@ -118,4 +118,4 @@ def snn(ar):
 
 if __name__ == "__main__":
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    result = pool.map(snn, [1024,512,256,128,64,32,16])
+    result = pool.map(snn, [1024,2048,8192,16384,32768])
