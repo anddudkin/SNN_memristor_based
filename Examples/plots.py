@@ -11,13 +11,13 @@ from tqdm import tqdm
 from tqdm.auto import tqdm  # notebook compatible
 import time
 
-breakpoint()
+
 x = []
 for i in np.linspace(0.00005, 0.01, 20000):
     x.append(1 / i)
 plt.plot(np.linspace(0.00005, 0.01, 20000), x)
 plt.show()
-
+breakpoint()
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196
 

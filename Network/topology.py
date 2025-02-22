@@ -189,10 +189,10 @@ class Connections:
                 time_diff[:, i].apply_(compute_dw1)  # calling compute_dw function for each dt in matrix
 
                 self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
-
+                #print(self.weights)
                 for j in range(len(self.weights[:, i])):  #приводим к ближайшему дискретному состоянию
                     self.weights[:, i][j] = bisection(discrete_states, self.weights[:, i][j])
-
+                #print(self.weights)
 
 
         if self.decay[0]:

@@ -65,17 +65,19 @@ class NeuronIF:
             weights(Tensor): matrix of network weights (Connections.weights)
 
         """
+        weights1=weights.clone().detach()
         if not crossbar and not nonlin:
-            I_for_each_neuron = torch.matmul(U_in, weights)
+            I_for_each_neuron = torch.matmul(U_in, weights1)
 
         elif crossbar and not nonlin:
             #####################
             def ff(x):
                 return 1/x
-            weights = weights.apply_(ff)
+
+            weights1.apply_(ff)
             ##########################
             I_for_each_neuron = torch.squeeze(torch.tensor(
-                badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights, r_line).currents.output))
+                badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights1, r_line).currents.output))
 
         else:
             flag = True
