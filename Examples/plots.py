@@ -11,13 +11,24 @@ from tqdm import tqdm
 from tqdm.auto import tqdm  # notebook compatible
 import time
 
-
+with open('result.txt', 'a+') as f:
+    f.write("\ntrain: ")
+    f.write("\ntrain: ")
+    f.write("\ntrain: ")
+data_train = MNIST_train_test_14x14()[0]
+data_test = MNIST_train_test_14x14()[1]
+print(type(data_test))
+for i in range(10):
+    print(data_train[i][1])
+for i in range(10):
+    print(data_train[i][1])
+breakpoint()
 x = []
 for i in np.linspace(0.00005, 0.01, 20000):
     x.append(1 / i)
 plt.plot(np.linspace(0.00005, 0.01, 20000), x)
 plt.show()
-breakpoint()
+
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196
 
