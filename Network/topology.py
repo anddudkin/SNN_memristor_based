@@ -133,7 +133,7 @@ class Connections:
         self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
 
     def update_w2(self, spike_traces_in, spike_traces_out, spikes, d_min, d_max,
-                  number_states):  # модификация для реальных значений проводимости и линейного дискретного диапазона состояний
+                  number_states, nonlinear=False):  # модификация для реальных значений проводимости и линейного дискретного диапазона состояний
 
         """ Take spike traces from NeuronModels, compute dw and update weights )
 
@@ -180,9 +180,19 @@ class Connections:
             elif (value == array[n - 1]):  # and top
                 return array[-1]
             else:
-                return array[jl + 1]
+                return array[jl+1]
 
-        discrete_states = np.linspace(d_min, d_max, number_states)
+        def linespace_diff_dens(start, end, num1, num2, s):
+            #s - разделения числовой прямой на части 0ю5 - пополам
+            num1 += 1
+            l_all = end - start
+            first_point = l_all * s
+            return np.concatenate((np.linspace(start, first_point, num1)[:-1], np.linspace(first_point, end, num2)))
+
+        if not nonlinear:
+            discrete_states = np.linspace(d_min, d_max, number_states)
+        elif nonlinear:
+            discrete_states=linespace_diff_dens(0.00005,0.01,56,200,0.5)
 
         for i, sp in enumerate(spikes, start=0):  # updating weights (only weights of neuron that spiked)
             if sp == 1:

@@ -10,12 +10,12 @@ import time as t
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train =2500# number of images for training
-n_test = 1000 # number of images for testing
+n_train = 2500  # number of images for training
+n_test = 1000  # number of images for testing
 time = 350  # time of each image presentation during training
-time_test = 200 # time of each image presentation during testing
+time_test = 200  # time of each image presentation during testing
 test = True  # do testing or not
-plot = True # plot graphics or not
+plot = True  # plot graphics or not
 # модель с реальными физическими величинами и линейно
 # дискретным диапазоном значений проводимости
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
@@ -23,7 +23,7 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       train=True,
                                       U_mem=0,
                                       decay=0.92,
-                                      U_tr=20/100,
+                                      U_tr=20 / 100,
                                       U_rest=0,
                                       refr_time=5,
                                       traces=True,
@@ -33,20 +33,17 @@ conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_m
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
 
-
-
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
 assig = MnistAssignment(n_neurons_out)
 
-
-
 if plot:
     plt.ion()
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111)
-    axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
+    axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
+                     vmax=0.01)
     plt.colorbar(axim, fraction=0.046, pad=0.04)
 
     fig1 = plt.figure(figsize=(5, 5))
@@ -72,8 +69,8 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes1()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
-            conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,0.00005,0.01,1024)
-
+            conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
+                           out_neurons.spikes, 0.00005, 0.01, 256, nonlinear=True)
 
 assig.get_assignment()
 assig.save_assignment()

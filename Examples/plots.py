@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import torch
 from tqdm import tqdm
@@ -11,6 +13,29 @@ from tqdm import tqdm
 from tqdm.auto import tqdm  # notebook compatible
 import time
 
+print(np.linspace(0,4,5))
+print(np.linspace(4,8,5))
+x1=np.concatenate((np.linspace(0,4,5)[:-1],np.linspace(4,8,5)))
+print(x1)
+def linespace_diff_dens(start, end, num1, num2, s):
+    num1+=1
+    l_all = end - start
+    first_point = l_all * s
+    return np.concatenate((np.linspace(start, first_point, num1)[:-1],np.linspace(first_point,end,num2)))
+
+g = linespace_diff_dens(0.00005,0.01,56,200,0.5)
+print(len(g))
+
+plt.loglog( list(range(1,257)),g, 'o',markersize=2)
+plt.show()
+breakpoint()
+
+x = np.linspace(0.00005, 0.01, 50)
+y_ = 1 / 3 ** (-x * 300)
+plt.plot(y_, x, 'o')
+plt.show()
+
+breakpoint()
 with open('result.txt', 'a+') as f:
     f.write("\ntrain: ")
     f.write("\ntrain: ")
