@@ -26,7 +26,7 @@ def snn(ar):
                                           decay=0.92,
                                           U_tr=20/100,
                                           U_rest=0,
-                                          refr_time=7,
+                                          refr_time=5,
                                           traces=True,
                                           inh=True)  # activate literal inhibition
 

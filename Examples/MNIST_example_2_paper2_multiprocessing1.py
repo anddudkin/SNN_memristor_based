@@ -72,8 +72,8 @@ def snn(ar):
                 out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
                 out_neurons.check_spikes1()
                 assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
-                conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes, 0.00005,
-                               0.01, ar)
+                conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
+                               out_neurons.spikes, 0.00005,  0.01, ar, nonlinear=False)
 
     assig.get_assignment()
     #assig.save_assignment(path='assignments' + str(ar) + '.pkl')

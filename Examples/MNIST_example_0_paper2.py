@@ -10,12 +10,12 @@ import time as t
 # абстрактная модель
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 5000 # number of images for training
+n_train = 2500 # number of images for training
 n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
-plot = True # plot graphics or not
+plot = False # plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -79,7 +79,11 @@ out_neurons.save_U_thresh()
 
 out_neurons.train = False
 out_neurons.reset_variables(True, True, True)
-
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111)
+axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0, vmax=1)
+plt.colorbar(axim, fraction=0.046, pad=0.04)
+fig.savefig("weights")
 if test:
     for i in tqdm(range(n_test), desc='test', colour='green', position=0):
 
