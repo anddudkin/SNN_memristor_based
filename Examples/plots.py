@@ -13,6 +13,38 @@ from tqdm import tqdm
 from tqdm.auto import tqdm  # notebook compatible
 import time
 
+
+def bisection(array, value):
+    '''Given an ``array`` , and given a ``value`` , returns an index j such that ``value`` is between array[j]
+    and array[j+1]. ``array`` must be monotonic increasing. j=-1 or j=len(array) is returned
+    to indicate that ``value`` is out of range below and above respectively.'''
+    n = len(array)
+    if value < array[0]:
+        return array[0]
+    elif value > array[n - 1]:
+        return array[-1]
+    jl = 0  # Initialize lower
+    ju = n - 1  # and upper limits.
+    while ju - jl > 1:  # If we are not yet done,
+        jm = (ju + jl) >> 1  # compute a midpoint with a bitshift
+        if value >= array[jm]:
+            jl = jm  # and replace either the lower limit
+        else:
+            ju = jm  # or the upper limit, as appropriate.
+        # Repeat until the test condition is satisfied.
+    print(jl)
+    print(value - array[jl])
+    if value == array[0]:  # edge cases at bottom
+        return array[0]
+
+    elif (value - array[jl]) <= (array[jl+1] - value):
+        return array[jl]
+    else:
+        return array[jl+1]
+
+
+print(bisection([1,2,3,4,5,6,7], 7))
+breakpoint()
 print(np.linspace(0,4,5))
 print(np.linspace(4,8,5))
 x1=np.concatenate((np.linspace(0,4,5)[:-1],np.linspace(4,8,5)))

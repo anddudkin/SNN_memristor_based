@@ -10,7 +10,7 @@ import time as t
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 2500  # number of images for training
+n_train = 2000  # number of images for training
 n_test = 1000  # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200  # time of each image presentation during testing
@@ -25,7 +25,7 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       decay=0.92,
                                       U_tr=20 / 100,
                                       U_rest=0,
-                                      refr_time=5,
+                                      refr_time=5, #было 5
                                       traces=True,
                                       inh=True)  # activate literal inhibition
 
@@ -70,7 +70,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             out_neurons.check_spikes1()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
-                           out_neurons.spikes, 0.00005, 0.01, 256, nonlinear=True)
+                           out_neurons.spikes, 0.00005, 0.01, 256, nonlinear=False)
 
 assig.get_assignment()
 assig.save_assignment()

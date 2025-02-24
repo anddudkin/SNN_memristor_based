@@ -133,7 +133,8 @@ class Connections:
         self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
 
     def update_w2(self, spike_traces_in, spike_traces_out, spikes, d_min, d_max,
-                  number_states, nonlinear=False):  # модификация для реальных значений проводимости и линейного дискретного диапазона состояний
+                  number_states,
+                  nonlinear=False):  # модификация для реальных значений проводимости и линейного дискретного диапазона состояний
 
         """ Take spike traces from NeuronModels, compute dw and update weights )
 
@@ -162,28 +163,28 @@ class Connections:
             and array[j+1]. ``array`` must be monotonic increasing. j=-1 or j=len(array) is returned
             to indicate that ``value`` is out of range below and above respectively.'''
             n = len(array)
-            if (value < array[0]):
+            if value < array[0]:
                 return array[0]
-            elif (value > array[n - 1]):
+            elif value > array[n - 1]:
                 return array[-1]
             jl = 0  # Initialize lower
             ju = n - 1  # and upper limits.
-            while (ju - jl > 1):  # If we are not yet done,
+            while ju - jl > 1:  # If we are not yet done,
                 jm = (ju + jl) >> 1  # compute a midpoint with a bitshift
-                if (value >= array[jm]):
+                if value >= array[jm]:
                     jl = jm  # and replace either the lower limit
                 else:
                     ju = jm  # or the upper limit, as appropriate.
                 # Repeat until the test condition is satisfied.
-            if (value == array[0]):  # edge cases at bottom
+            if value == array[0]:  # edge cases at bottom
                 return array[0]
-            elif (value == array[n - 1]):  # and top
-                return array[-1]
+            elif (value - array[jl]) <= (array[jl + 1] - value):
+                return array[jl]
             else:
-                return array[jl+1]
+                return array[jl + 1]
 
         def linespace_diff_dens(start, end, num1, num2, s):
-            #s - разделения числовой прямой на части 0ю5 - пополам
+            # s - разделения числовой прямой на части 0ю5 - пополам
             num1 += 1
             l_all = end - start
             first_point = l_all * s
@@ -192,18 +193,17 @@ class Connections:
         if not nonlinear:
             discrete_states = np.linspace(d_min, d_max, number_states)
         elif nonlinear:
-            discrete_states=linespace_diff_dens(0.00005,0.01,56,200,0.5)
+            discrete_states = linespace_diff_dens(0.00005, 0.01, 100, 156, 0.5)
 
         for i, sp in enumerate(spikes, start=0):  # updating weights (only weights of neuron that spiked)
             if sp == 1:
                 time_diff[:, i].apply_(compute_dw1)  # calling compute_dw function for each dt in matrix
 
                 self.weights[:, i] = torch.add(self.weights[:, i], time_diff[:, i])
-                #print(self.weights)
-                for j in range(len(self.weights[:, i])):  #приводим к ближайшему дискретному состоянию
+                # print(self.weights)
+                for j in range(len(self.weights[:, i])):  # приводим к ближайшему дискретному состоянию
                     self.weights[:, i][j] = bisection(discrete_states, self.weights[:, i][j])
-                #print(self.weights)
-
+                # print(self.weights)
 
         if self.decay[0]:
             self.weights = torch.mul(self.weights, self.decay[1])  # weight decay
