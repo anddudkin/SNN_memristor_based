@@ -8,17 +8,15 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 import multiprocessing
-
-
 def snn(ar):
     n_neurons_out = 50  # number of neurons in input layer
     n_neurons_in = 196  # number of output in input layer
-    n_train = 2000  # number of images for training
-    n_test = 1000  # number of images for testing
+    n_train =2000# number of images for training
+    n_test = 1000# number of images for testing
     time = 350  # time of each image presentation during training
-    time_test = 200  # time of each image presentation during testing
+    time_test = 200 # time of each image presentation during testing
     test = True  # do testing or not
-    plot = False  # plot graphics or not
+    plot = False # plot graphics or not
     # модель с реальными физическими величинами и линейно
     # дискретным диапазоном значений проводимости
     out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
@@ -26,9 +24,9 @@ def snn(ar):
                                           train=True,
                                           U_mem=0,
                                           decay=0.92,
-                                          U_tr=20 / 100,
+                                          U_tr=20/100,
                                           U_rest=0,
-                                          refr_time=5,
+                                          refr_time=7,
                                           traces=True,
                                           inh=True)  # activate literal inhibition
 
@@ -36,17 +34,20 @@ def snn(ar):
     conn.all_to_all_conn()
     conn.initialize_weights("normal")
 
+
+
     data_train = MNIST_train_test_14x14()[0]
     data_test = MNIST_train_test_14x14()[1]
 
     assig = MnistAssignment(n_neurons_out)
 
+
+
     if plot:
         plt.ion()
         fig = plt.figure(figsize=(6, 6))
         ax = fig.add_subplot(111)
-        axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
-                         vmax=0.01)
+        axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
         plt.colorbar(axim, fraction=0.046, pad=0.04)
 
         fig1 = plt.figure(figsize=(5, 5))
@@ -72,22 +73,21 @@ def snn(ar):
                 out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
                 out_neurons.check_spikes1()
                 assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
-                conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes, 0.00005,
-                               0.01, ar)
+                conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,0.00005,0.01,256)
+
 
     assig.get_assignment()
-    #assig.save_assignment(path='assignments' + str(ar) + '.pkl')
+    assig.save_assignment(path='assignments'+str(ar)+'.pkl')
 
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111)
-    axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
-                     vmax=0.01)
+    axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
     plt.colorbar(axim, fraction=0.046, pad=0.04)
-    #fig.savefig("weights" + str(ar))
+    fig.savefig("weights"+str(ar))
     evall = MnistEvaluation(n_neurons_out)
 
-    #conn.save_weights(path='weights_tensor' + str(ar) + '.pt')
-    #out_neurons.save_U_thresh(path='thresh' + str(ar) + '.pt')
+    conn.save_weights(path='weights_tensor'+str(ar)+'.pt')
+    out_neurons.save_U_thresh(path='thresh'+str(ar)+'.pt')
 
     out_neurons.train = False
     out_neurons.reset_variables(True, True, True)
@@ -105,13 +105,17 @@ def snn(ar):
                 evall.conclude(assig.assignments, data_train[i][1])
 
     evall.final()
+    with open('result'+str(ar)+'.txt', 'w+') as f:
+        f.write("\ntrain: " + str(train_labels))
+        f.write("\ntrain: " + str(n_train))
+        f.write("\ntest: " + str(n_test))
+        f.write("\ntime_train: " + str(time))
+        f.write("\ntime_train: " + str(time_test))
+        f.write("\nneurons out: " + str(n_neurons_out))
+        f.write("\ntrain images: " + str(0))
 
-    with open('results.txt', 'a+') as f:
-        f.write(f"\n{ar}" + evall.final(only_result=True))
-    return evall.final(only_result=True)
+        f.write(evall.final())
 
 if __name__ == "__main__":
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    result = pool.map(snn, [1024, 1024,1024,1024,1024,2048,2048,2048,2048,2048, 8192,8192,8192,8192,8192,
-                            16384,16384,16384,16384,16384, 32768,32768,32768,32768,32768])
-    print(result)
+    result = pool.map(snn, [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
