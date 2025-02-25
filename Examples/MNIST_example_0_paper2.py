@@ -10,7 +10,7 @@ import time as t
 # абстрактная модель
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 2500 # number of images for training
+n_train = 3500 # number of images for training
 n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing

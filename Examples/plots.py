@@ -12,8 +12,10 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from tqdm.auto import tqdm  # notebook compatible
 import time
-
-
+g1=torch.tensor([1,1])
+g = g1.normal_(mean=1* 0.7, std=1 * 0.2)
+print(g)
+breakpoint()
 def bisection(array, value):
     '''Given an ``array`` , and given a ``value`` , returns an index j such that ``value`` is between array[j]
     and array[j+1]. ``array`` must be monotonic increasing. j=-1 or j=len(array) is returned
