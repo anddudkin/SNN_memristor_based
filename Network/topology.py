@@ -1,3 +1,4 @@
+import math
 from multiprocessing import Pool
 from random import random
 
@@ -133,7 +134,7 @@ class Connections:
         self.weights = torch.clamp(self.weights, min=self.w_min, max=self.w_max)
 
     def update_w2(self, spike_traces_in, spike_traces_out, spikes, d_min, d_max,
-                  number_states,
+                  number_states, descrete_states = (False,None),
                   nonlinear=False):  # модификация для реальных значений проводимости и линейного дискретного диапазона состояний
 
         """ Take spike traces from NeuronModels, compute dw and update weights )
@@ -190,10 +191,33 @@ class Connections:
             first_point = l_all * s
             return np.concatenate((np.linspace(start, first_point, num1)[:-1], np.linspace(first_point, end, num2)))
 
+        def steps(w_m, w_max, steps):
+            g = []
+            for i in range(steps):
+                g.append(w_m + w_max * (1 - math.exp(i / steps * math.log(w_m / w_max))))
+            return g
+
         if not nonlinear:
             discrete_states = np.linspace(d_min, d_max, number_states)
-        elif nonlinear:
-            discrete_states = linespace_diff_dens(0.00005, 0.01, 100, 156, 0.5)
+        elif nonlinear and not descrete_states[0]:
+            if number_states == 256:
+                num1 = 100
+                num2=  156
+            elif number_states == 128:
+                num1 = 42
+                num2 = 86
+            elif number_states == 64:
+                num1 = 26
+                num2 = 38
+            elif number_states == 32:
+                num1 = 13
+                num2 = 19
+            elif number_states == 16:
+                num1 = 7
+                num2 = 9
+            discrete_states = linespace_diff_dens(0.00005, 0.01, num1, num2, 0.5)
+        elif nonlinear and descrete_states[0]:
+
 
         for i, sp in enumerate(spikes, start=0):  # updating weights (only weights of neuron that spiked)
             if sp == 1:

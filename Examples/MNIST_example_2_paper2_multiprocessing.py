@@ -74,7 +74,7 @@ def snn(ar):
                 out_neurons.check_spikes1()
                 assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
                 conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,
-                               0.00005,0.01,ar, nonlinear=False)
+                               0.00005,0.01,ar, nonlinear=True)
 
 
     assig.get_assignment()
@@ -119,4 +119,4 @@ def snn(ar):
 
 if __name__ == "__main__":
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    result = pool.map(snn, [16,32,65,128,256,512,1024,2048,8192])
+    result = pool.map(snn, [16,32,64,128,256])
