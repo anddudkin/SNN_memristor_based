@@ -204,8 +204,8 @@ class Connections:
                 num1 = 85
                 num2=  171
             elif number_states == 128:
-                num1 = 55
-                num2 = 73
+                num1 = 58
+                num2 = 70
             elif number_states == 64:
                 num1 = 26
                 num2 = 38

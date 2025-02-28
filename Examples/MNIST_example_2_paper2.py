@@ -12,8 +12,8 @@ import time as t
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 2000  # number of images for training
-n_test = 1000  # number of images for testing
+n_train = 500  # number of images for training
+n_test = 8000  # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200  # time of each image presentation during testing
 test = True  # do testing or not
@@ -86,7 +86,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             #                out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True,
             #                descrete_st=(True, steps1(0.00005,0.01,128)))
             conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
-                           out_neurons.spikes, 0.00005, 0.01, 256, nonlinear=True)
+                           out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True)
 
 assig.get_assignment()
 assig.save_assignment()
