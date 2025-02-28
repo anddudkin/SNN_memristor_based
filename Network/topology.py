@@ -201,11 +201,11 @@ class Connections:
             discrete_states = np.linspace(d_min, d_max, number_states)
         elif nonlinear and not descrete_st[0]:
             if number_states == 256:
-                num1 = 100
-                num2=  156
+                num1 = 85
+                num2=  171
             elif number_states == 128:
-                num1 = 28
-                num2 = 100
+                num1 = 55
+                num2 = 73
             elif number_states == 64:
                 num1 = 26
                 num2 = 38
@@ -215,7 +215,8 @@ class Connections:
             elif number_states == 16:
                 num1 = 7
                 num2 = 9
-            discrete_states = linespace_diff_dens(0.00005, 0.01, num1, num2, 0.75)
+            discrete_states = linespace_diff_dens(0.00005, 0.01, num1, num2, 0.5)
+            print(discrete_states[3]-discrete_states[2], discrete_states[126]-discrete_states[125])
         elif nonlinear and descrete_st[0]:
             discrete_states= descrete_st[1]
 

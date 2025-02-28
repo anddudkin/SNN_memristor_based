@@ -86,7 +86,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             #                out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True,
             #                descrete_st=(True, steps1(0.00005,0.01,128)))
             conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
-                           out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True)
+                           out_neurons.spikes, 0.00005, 0.01, 256, nonlinear=True)
 
 assig.get_assignment()
 assig.save_assignment()
