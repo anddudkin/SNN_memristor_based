@@ -193,8 +193,8 @@ class Connections:
 
         def steps(w_m, w_max, steps):
             g = []
-            for i in range(steps):
-                g.append(w_m + w_max * (1 - math.exp(i / steps * math.log(w_m / w_max))))
+            for i1 in range(steps):
+                g.append(w_m + w_max * (1 - math.exp(i1 / steps * math.log(w_m / w_max))))
             return g
 
         if not nonlinear:

@@ -55,10 +55,10 @@ if plot:
     #axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 
 
-def steps(w_m, w_max, steps):
+def steps(w_m, w_max, steps1):
     g = []
-    for i in range(steps):
-        g.append(w_m + w_max * (1 - math.exp(i / steps * math.log(w_m / w_max))))
+    for i1 in range(steps1):
+        g.append(w_m + w_max * (1 - math.exp(i1 / steps1 * math.log(w_m / w_max))))
     return g
 
 train_labels = [0, 1, 2, 9, 5]

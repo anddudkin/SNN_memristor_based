@@ -3,7 +3,7 @@ import math
 import  matplotlib.pyplot as plt
 w_m = 0.00005
 w_max = 0.01
-i_st = 50
+i_st = 128
 def steps(w_m,w_max,steps):
     g = []
     for i in range(steps):
@@ -12,3 +12,6 @@ def steps(w_m,w_max,steps):
 
 plt.plot(list(range(1,i_st+1)),steps(w_m,w_max,i_st), "o")
 plt.show()
+g1=steps(w_m,w_max,i_st)
+for i in range(127):
+    print(i, g1[i+1] - g1[i], g1[i+1],g1[i])
