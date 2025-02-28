@@ -204,8 +204,8 @@ class Connections:
                 num1 = 100
                 num2=  156
             elif number_states == 128:
-                num1 = 42
-                num2 = 86
+                num1 = 28
+                num2 = 100
             elif number_states == 64:
                 num1 = 26
                 num2 = 38
@@ -215,7 +215,7 @@ class Connections:
             elif number_states == 16:
                 num1 = 7
                 num2 = 9
-            discrete_states = linespace_diff_dens(0.00005, 0.01, num1, num2, 0.5)
+            discrete_states = linespace_diff_dens(0.00005, 0.01, num1, num2, 0.75)
         elif nonlinear and descrete_st[0]:
             discrete_states= descrete_st[1]
 

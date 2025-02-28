@@ -42,7 +42,7 @@ assig = MnistAssignment(n_neurons_out)
 
 if plot:
     plt.ion()
-    fig = plt.figure(figsize=(6, 6))
+    fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111)
     axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
                      vmax=0.01)
@@ -60,7 +60,11 @@ def steps(w_m, w_max, steps1):
     for i1 in range(steps1):
         g.append(w_m + w_max * (1 - math.exp(i1 / steps1 * math.log(w_m / w_max))))
     return g
-
+def steps1(w_m,w_max,steps2):
+    g = []
+    for i1 in range(steps2):
+        g.append(w_m*math.exp(i1/steps2*math.log(w_max/w_m)))
+    return g
 train_labels = [0, 1, 2, 9, 5]
 
 for i in tqdm(range(n_train), desc='training', colour='green', position=0):
@@ -78,9 +82,11 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
             out_neurons.check_spikes1()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
+            # conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
+            #                out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True,
+            #                descrete_st=(True, steps1(0.00005,0.01,128)))
             conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
-                           out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True,
-                           descrete_st=(True, steps(0.00005,0.01,128)))
+                           out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True)
 
 assig.get_assignment()
 assig.save_assignment()
