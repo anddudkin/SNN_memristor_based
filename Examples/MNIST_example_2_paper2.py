@@ -1,3 +1,5 @@
+import math
+
 import torch
 from tqdm import tqdm
 from Network.assigment import MnistAssignment, MnistEvaluation
@@ -46,11 +48,18 @@ if plot:
                      vmax=0.01)
     plt.colorbar(axim, fraction=0.046, pad=0.04)
 
-    fig1 = plt.figure(figsize=(5, 5))
-    ax2 = fig1.add_subplot(211)
-    ax3 = fig1.add_subplot(212)
-    axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
+   # fig1 = plt.figure(figsize=(5, 5))
+    #ax2 = fig1.add_subplot(211)
+    #ax3 = fig1.add_subplot(212)
+    #axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
     #axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
+
+
+def steps(w_m, w_max, steps):
+    g = []
+    for i in range(steps):
+        g.append(w_m + w_max * (1 - math.exp(i / steps * math.log(w_m / w_max))))
+    return g
 
 train_labels = [0, 1, 2, 9, 5]
 
@@ -61,7 +70,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 
         if plot:
             axim.set_data(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights))
-            axim2.set_data(torch.squeeze(data_train[i][0]))
+            #axim2.set_data(torch.squeeze(data_train[i][0]))
             #axim3.set_data(input_spikes.reshape(196, 350)[::4, ::4])
             fig.canvas.flush_events()
 
@@ -70,7 +79,8 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             out_neurons.check_spikes1()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
-                           out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True)
+                           out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True,
+                           descrete_st=(True, steps(0.00005,0.01,128)))
 
 assig.get_assignment()
 assig.save_assignment()
