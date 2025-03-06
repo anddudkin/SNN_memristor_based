@@ -224,7 +224,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
         """
         super().__init__(n_neurons_in, n_neurons_out, decay, inh, traces, train, U_mem, U_tr, U_rest, refr_time)
 
-    def check_spikes(self):
+    def check_spikes(self,U_thresh_increase=0.02, U_mem_all_neurons_decrease = 5):
         """
         Checks if neuron spikes and reset U_mem
 
@@ -235,12 +235,14 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
         #         (self.U_mem_trace,
         #          torch.clamp(self.U_mem_all_neurons.reshape(1, self.n_neurons_out), max=self.U_tr + self.U_tr * 0.2)),
         #         0)
+
+
         for i in range(self.n_neurons_out):
             self.spikes[i] = 0  # update spike values
             if self.U_mem_all_neurons[i] >= self.U_thresh_all_neurons[i]:  # threshold check
 
                 if self.train:
-                    self.U_thresh_all_neurons[i] += 0.02  # adaptive thresh
+                    self.U_thresh_all_neurons[i] += U_thresh_increase  # adaptive thresh
 
                 self.U_mem_all_neurons[i] = self.U_rest  # if spike occurs rest
 
@@ -251,7 +253,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
                 if self.inh:  # inhibition
                     for j in range(self.n_neurons_out):
                         if i != j:
-                            self.U_mem_all_neurons[j] -= 5
+                            self.U_mem_all_neurons[j] -=  U_mem_all_neurons_decrease
                             if self.U_mem_all_neurons[j] < self.U_rest:
                                 self.U_mem_all_neurons[j] = self.U_rest
                             self.refractor_count[j] = 6
@@ -309,48 +311,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
             self.U_thresh_all_neurons = torch.mul(self.U_thresh_all_neurons, 0.99999)
             self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
                                                     max=self.U_tr * 1.2)
-    def check_spikes3(self):
-        """
-        Checks if neuron spikes and reset U_mem
 
-        :return: tensor [index of neuron, spike (0 or 1)]
-        """
-        # if self.traces and self.train:
-        #     self.U_mem_trace = torch.cat(
-        #         (self.U_mem_trace,
-        #          torch.clamp(self.U_mem_all_neurons.reshape(1, self.n_neurons_out), max=self.U_tr + self.U_tr * 0.2)),
-        #         0)
-        for i in range(self.n_neurons_out):
-            self.spikes[i] = 0  # update spike values
-            if self.U_mem_all_neurons[i] >= self.U_thresh_all_neurons[i]:  # threshold check
-
-                if self.train:
-                    self.U_thresh_all_neurons[i] += 0.000002  # adaptive thresh
-
-                self.U_mem_all_neurons[i] = self.U_rest  # if spike occurs rest
-
-                self.spikes[i] = 1  # record spike
-
-                self.refractor_count[i] = self.refr_time  # start refractor period
-
-                if self.inh:  # inhibition
-                    for j in range(self.n_neurons_out):
-                        if i != j:
-                            self.U_mem_all_neurons[j] -= 5/10000
-                            if self.U_mem_all_neurons[j] < self.U_rest:
-                                self.U_mem_all_neurons[j] = self.U_rest
-                            self.refractor_count[j] = 6
-                            self.spikes[j] = 0
-
-                if self.traces and self.train:
-                    for j in range(self.n_neurons_out):
-                        if self.spikes[j] == 1:
-                            self.spikes_trace_out[j] = self.time_sim  # times of spikes
-
-        if self.train:
-            self.U_thresh_all_neurons = torch.mul(self.U_thresh_all_neurons, 0.99999)
-            self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
-                                                    max=self.U_tr * 1.2)
     def save_U_thresh(self, path='thresh.pt'):
         torch.save(self.U_thresh_all_neurons, path)
 

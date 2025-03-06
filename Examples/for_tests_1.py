@@ -1,4 +1,5 @@
 import torch
+from numpy.ma.core import shape
 from tqdm import tqdm
 from Network.assigment import MnistAssignment, MnistEvaluation
 from Network.visuals import plot_weights_square
@@ -39,14 +40,15 @@ plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap=
 plt.show()
 plt.imshow(conn.weights, cmap='YlOrBr', vmin=0.00005, vmax=0.01)
 plt.show()
+print(shape(conn.weights))
 
 for i in tqdm(range(n_test), desc='test', colour='green', position=0):
 
-    if data_train[i][1] in train_labels:
-        input_spikes = encoding_to_spikes(data_train[i][0], time_test)
+    # if data_train[i][1] in train_labels:
+    #     input_spikes = encoding_to_spikes(data_train[i][0], time_test)
 
         for j in range(1):
-            out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
+            out_neurons.compute_U_mem(torch.ones(196), conn.weights)
             g=out_neurons.I_for_each_neuron
 
 print(g)
@@ -54,13 +56,16 @@ print(g)
 
 for i in tqdm(range(n_test), desc='test', colour='green', position=0):
 
-    if data_train[i][1] in train_labels:
-        input_spikes = encoding_to_spikes(data_train[i][0], time_test)
-
+    # if data_train[i][1] in train_labels:
+    #     input_spikes = encoding_to_spikes(data_train[i][0], time_test)
+    #     input_spikes = torch.ones(196,1)
         for j in range(1):
-            out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
+            out_neurons.compute_U_mem(torch.ones(196), conn.weights,crossbar=True,r_line=0.1)
             g1=out_neurons.I_for_each_neuron
+            break
 print(g1)
 
 f = torch.div(g,g1)
 print(f)
+plt.imshow(torch.unsqueeze(f,0), cmap='YlOrBr', vmin=min(f), vmax=max(f))
+plt.show()
