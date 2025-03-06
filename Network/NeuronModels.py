@@ -29,6 +29,7 @@ class NeuronIF:
         self.n_neurons_in = n_neurons_in
         self.n_neurons_out = n_neurons_out
         self.U_mem = U_mem
+
         self.U_tr = U_tr
         self.U_rest = U_rest
         self.refr_time = refr_time
@@ -224,7 +225,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
         """
         super().__init__(n_neurons_in, n_neurons_out, decay, inh, traces, train, U_mem, U_tr, U_rest, refr_time)
 
-    def check_spikes(self,U_thresh_increase=0.02, U_mem_all_neurons_decrease = 5):
+    def check_spikes(self,U_thresh_increase=0.02, U_mem_all_neurons_decrease = 5, diff_U_thresh=(False,None)):
         """
         Checks if neuron spikes and reset U_mem
 
@@ -266,8 +267,17 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
 
         if self.train:
             self.U_thresh_all_neurons = torch.mul(self.U_thresh_all_neurons, 0.99999)
-            self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
-                                                    max=self.U_tr * 1.2)
+            if not diff_U_thresh[0]:
+                self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
+                                                    max=self.U_tr * 1.2) #???????????????????
+            elif diff_U_thresh[0]:
+                for i in range(len(self.U_thresh_all_neurons)):
+                    if self.U_thresh_all_neurons[i] > diff_U_thresh[1][i]*1.2:
+                        self.U_thresh_all_neurons[i]=diff_U_thresh[1][i]*1.2
+                    elif self.U_thresh_all_neurons[i] < diff_U_thresh[1][i]:
+                         self.U_thresh_all_neurons[i] = diff_U_thresh[1][i]
+
+
 
     def check_spikes1(self):
         """

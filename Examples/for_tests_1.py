@@ -60,7 +60,7 @@ for i in tqdm(range(n_test), desc='test', colour='green', position=0):
     #     input_spikes = encoding_to_spikes(data_train[i][0], time_test)
     #     input_spikes = torch.ones(196,1)
         for j in range(1):
-            out_neurons.compute_U_mem(torch.ones(196), conn.weights,crossbar=True,r_line=0.1)
+            out_neurons.compute_U_mem(torch.ones(196), conn.weights,crossbar=True,r_line=1)
             g1=out_neurons.I_for_each_neuron
             break
 print(g1)
