@@ -23,6 +23,7 @@ class NeuronIF:
             refr_time (int) : refractory period time
         """
 
+        self.I_for_each_neuron = None
         self.train = train
         self.inh = inh
         self.n_neurons_in = n_neurons_in
@@ -68,6 +69,7 @@ class NeuronIF:
         weights1=weights.clone().detach()
         if not crossbar and not nonlin:
             I_for_each_neuron = torch.matmul(U_in, weights1)
+            self.I_for_each_neuron=I_for_each_neuron
 
         elif crossbar and not nonlin:
             #####################
@@ -78,7 +80,7 @@ class NeuronIF:
             ##########################
             I_for_each_neuron = torch.squeeze(torch.tensor(
                 badcrossbar.compute(U_in.reshape(self.n_neurons_in, 1), weights1, r_line).currents.output))
-
+            self.I_for_each_neuron = I_for_each_neuron
         else:
             flag = True
             o = 8 * 10 ** (-3)

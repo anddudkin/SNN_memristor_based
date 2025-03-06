@@ -1,0 +1,16 @@
+
+train: [0, 1, 2, 9, 5]
+train: 800
+test: 1000
+time_train: 200
+time_train: 100
+neurons out: 50
+train images: 0
+Test Completed
+Correctly defined images:442
+Incorrectly defined images:62
+Final result:87.7
+   if -10 <= t <= 0:
+        return 0.00007 * np.exp(t / tau_plus)
+    else:
+        return  -0.000044 #-0.00003

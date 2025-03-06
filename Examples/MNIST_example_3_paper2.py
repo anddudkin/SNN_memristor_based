@@ -10,12 +10,12 @@ import time as t
 
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train =4000# number of images for training
+n_train =800# number of images for training
 n_test = 1000 # number of images for testing
-time = 200  # time of each image presentation during training
+time = 300  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
-plot = False # plot graphics or not
+plot = True # plot graphics or not
 # модель с реальными физическими величинами и линейно
 # дискретным диапазоном значений проводимости и падением напряжений в кроссбар-массиве
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
@@ -23,7 +23,7 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       train=True,
                                       U_mem=0,
                                       decay=0.92,
-                                      U_tr=20/10000,
+                                      U_tr=20/100/60,
                                       U_rest=0,
                                       refr_time=5,
                                       traces=True,
@@ -50,11 +50,11 @@ if plot:
     axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
     plt.colorbar(axim, fraction=0.046, pad=0.04)
 
-    fig1 = plt.figure(figsize=(5, 5))
-    ax2 = fig1.add_subplot(211)
-    ax3 = fig1.add_subplot(212)
-    axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
-    axim3 = ax3.imshow(torch.zeros([196, time])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
+    # fig1 = plt.figure(figsize=(5, 5))
+    # ax2 = fig1.add_subplot(211)
+    # ax3 = fig1.add_subplot(212)
+    # axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
+    # axim3 = ax3.imshow(torch.zeros([196, time])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 
 train_labels = [0, 1, 2, 9, 5]
 count1=0
@@ -82,12 +82,13 @@ for i in range(n_train):
             #      print(out_neurons.spikes)
             out_neurons.check_spikes3()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
-            conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,0.00005,0.01,10000)
+            conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out,
+                           out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True)
 
             if plot:
                 axim.set_data(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights))
-                axim2.set_data(torch.squeeze(data_train[i][0]))
-                axim3.set_data(input_spikes.reshape(196, time)[::4, ::4])
+                # axim2.set_data(torch.squeeze(data_train[i][0]))
+                # axim3.set_data(input_spikes.reshape(196, time)[::4, ::4])
                 fig.canvas.flush_events()
 
 assig.get_assignment()
@@ -113,7 +114,7 @@ if test:
             input_spikes = encoding_to_spikes(data_train[i][0], time_test)
 
             for j in range(time_test):
-                out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
+                out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
                 out_neurons.check_spikes1()
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])
