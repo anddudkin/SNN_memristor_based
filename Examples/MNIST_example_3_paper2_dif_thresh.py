@@ -11,7 +11,8 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 import pickle
-from Network.tools import U_thesh_coef
+from Network.tools import U_thesh_coef, U_thesh_coef1
+
 n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train =800# number of images for training
@@ -37,10 +38,37 @@ conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_m
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
 
-print(out_neurons.U_thresh_all_neurons)
-out_neurons.U_thresh_all_neurons= torch.div(out_neurons.U_thresh_all_neurons,U_thesh_coef())*0.5
+#print(out_neurons.U_thresh_all_neurons)
+#coef0 , coef1= U_thesh_coef1()
+coef0=torch.tensor([66.7521, 67.6613, 66.8345, 68.8402, 66.2031, 65.7780, 64.2742, 67.6287,
+        63.5950, 64.0485, 64.1613, 63.3175, 63.4535, 64.5462, 59.9706, 62.3498,
+        58.8332, 68.0912, 64.9158, 62.1731, 67.1491, 63.7720, 66.3503, 66.7815,
+        67.1802, 66.3748, 66.2373, 63.0592, 63.8902, 60.8493, 64.4619, 65.8821,
+        65.8412, 66.1914, 66.3855, 65.5294, 65.8859, 67.9008, 66.5146, 65.3538,
+        66.0920, 66.0371, 66.7534, 68.3254, 66.0404, 66.8176, 67.2102, 68.5515,
+        68.9180, 67.7385], dtype=torch.float64)
+coef0=torch.tensor([21.8821, 23.2137, 24.5991, 26.0377, 27.5289, 29.0716, 30.6643, 32.3054,
+        33.9930, 35.7247, 37.4978, 39.3096, 41.1567, 43.0357, 44.9428, 46.8739,
+        48.8247, 50.7909, 52.7676, 54.7501, 56.7334, 58.7124, 60.6818, 62.6366,
+        64.5715, 66.4811, 68.3604, 70.2042, 72.0073, 73.7650, 75.4722, 77.1245,
+        78.7172, 80.2460, 81.7068, 83.0956, 84.4089, 85.6430, 86.7948, 87.8612,
+        88.8395, 89.7271, 90.5218, 91.2216, 91.8247, 92.3296, 92.7350, 93.0400,
+        93.2437, 93.3457], dtype=torch.float64)
+
+coef0=torch.tensor([ 32.3721,  35.1571,  38.1034,  41.2104,  44.4761,  47.8974,  51.4698,
+         55.1875,  59.0433,  63.0288,  67.1344,  71.3495,  75.6624,  80.0606,
+         84.5308,  89.0591,  93.6313,  98.2329, 102.8492, 107.4654, 112.0671,
+        116.6400, 121.1700, 125.6436, 130.0480, 134.3705, 138.5995, 142.7238,
+        146.7328, 150.6168, 154.3666, 157.9737, 161.4304, 164.7294, 167.8641,
+        170.8286, 173.6174, 176.2255, 178.6486, 180.8825, 182.9239, 184.7695,
+        186.4166, 187.8629, 189.1062, 190.1448, 190.9774, 191.6028, 192.0202,
+        192.2290], dtype=torch.float64)
+
+coef1=torch.mean(coef0)
+out_neurons.U_thresh_all_neurons= torch.div(out_neurons.U_thresh_all_neurons, coef0)
+
 new_U_thresh_all_neurons=out_neurons.U_thresh_all_neurons.clone().detach()
-print(out_neurons.U_thresh_all_neurons)
+#print(out_neurons.U_thresh_all_neurons)
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
@@ -72,13 +100,9 @@ count1=0
 for i in range(n_train):
     print("Image № ", i, "of ", n_train)
     count1+=1
-    if count1%1000 == 0:
-        fig = plt.figure(figsize=(6, 6))
-        ax = fig.add_subplot(111)
-        axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
-                         vmax=0.01)
-        plt.colorbar(axim, fraction=0.046, pad=0.04)
-        fig.savefig("weights")
+    if count1%20 == 0:
+
+        fig.savefig("weights"+str(i))
 
     if data_train[i][1] in train_labels:
         input_spikes = encoding_to_spikes(data_train[i][0], time)
@@ -89,9 +113,14 @@ for i in range(n_train):
 
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
 
-            # if 1 in out_neurons.spikes:
-            #      print(out_neurons.spikes)
-            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/30, U_thresh_increase=0.2/100/30, diff_U_thresh=(True,new_U_thresh_all_neurons))
+
+            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/coef1, U_thresh_increase=0.2/100/coef1, 
+                                     diff_U_thresh=(True,new_U_thresh_all_neurons))
+            """
+            out_neurons.check_spikes(U_mem_all_neurons_decrease=5/100 , U_thresh_increase=0.2/100,
+                                     diff_U_thresh=(True, new_U_thresh_all_neurons),
+                                     diff_thresh_increase=(True,coef0),diff_U_mem_all_neurons_decrease=(True,coef0))
+            """
             c+=int(sum(out_neurons.spikes))
 
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
@@ -105,6 +134,7 @@ for i in range(n_train):
                 # axim3.set_data(input_spikes.reshape(196, time)[::4, ::4])
                 fig.canvas.flush_events()
         num_spikes.append(c)
+
         c=0
         print(num_spikes)
         # line1.set_xdata(list(range(len(num_spikes))))
@@ -118,7 +148,7 @@ with open("spikes.json", 'w') as f1:
 fig.savefig("spikes")
 
 
-breakpoint()
+
 assig.get_assignment()
 assig.save_assignment()
 
@@ -144,7 +174,9 @@ if test:
 
             for j in range(time_test):
                 out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
-                out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/64, U_thresh_increase=0.2/100/64)
+                out_neurons.check_spikes(U_mem_all_neurons_decrease=5 / 100 / coef1,
+                                         U_thresh_increase=0.2 / 100 / coef1,
+                                         diff_U_thresh=(True, new_U_thresh_all_neurons))
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])
 

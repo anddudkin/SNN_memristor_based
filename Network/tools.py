@@ -200,7 +200,7 @@ def U_thesh_coef():
     out_neurons1.compute_U_mem(torch.ones(196), conn.weights)
     g = out_neurons1.I_for_each_neuron
 
-    print(g)
+    #print(g)
 
     out_neurons2 = NeuronLifAdaptiveThresh(n_neurons_in,
                                           n_neurons_out,
@@ -220,10 +220,62 @@ def U_thesh_coef():
     out_neurons2.compute_U_mem(torch.ones(196), conn.weights, crossbar=True, r_line=1)
     g1 = out_neurons2.I_for_each_neuron
 
-    print(g1)
+    #print(g1)
 
     f = torch.div(g, g1)
-    print(f)
+    #print(f)
     return f
     # plt.imshow(torch.unsqueeze(f, 0), cmap='YlOrBr', vmin=min(f), vmax=max(f))
     # plt.show()
+
+def U_thesh_coef1():
+    n_neurons_out = 50  # number of neurons in input layer
+    n_neurons_in = 196  # number of output in input layer
+
+    out_neurons1 = NeuronLifAdaptiveThresh(n_neurons_in,
+                                           n_neurons_out,
+                                           train=True,
+                                           U_mem=0,
+                                           decay=0.92,
+                                           U_tr=20 / 6500,
+                                           U_rest=0,
+                                           refr_time=5,
+                                           traces=True,
+                                           inh=True)  # activate literal inhibition
+
+    conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
+    conn.all_to_all_conn()
+    conn.initialize_weights("normal")
+
+    out_neurons2 = NeuronLifAdaptiveThresh(n_neurons_in,
+                                           n_neurons_out,
+                                           train=True,
+                                           U_mem=0,
+                                           decay=0.92,
+                                           U_tr=20 / 6500,
+                                           U_rest=0,
+                                           refr_time=5,
+                                           traces=True,
+                                           inh=True)  # activate literal inhibition
+
+    conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
+    conn.all_to_all_conn()
+    conn.initialize_weights("normal")
+
+    data_train = MNIST_train_test_14x14()[0]
+    time_test=200
+    g5 = 0
+    for i in tqdm(range(300)):
+        input_spikes = encoding_to_spikes(data_train[i][0], time_test)
+        out_neurons1.compute_U_mem(input_spikes[0].reshape(196), conn.weights)
+        g5 += out_neurons1.I_for_each_neuron
+    g4 = 0
+    for i in tqdm(range(300)):
+        input_spikes = encoding_to_spikes(data_train[i][0], time_test)
+        out_neurons2.compute_U_mem(input_spikes[0].reshape(196), conn.weights, crossbar=True, r_line=1)
+        g4 += out_neurons2.I_for_each_neuron
+    f1 = torch.div(g5 / 300, g4 / 300)
+    print(f1)
+    print(torch.mean(f1))
+    return f1,torch.mean(f1)
+

@@ -28,44 +28,78 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       refr_time=5,
                                       traces=True,
                                       inh=True)  # activate literal inhibition
+out_neurons2 = NeuronLifAdaptiveThresh(n_neurons_in,
+                                      n_neurons_out,
+                                      train=True,
+                                      U_mem=0,
+                                      decay=0.92,
+                                      U_tr=20/6500,
+                                      U_rest=0,
+                                      refr_time=5,
+                                      traces=True,
+                                      inh=True)  # activate literal inhibition
 
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
-train_labels = [0, 1, 2, 5, 9,3,4,6,7,8]
+
 conn.load_weights('weights_tensor.pt')
+conn.weights=torch.ones([196,50])/50
 plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
 plt.show()
 plt.imshow(conn.weights, cmap='YlOrBr', vmin=0.00005, vmax=0.01)
 plt.show()
-print(shape(conn.weights))
 
-for i in tqdm(range(n_test), desc='test', colour='green', position=0):
-
-    # if data_train[i][1] in train_labels:
-    #     input_spikes = encoding_to_spikes(data_train[i][0], time_test)
-
-        for j in range(1):
-            out_neurons.compute_U_mem(torch.ones(196), conn.weights)
-            g=out_neurons.I_for_each_neuron
-
+out_neurons.compute_U_mem(torch.ones(196), conn.weights)
+g=out_neurons.I_for_each_neuron
 print(g)
 
-
-for i in tqdm(range(n_test), desc='test', colour='green', position=0):
-
-    # if data_train[i][1] in train_labels:
-    #     input_spikes = encoding_to_spikes(data_train[i][0], time_test)
-    #     input_spikes = torch.ones(196,1)
-        for j in range(1):
-            out_neurons.compute_U_mem(torch.ones(196), conn.weights,crossbar=True,r_line=1)
-            g1=out_neurons.I_for_each_neuron
-            break
+out_neurons2.compute_U_mem(torch.ones(196), conn.weights,crossbar=True,r_line=1)
+g1=out_neurons2.I_for_each_neuron
 print(g1)
 
 f = torch.div(g,g1)
 print(f)
 plt.imshow(torch.unsqueeze(f,0), cmap='YlOrBr', vmin=min(f), vmax=max(f))
 plt.show()
+out_neurons3 = NeuronLifAdaptiveThresh(n_neurons_in,
+                                      n_neurons_out,
+                                      train=True,
+                                      U_mem=0,
+                                      decay=0.92,
+                                      U_tr=20/6500,
+                                      U_rest=0,
+                                      refr_time=5,
+                                      traces=True,
+                                      inh=True)  # activate literal inhibition
+out_neurons4 = NeuronLifAdaptiveThresh(n_neurons_in,
+                                      n_neurons_out,
+                                      train=True,
+                                      U_mem=0,
+                                      decay=0.92,
+                                      U_tr=20/6500,
+                                      U_rest=0,
+                                      refr_time=5,
+                                      traces=True,
+                                      inh=True)  # activate literal inhibition
+
+
+g5=0
+
+out_neurons3.reset_variables(True,True,True)
+for i in tqdm(range(1000)):
+    input_spikes = encoding_to_spikes(data_train[i][0], time_test)
+    out_neurons3.compute_U_mem(input_spikes[0].reshape(196), conn.weights)
+    g5+=out_neurons3.I_for_each_neuron
+    out_neurons3.reset_variables(True,True,True)
+g4=0
+for i in tqdm(range(1000)):
+    input_spikes = encoding_to_spikes(data_train[i][0], time_test)
+    out_neurons3.compute_U_mem(input_spikes[0].reshape(196), conn.weights,crossbar=True,r_line=1)
+    g4+=out_neurons3.I_for_each_neuron
+    out_neurons3.reset_variables(True, True, True)
+f1 = torch.div(g5/300,g4/300)
+print(f1)
+

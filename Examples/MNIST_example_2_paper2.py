@@ -17,7 +17,7 @@ n_test = 1000  # number of images for testing
 time = 200 # time of each image presentation during training
 time_test = 100  # time of each image presentation during testing
 test = True  # do testing or not
-plot = False # plot graphics or not
+plot = True # plot graphics or not
 # модель с реальными физическими величинами и линейно
 # дискретным диапазоном значений проводимости
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
@@ -91,10 +91,11 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
                            out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True)
         num_spikes.append(c)
         c = 0
-        print(num_spikes)
+
+
 plt.plot(list(range(len(num_spikes))),num_spikes)
 plt.show()
-breakpoint()
+
 assig.get_assignment()
 assig.save_assignment()
 

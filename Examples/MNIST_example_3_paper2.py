@@ -18,7 +18,7 @@ n_test = 1000 # number of images for testing
 time = 200  # time of each image presentation during training
 time_test = 100 # time of each image presentation during testing
 test = True  # do testing or not
-plot = False# plot graphics or not
+plot = True# plot graphics or not
 # модель с реальными физическими величинами и линейно
 # дискретным диапазоном значений проводимости и падением напряжений в кроссбар-массиве
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
@@ -26,7 +26,7 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       train=True,
                                       U_mem=0,
                                       decay=0.92,
-                                      U_tr=20/100/64,
+                                      U_tr=20/100/30,
                                       U_rest=0,
                                       refr_time=5,
                                       traces=True,
@@ -63,9 +63,9 @@ train_labels = [0, 1, 2, 9, 5]
 count1=0
 plt.ion()
 x = list(range(400))
-y = np.random.randint(20, 40, 400)
-fig, ax = plt.subplots(figsize=(8, 5))
-line1, = ax.plot(x, y)
+# y = np.random.randint(20, 40, 400)
+# fig, ax = plt.subplots(figsize=(8, 5))
+# line1, = ax.plot(x, y)
 for i in range(n_train):
     print("Image № ", i, "of ", n_train)
     count1+=1
@@ -88,7 +88,7 @@ for i in range(n_train):
 
             # if 1 in out_neurons.spikes:
             #      print(out_neurons.spikes)
-            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/64, U_thresh_increase=0.2/100/64)
+            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/30, U_thresh_increase=0.2/100/30)
             c+=int(sum(out_neurons.spikes))
 
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
@@ -104,10 +104,10 @@ for i in range(n_train):
         num_spikes.append(c)
         c=0
         print(num_spikes)
-        line1.set_xdata(list(range(len(num_spikes))))
-        line1.set_ydata(num_spikes)
-        fig.canvas.draw()
-        fig.canvas.flush_events()
+        # line1.set_xdata(list(range(len(num_spikes))))
+        # line1.set_ydata(num_spikes)
+        # fig.canvas.draw()
+        # fig.canvas.flush_events()
 with open("spikes.json", 'w') as f1:
     # indent=2 is not needed but makes the file human-readable
     # if the data is nested
