@@ -8,7 +8,7 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 
-n_neurons_out = 50  # number of neurons in input layer
+n_neurons_out = 20  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train =1# number of images for training
 n_test = 1 # number of images for testing
@@ -45,8 +45,9 @@ conn.initialize_weights("normal")
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
-conn.load_weights('weights_tensor.pt')
-conn.weights=torch.ones([196,50])/50
+#conn.load_weights('../Examples/paper2_2/256_72/weights_tensor.pt')
+#conn.load_weights('../Examples/paper2_2/20_neurons/weights_tensor.pt')
+#conn.weights=torch.ones([196,50])/60
 plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
 plt.show()
 plt.imshow(conn.weights, cmap='YlOrBr', vmin=0.00005, vmax=0.01)
@@ -62,6 +63,7 @@ print(g1)
 
 f = torch.div(g,g1)
 print(f)
+print(torch.mean(f))
 plt.imshow(torch.unsqueeze(f,0), cmap='YlOrBr', vmin=min(f), vmax=max(f))
 plt.show()
 out_neurons3 = NeuronLifAdaptiveThresh(n_neurons_in,

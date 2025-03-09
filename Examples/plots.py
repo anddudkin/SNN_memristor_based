@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from tqdm.auto import tqdm  # notebook compatible
 import time
+g1=torch.tensor([1,1,2])
+print(g1.flipud())
+breakpoint()
 g1=torch.tensor([1,1])
 g = g1.normal_(mean=1* 0.7, std=1 * 0.2)
 print(g)

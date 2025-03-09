@@ -10,9 +10,9 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 
-n_neurons_out = 50  # number of neurons in input layer
+n_neurons_out = 20  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 800 # number of images for training
+n_train = 500 # number of images for training
 n_test = 1000  # number of images for testing
 time = 200 # time of each image presentation during training
 time_test = 100  # time of each image presentation during testing
@@ -53,7 +53,7 @@ if plot:
     #ax2 = fig1.add_subplot(211)
     #ax3 = fig1.add_subplot(212)
     #axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
-    #axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
+    #axim3 = ax3.imshow(torch.zeros([n_neurons_in, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 
 
 def steps(w_m, w_max, steps1):
@@ -80,7 +80,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             fig.canvas.flush_events()
 
         for j in range(time):
-            out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
+            out_neurons.compute_U_mem(input_spikes[j].reshape(n_neurons_in), conn.weights)
             out_neurons.check_spikes1()
             c += int(sum(out_neurons.spikes))
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
@@ -91,7 +91,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
                            out_neurons.spikes, 0.00005, 0.01, 128, nonlinear=True)
         num_spikes.append(c)
         c = 0
-
+    fig.savefig("weights"+str(i))
 
 plt.plot(list(range(len(num_spikes))),num_spikes)
 plt.show()
@@ -119,7 +119,7 @@ if test:
             input_spikes = encoding_to_spikes(data_train[i][0], time_test)
 
             for j in range(time_test):
-                out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
+                out_neurons.compute_U_mem(input_spikes[j].reshape(n_neurons_in), conn.weights)
                 out_neurons.check_spikes1()
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])

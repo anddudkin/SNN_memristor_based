@@ -11,7 +11,7 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 import pickle
-n_neurons_out = 50  # number of neurons in input layer
+n_neurons_out = 20 # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train =800# number of images for training
 n_test = 1000 # number of images for testing
@@ -26,7 +26,7 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       train=True,
                                       U_mem=0,
                                       decay=0.92,
-                                      U_tr=20/100/30,
+                                      U_tr=20/100/28,
                                       U_rest=0,
                                       refr_time=5,
                                       traces=True,
@@ -88,7 +88,7 @@ for i in range(n_train):
 
             # if 1 in out_neurons.spikes:
             #      print(out_neurons.spikes)
-            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/30, U_thresh_increase=0.2/100/30)
+            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/17, U_thresh_increase=0.2/100/20)
             c+=int(sum(out_neurons.spikes))
 
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
@@ -112,10 +112,10 @@ with open("spikes.json", 'w') as f1:
     # indent=2 is not needed but makes the file human-readable
     # if the data is nested
     json.dump(num_spikes, f1, indent=2)
-fig.savefig("spikes")
+#fig.savefig("spikes")
 
 
-breakpoint()
+
 assig.get_assignment()
 assig.save_assignment()
 
@@ -141,7 +141,7 @@ if test:
 
             for j in range(time_test):
                 out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
-                out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/64, U_thresh_increase=0.2/100/64)
+                out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/17, U_thresh_increase=0.2/100/20)
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])
 

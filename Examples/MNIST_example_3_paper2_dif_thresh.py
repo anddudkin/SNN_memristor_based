@@ -13,7 +13,7 @@ import time as t
 import pickle
 from Network.tools import U_thesh_coef, U_thesh_coef1
 
-n_neurons_out = 50  # number of neurons in input layer
+n_neurons_out = 20  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train =800# number of images for training
 n_test = 1000 # number of images for testing
@@ -55,7 +55,7 @@ coef0=torch.tensor([21.8821, 23.2137, 24.5991, 26.0377, 27.5289, 29.0716, 30.664
         88.8395, 89.7271, 90.5218, 91.2216, 91.8247, 92.3296, 92.7350, 93.0400,
         93.2437, 93.3457], dtype=torch.float64)
 
-coef0=torch.tensor([ 32.3721,  35.1571,  38.1034,  41.2104,  44.4761,  47.8974,  51.4698,
+coef0=torch.tensor([ 32.3721,  35.1571,  38.1034,  41.2104,  44.4761,  47.8974,  51.4698,  ##0.5
          55.1875,  59.0433,  63.0288,  67.1344,  71.3495,  75.6624,  80.0606,
          84.5308,  89.0591,  93.6313,  98.2329, 102.8492, 107.4654, 112.0671,
         116.6400, 121.1700, 125.6436, 130.0480, 134.3705, 138.5995, 142.7238,
@@ -63,7 +63,18 @@ coef0=torch.tensor([ 32.3721,  35.1571,  38.1034,  41.2104,  44.4761,  47.8974, 
         170.8286, 173.6174, 176.2255, 178.6486, 180.8825, 182.9239, 184.7695,
         186.4166, 187.8629, 189.1062, 190.1448, 190.9774, 191.6028, 192.0202,
         192.2290], dtype=torch.float64)
+coef0=torch.tensor([ 29.1613,  31.4543,  33.8687,  36.4038,  39.0583,  41.8299,  44.7154,
+         47.7107,  50.8110,  54.0103,  57.3020,  60.6786,  64.1318,  67.6528,
+         71.2321,  74.8596,  78.5251,  82.2176,  85.9264,  89.6402,  93.3480,
+         97.0387, 100.7013, 104.3251, 107.8995, 111.4144, 114.8599, 118.2267,
+        121.5058, 124.6887, 127.7673, 130.7342, 133.5823, 136.3049, 138.8961,
+        141.3503, 143.6622, 145.8272, 147.8410, 149.6997, 151.3999, 152.9385,
+        154.3128, 155.5203, 156.5590, 157.4272, 158.1234, 158.6466, 158.9958,
+        159.1706], dtype=torch.float64)
 
+coef0=torch.tensor([18.4118, 19.1325, 18.7502, 19.9498, 19.7680, 21.1226, 23.7044, 22.2646,
+        24.6019, 23.5106, 25.7043, 24.6020, 24.6278, 25.9831, 24.8357, 28.3037,
+        27.0011, 27.4581, 28.4245, 28.6087], dtype=torch.float64)
 coef1=torch.mean(coef0)
 out_neurons.U_thresh_all_neurons= torch.div(out_neurons.U_thresh_all_neurons, coef0)
 
@@ -114,12 +125,12 @@ for i in range(n_train):
             out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
 
 
-            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/coef1, U_thresh_increase=0.2/100/coef1, 
+            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/coef1*2, U_thresh_increase=0.2/100/(coef1)/2,
                                      diff_U_thresh=(True,new_U_thresh_all_neurons))
             """
             out_neurons.check_spikes(U_mem_all_neurons_decrease=5/100 , U_thresh_increase=0.2/100,
                                      diff_U_thresh=(True, new_U_thresh_all_neurons),
-                                     diff_thresh_increase=(True,coef0),diff_U_mem_all_neurons_decrease=(True,coef0))
+                                     diff_thresh_increase=(True,coef0.flipud()),diff_U_mem_all_neurons_decrease=(True,coef0))
             """
             c+=int(sum(out_neurons.spikes))
 
@@ -134,6 +145,18 @@ for i in range(n_train):
                 # axim3.set_data(input_spikes.reshape(196, time)[::4, ::4])
                 fig.canvas.flush_events()
         num_spikes.append(c)
+        """
+        coef0 *= 0.99
+        for hi, h in enumerate(coef0):
+            if h < 18:
+                coef0[hi] = 18
+            
+
+        out_neurons.U_thresh_all_neurons = torch.div(out_neurons.U_thresh_all_neurons, coef0)
+
+        new_U_thresh_all_neurons = out_neurons.U_thresh_all_neurons.clone().detach()
+        """
+        print(coef0)
 
         c=0
         print(num_spikes)
