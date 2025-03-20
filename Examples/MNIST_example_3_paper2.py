@@ -11,9 +11,9 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 import pickle
-n_neurons_out = 20 # number of neurons in input layer
+n_neurons_out = 25 # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train =800# number of images for training
+n_train =600# number of images for training
 n_test = 1000 # number of images for testing
 time = 200  # time of each image presentation during training
 time_test = 100 # time of each image presentation during testing
@@ -69,13 +69,13 @@ x = list(range(400))
 for i in range(n_train):
     print("Image № ", i, "of ", n_train)
     count1+=1
-    if count1%1000 == 0:
+    if count1%20 == 0:
         fig = plt.figure(figsize=(6, 6))
         ax = fig.add_subplot(111)
         axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
                          vmax=0.01)
         plt.colorbar(axim, fraction=0.046, pad=0.04)
-        fig.savefig("weights")
+        fig.savefig("weights"+str(i))
 
     if data_train[i][1] in train_labels:
         input_spikes = encoding_to_spikes(data_train[i][0], time)

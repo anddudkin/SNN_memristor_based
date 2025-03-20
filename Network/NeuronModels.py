@@ -242,7 +242,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
             for i in range(self.n_neurons_out):
                 self.spikes[i] = 0  # update spike values
                 if self.U_mem_all_neurons[i] >= self.U_thresh_all_neurons[i]:  # threshold check
-                    print(i)
+                    #print(i)
                     if self.train:
                         self.U_thresh_all_neurons[i] += U_thresh_increase  # adaptive thresh
 
@@ -300,7 +300,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
             self.U_thresh_all_neurons = torch.mul(self.U_thresh_all_neurons, 0.99999)
             if not diff_U_thresh[0]:
                 self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
-                                                    max=self.U_tr * 3.5)
+                                                    max=self.U_tr * 4)
             elif diff_U_thresh[0]:
                 for i in range(len(self.U_thresh_all_neurons)):
                     if self.U_thresh_all_neurons[i] > diff_U_thresh[1][i]*1.8:  #было 1.2
@@ -324,7 +324,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
         for i in range(self.n_neurons_out):
             self.spikes[i] = 0  # update spike values
             if self.U_mem_all_neurons[i] >= self.U_thresh_all_neurons[i]:  # threshold check
-                print(i)
+                #print(i)
                 if self.train:
                     self.U_thresh_all_neurons[i] += 0.0002  # adaptive thresh
 

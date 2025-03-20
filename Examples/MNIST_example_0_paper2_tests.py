@@ -10,12 +10,12 @@ import time as t
 # абстрактная модель
 n_neurons_out = 20  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 2000 # number of images for training
+n_train = 500# number of images for training
 n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
-plot = False # plot graphics or not
+plot = False# plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
@@ -27,15 +27,32 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       refr_time=5,
                                       traces=True,
                                       inh=True)  # activate literal inhibition
-
+out_neurons1 = NeuronLifAdaptiveThresh(n_neurons_in,
+                                      n_neurons_out,
+                                      train=True,
+                                      U_mem=0,
+                                      decay=0.92,
+                                      U_tr=20,
+                                      U_rest=0,
+                                      refr_time=5,
+                                      traces=True,
+                                      inh=True)  # activate literal inhibition
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all")
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
-
+conn1 = Connections(n_neurons_in, n_neurons_out, "all_to_all")
+conn1.all_to_all_conn()
+conn1.initialize_weights("normal")
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
 assig = MnistAssignment(n_neurons_out)
+input_spikes = encoding_to_spikes(data_train[0][0], time_test)
+out_neurons1.compute_U_mem(torch.ones(196), conn.weights)
+g=out_neurons1.I_for_each_neuron # normal distributinon
+g1=[]
+print(g)
+out_neurons.reset_variables(True,True,True)
 
 if plot:
     plt.ion()
@@ -68,8 +85,19 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
             out_neurons.check_spikes()
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
             conn.update_w(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes)
+    """
+    out_neurons1.compute_U_mem(torch.ones(196), conn.weights)
+    g1.append(float(torch.mean(torch.div(g,out_neurons1.I_for_each_neuron))))
+    out_neurons1.reset_variables(True,True,True)
+    """
+    out_neurons1.compute_U_mem(input_spikes[j].reshape(196), conn1.weights)
+    g=out_neurons1.I_for_each_neuron
+    out_neurons1.compute_U_mem(input_spikes[j].reshape(196), conn.weights)
 
-
+    g1.append(float(torch.mean(torch.div(g, out_neurons1.I_for_each_neuron))))
+    out_neurons1.reset_variables(True,True,True)
+plt.plot(list(range(len(g1))),g1,"o")
+plt.show()
 assig.get_assignment()
 assig.save_assignment()
 evall = MnistEvaluation(n_neurons_out)
