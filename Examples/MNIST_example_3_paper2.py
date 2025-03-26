@@ -59,7 +59,7 @@ if plot:
     # axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
     # axim3 = ax3.imshow(torch.zeros([196, time])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 c=0
-train_labels = [0, 1, 2, 9, 5]
+train_labels = [0, 1, 2, 9,5]
 count1=0
 plt.ion()
 x = list(range(400))

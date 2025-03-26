@@ -8,9 +8,9 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 
-n_neurons_out = 100  # number of neurons in input layer
+n_neurons_out = 144  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train = 5000 # number of images for training
+n_train = 2500 # number of images for training
 n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing

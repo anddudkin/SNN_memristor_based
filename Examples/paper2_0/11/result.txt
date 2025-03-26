@@ -1,12 +1,12 @@
 
 train: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-train: 5000
+train: 2500
 test: 1000
 time_train: 350
 time_train: 200
-neurons out: 100
+neurons out: 144
 train images: 0
 Test Completed
-Correctly defined images:582
-Incorrectly defined images:418
-Final result:58.2
+Correctly defined images:610
+Incorrectly defined images:390
+Final result:61.0
