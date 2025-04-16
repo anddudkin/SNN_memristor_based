@@ -11,7 +11,7 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 import pickle
-n_neurons_out = 50 # number of neurons in input layer
+n_neurons_out = 25 # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train =600# number of images for training
 n_test = 1000 # number of images for testing
@@ -25,25 +25,33 @@ out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,
                                       train=True,
                                       U_mem=0,
-                                      decay=0.92,
-                                      U_tr=20/100/65,
+                                      decay=0.88,
+                                      U_tr=20/100/50, #70
                                       U_rest=0,
                                       refr_time=5,
-                                      U_tr_coef_max=5,
+                                      U_tr_coef_max=20,
                                       traces=True,
                                       inh=True)  # activate literal inhibition
 
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
-
-
+#coef_U_mem_all_neurons_decrease=10 #13
+coef_U_mem_all_neurons_decrease=0.97
+coef_U_thresh_increase=5#18
+print(20/100/50*out_neurons.U_tr_coef_max)
 
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 
 assig = MnistAssignment(n_neurons_out)
-
+x=torch.tensor([18.4118, 19.1325, 18.7502, 19.9498, 19.7680, 21.1226, 23.7044, 22.2646,
+        24.6019, 23.5106, 25.7043, 24.6020, 24.6278, 25.9831, 24.8357, 28.3037,
+        27.0011, 27.4581, 28.4245, 28.6087], dtype=torch.float64).__reversed__()
+x = x*1/torch.max(x)
+# print(out_neurons.U_thresh_all_neurons)
+# out_neurons.U_thresh_all_neurons = out_neurons.U_thresh_all_neurons * x
+# print(out_neurons.U_thresh_all_neurons)
 num_spikes=[]
 
 if plot:
@@ -60,7 +68,7 @@ if plot:
     # axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
     # axim3 = ax3.imshow(torch.zeros([196, time])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 c=0
-train_labels = [0, 1, 2, 9,5]
+train_labels = [0, 1, 2, 9, 5]
 count1=0
 plt.ion()
 x = list(range(400))
@@ -89,7 +97,8 @@ for i in range(n_train):
 
             # if 1 in out_neurons.spikes:
             #      print(out_neurons.spikes)
-            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/40, U_thresh_increase=0.2/100/30) #было 65 40
+            out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/coef_U_mem_all_neurons_decrease,
+                                     U_thresh_increase=0.2/100/coef_U_thresh_increase) #было 65 65
             c+=int(sum(out_neurons.spikes))
 
             assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
@@ -102,9 +111,11 @@ for i in range(n_train):
                 # axim2.set_data(torch.squeeze(data_train[i][0]))
                 # axim3.set_data(input_spikes.reshape(196, time)[::4, ::4])
                 fig.canvas.flush_events()
+
         num_spikes.append(c)
         c=0
         print(num_spikes)
+        print(out_neurons.U_thresh_all_neurons)
         # line1.set_xdata(list(range(len(num_spikes))))
         # line1.set_ydata(num_spikes)
         # fig.canvas.draw()
@@ -142,7 +153,8 @@ if test:
 
             for j in range(time_test):
                 out_neurons.compute_U_mem(input_spikes[j].reshape(196), conn.weights,crossbar=True,r_line=1)
-                out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/65, U_thresh_increase=0.2/100/65)
+                out_neurons.check_spikes(U_mem_all_neurons_decrease= 5/100/coef_U_mem_all_neurons_decrease,
+                                         U_thresh_increase=0.2/100/coef_U_thresh_increase)
                 evall.count_spikes(out_neurons.spikes)
             evall.conclude(assig.assignments, data_train[i][1])
 
