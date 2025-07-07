@@ -74,11 +74,11 @@ def snn(ar):
                 out_neurons.check_spikes1()
                 assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
                 conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,
-                               0.00005,0.01,ar, nonlinear=True)
+                               0.00005,0.01,ar, nonlinear=False)
 
 
     assig.get_assignment()
-    assig.save_assignment(path='assignments'+str(ar)+'.pkl')
+    #assig.save_assignment(path='assignments'+str(ar)+'.pkl')
 
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111)
@@ -87,8 +87,8 @@ def snn(ar):
     fig.savefig("weights"+str(ar))
     evall = MnistEvaluation(n_neurons_out)
 
-    conn.save_weights(path='weights_tensor'+str(ar)+'.pt')
-    out_neurons.save_U_thresh(path='thresh'+str(ar)+'.pt')
+    #conn.save_weights(path='weights_tensor'+str(ar)+'.pt')
+    #out_neurons.save_U_thresh(path='thresh'+str(ar)+'.pt')
 
     out_neurons.train = False
     out_neurons.reset_variables(True, True, True)
@@ -119,4 +119,4 @@ def snn(ar):
 
 if __name__ == "__main__":
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    result = pool.map(snn, [16,32,64,128,256])
+    result = pool.map(snn, [16,32,64,128,256,512])
