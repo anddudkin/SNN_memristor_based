@@ -1,24 +1,37 @@
 
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas
-''' #dz1
-#excel_data = pandas.read_excel("G:/Другие компьютеры/Ноутбук/7сем/1_Магистратура/3 сем/Методы анализа микро- и наносистем/5.xls")
-excel_data = pandas.read_excel("C:/Users/anddu/Desktop/7сем/1_Магистратура/3 сем/Методы анализа микро- и наносистем/5.xls")
-print(excel_data)
-excel_data=excel_data.drop('experimental', axis=1)
-excel_data=excel_data.drop('smoothed', axis=1)
-print(excel_data)
-for i in excel_data:
-    print(i)
-    print(excel_data[i].tolist())
-for i in excel_data:
-    if i != "channel":
-        plt.plot(excel_data["channel"].tolist(), excel_data[i].tolist(), label = i)
-        #plt.semilogy(excel_data["channel"].tolist(), excel_data[i].tolist(), label=i) #log
-plt.xlim(0, 2000)
-plt.minorticks_on()
-#plt.xticks(np.linspace(0, 2000, 30))
-plt.legend()
-plt.show()
-'''
+m = []
+n = []
+h = 0
+f = open('26.txt')
+c = int((f.readline().split())[1])
+p = 500
+for x in f.readlines():
+    s = x.split()
+    if s[2] == 'A':
+        m.append([int(s[0]), int(s[1])])
+    else:
+        n.append([int(s[0]), int(s[1])])
+m.sort()
+
+n.sort()
+k = 0
+gg=0
+for i in range(len(m)):
+    c = c - m[i][0] * m[i][1]
+    o = c
+for j in range(len(n)):
+    if o - n[j][0] * n[j][1] >= 0:
+        o = o - n[j][0] * n[j][1]
+        h = h + n[j][1]
+        gg+=n[j][0] * n[j][1]
+    else:
+        for i in range(n[j][1]):
+            if o - n[j][0] * i >= 0:
+                o = o - n[j][0] * i
+                h = h + i
+            else:
+                gg += n[j][0] * i
+                print(gg)
+                print(h)
+                print(o)
+                break

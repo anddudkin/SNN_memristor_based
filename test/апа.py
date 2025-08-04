@@ -1,15 +1,35 @@
-import matplotlib.pyplot as plt
-def cc(x, eps):
-    g= []
-    x1= ((x-1)/(x+1))*2
-    n=3
-    print(x1)
-    while ((x-1)**n)/(3*(x+1)**n) > eps:
+from turtle import *
 
-        x1+= ((x-1)**n)/(3*(x+1)**n)
-        n+=2
-        g.append(x1)
-        print(x1)
-    plt.plot(g)
-    plt.show()
-cc(10, 0.000000001)
+tracer(0)
+
+left(90)
+color('red')
+for i in range(9):
+    forward(22 * 10)
+    right(90)
+    forward(6 * 10)
+    right(90)
+
+penup()  # Поднять хвост
+
+forward(1 * 10)
+right(90)
+forward(5 * 10)
+left(90)
+
+pendown()  # Опустить хвост
+
+for i in range(9):
+    forward(53 * 10)
+    right(90)
+    forward(75 * 10)
+    right(90)
+
+# Рисуем координатную сетку
+penup()
+for x in range(-100, 100):
+    for y in range(-100, 100):
+        goto(x * 10, y * 10)
+        dot(3)
+
+done()
