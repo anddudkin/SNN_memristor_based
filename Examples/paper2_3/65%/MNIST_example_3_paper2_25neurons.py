@@ -13,7 +13,7 @@ import time as t
 import pickle
 n_neurons_out = 25 # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
-n_train =550# number of images for training
+n_train =600# number of images for training
 n_test = 1000 # number of images for testing
 time = 200  # time of each image presentation during training
 time_test = 100 # time of each image presentation during testing
@@ -37,8 +37,8 @@ conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_m
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
 #coef_U_mem_all_neurons_decrease=10 #13
-coef_U_mem_all_neurons_decrease=0.90
-coef_U_thresh_increase=5#18
+coef_U_mem_all_neurons_decrease=0.95
+coef_U_thresh_increase=10#5
 print(20/100/50*out_neurons.U_tr_coef_max)
 
 data_train = MNIST_train_test_14x14()[0]

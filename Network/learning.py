@@ -33,16 +33,16 @@ def plot_simple_stdp():
         #     return -0.0005
         if -10 <= t <= 0:
             return A_plus * np.exp(t / tau)
-        else:
+        if 0 <= t <= 10 :
             return -0.003
 
     a, b = [], []
     gg = np.linspace(-20, 20, num=500)
-    for j in (1, 2, 4, 8, 10, 20, 30, 40):
+    for j in (1, 2, 4, 8, 16):
         for i in gg:
             a.append(compute_dw_plot(i, j))
             b.append(i)
-        plt.plot(b, a, label=f'tau={j}')
+        plt.plot(b, a, label=f'tau={j}', linestyle='--')
         a, b = [], []
     plt.axvline(x=0, color='k')
     plt.axhline(y=0, color='k')
@@ -51,6 +51,7 @@ def plot_simple_stdp():
     plt.legend()
     plt.show()
 
+plot_simple_stdp()
 
 def plot_classic_STDP():
     A_plus_ = 0.005  # positive reinforcement
