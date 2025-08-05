@@ -31,6 +31,7 @@ class NeuronIF:
         self.U_mem = U_mem
 
         self.U_tr = U_tr
+
         self.U_rest = U_rest
         self.refr_time = refr_time
         self.traces = traces
@@ -208,7 +209,7 @@ class NeuronLIF(NeuronIF):
 
 
 class NeuronLifAdaptiveThresh(NeuronLIF):
-    def __init__(self, n_neurons_in, n_neurons_out, decay, inh, traces, train, U_mem=0, U_tr=13, U_rest=0,
+    def __init__(self, n_neurons_in, n_neurons_out, decay, inh, traces, train, U_mem=0, U_tr=13,U_tr_coef_max=1.2, U_rest=0,
                  refr_time=5):
         """ NeuronLifAdaptiveThresh
 
@@ -223,6 +224,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
                 U_rest  : membrane potential while resting (refractory), after neuron spikes
                 refr_time (int) : refractory period time
         """
+        self.U_tr_coef_max = U_tr_coef_max
         super().__init__(n_neurons_in, n_neurons_out, decay, inh, traces, train, U_mem, U_tr, U_rest, refr_time)
 
     def check_spikes(self,U_thresh_increase=0.02, U_mem_all_neurons_decrease = 5, diff_U_thresh=(False,None),
@@ -232,13 +234,8 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
 
         :return: tensor [index of neuron, spike (0 or 1)]
         """
-        # if self.traces and self.train:
-        #     self.U_mem_trace = torch.cat(
-        #         (self.U_mem_trace,
-        #          torch.clamp(self.U_mem_all_neurons.reshape(1, self.n_neurons_out), max=self.U_tr + self.U_tr * 0.2)),
-        #         0)
 
-        if not diff_thresh_increase[0]:
+        if not diff_thresh_increase[0]: #basic option
             for i in range(self.n_neurons_out):
                 self.spikes[i] = 0  # update spike values
                 if self.U_mem_all_neurons[i] >= self.U_thresh_all_neurons[i]:  # threshold check
@@ -251,11 +248,20 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
                     self.spikes[i] = 1  # record spike
 
                     self.refractor_count[i] = self.refr_time  # start refractor period
-
+                    """
                     if self.inh:  # inhibition
                         for j in range(self.n_neurons_out):
                             if i != j:
                                 self.U_mem_all_neurons[j] -=  U_mem_all_neurons_decrease
+                                if self.U_mem_all_neurons[j] < self.U_rest:
+                                    self.U_mem_all_neurons[j] = self.U_rest
+                                self.refractor_count[j] = 5
+                                self.spikes[j] = 0
+                                """
+                    if self.inh:  # inhibition
+                        for j in range(self.n_neurons_out):
+                            if i != j:
+                                self.U_mem_all_neurons[j] *=  U_mem_all_neurons_decrease
                                 if self.U_mem_all_neurons[j] < self.U_rest:
                                     self.U_mem_all_neurons[j] = self.U_rest
                                 self.refractor_count[j] = 6
@@ -300,7 +306,7 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
             self.U_thresh_all_neurons = torch.mul(self.U_thresh_all_neurons, 0.99999)
             if not diff_U_thresh[0]:
                 self.U_thresh_all_neurons = torch.clamp(self.U_thresh_all_neurons, min=self.U_tr,
-                                                    max=self.U_tr * 4)
+                                                    max=self.U_tr * self.U_tr_coef_max)
             elif diff_U_thresh[0]:
                 for i in range(len(self.U_thresh_all_neurons)):
                     if self.U_thresh_all_neurons[i] > diff_U_thresh[1][i]*1.8:  #было 1.2

@@ -61,13 +61,22 @@ out_neurons2 = NeuronLifAdaptiveThresh(n_neurons_in,
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
+<<<<<<< HEAD
 conn.weights=torch.ones([196,50])/100/2
+=======
+
+conn2 = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
+conn2.all_to_all_conn()
+conn2.initialize_weights("normal")
+
+>>>>>>> 2b498938d922db8fea401a108bc9a0f4ebc6b8bf
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 input_spikes = encoding_to_spikes(data_train[0][0], time_test)
 input_spikes = encoding_to_spikes(torch.ones([196,1]), time_test)
 # out_neurons.compute_U_mem(input_spikes[0].reshape(196), conn.weights)
 #conn.load_weights('../Examples/paper2_2/256_72/weights_tensor.pt')
+<<<<<<< HEAD
 # conn.load_weights('../Examples/paper2_2/20_neurons/weights_tensor.pt')
 # conn.weights=torch.ones([196,50])/60
 plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
@@ -92,6 +101,45 @@ g1 = out_neurons2.I_for_each_neuron
 print(g1)
 
 f = torch.div(g, g1)
+=======
+#conn.load_weights('../Examples/paper2_2/20_neurons/weights_tensor.pt')
+#conn.weights=torch.ones([196,50])/60
+# plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
+# plt.show()
+# plt.imshow(conn.weights, cmap='YlOrBr', vmin=0.00005, vmax=0.01)
+# plt.show()
+out_neurons.compute_U_mem(input_spikes[0].reshape(196), conn.weights)
+g=out_neurons.I_for_each_neuron
+print("нормальное распределение весов")
+print(g)
+out_neurons.reset_variables(True,True,True)
+conn2.load_weights('../Examples/paper2_2/20_neurons/weights_tensor.pt')
+out_neurons.compute_U_mem(input_spikes[0].reshape(196), conn2.weights)
+# out_neurons.compute_U_mem(torch.ones(196), conn.weights)
+g1=out_neurons.I_for_each_neuron
+print("распределение весов обученной нейросети")
+print(g1)
+print("до обучения / после обучения")
+print(torch.div(g,g1))
+print("нормальное распределение весов + межсоединения")
+out_neurons2.compute_U_mem(input_spikes[0].reshape(196), conn.weights,crossbar=True,r_line=1)
+print(torch.mean(conn.weights))
+print(torch.mean(conn2.weights))
+g2=out_neurons2.I_for_each_neuron
+print(g2)
+out_neurons.reset_variables(True,True,True)
+conn2.load_weights('../Examples/paper2_2/20_neurons/weights_tensor.pt')
+out_neurons2.compute_U_mem(input_spikes[0].reshape(196), conn2.weights,crossbar=True,r_line=1)
+g3=out_neurons2.I_for_each_neuron
+print("распределение весов обученной нейросети + межсоединения")
+print(g3)
+
+print(torch.div(g,g2))
+print(torch.div(g1,g3))
+breakpoint()
+f = torch.div(g,g1)
+
+>>>>>>> 2b498938d922db8fea401a108bc9a0f4ebc6b8bf
 print(f)
 print(torch.mean(f))
 y=plt.imshow(torch.unsqueeze(f, 0), cmap='YlOrBr', vmin=min(f), vmax=max(f))
