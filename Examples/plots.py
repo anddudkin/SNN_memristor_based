@@ -12,13 +12,8 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from tqdm.auto import tqdm  # notebook compatible
 import time
-g1=torch.tensor([1,1,2])
-print(g1.flipud())
-breakpoint()
-g1=torch.tensor([1,1])
-g = g1.normal_(mean=1* 0.7, std=1 * 0.2)
-print(g)
-breakpoint()
+
+
 def bisection(array, value):
     '''Given an ``array`` , and given a ``value`` , returns an index j such that ``value`` is between array[j]
     and array[j+1]. ``array`` must be monotonic increasing. j=-1 or j=len(array) is returned
@@ -49,7 +44,7 @@ def bisection(array, value):
 
 
 print(bisection([1,2,3,4,5,6,7], 7))
-breakpoint()
+
 print(np.linspace(0,4,5))
 print(np.linspace(4,8,5))
 x1=np.concatenate((np.linspace(0,4,5)[:-1],np.linspace(4,8,5)))
@@ -60,12 +55,12 @@ def linespace_diff_dens(start, end, num1, num2, s):
     first_point = l_all * s
     return np.concatenate((np.linspace(start, first_point, num1)[:-1],np.linspace(first_point,end,num2)))
 
-g = linespace_diff_dens(0.00005,0.01,56,200,0.5)
+g = linespace_diff_dens(0.00005,0.01,38,90,0.5)
 print(len(g))
 
-plt.loglog( list(range(1,257)),g, 'o',markersize=2)
+plt.loglog( list(range(1,129)),g, 'o',markersize=2)
 plt.show()
-breakpoint()
+
 
 x = np.linspace(0.00005, 0.01, 50)
 y_ = 1 / 3 ** (-x * 300)
