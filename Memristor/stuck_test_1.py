@@ -4,8 +4,12 @@ import torch
 import matplotlib.pyplot as plt
 
 from Network.visuals import plot_weights_square
+from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 
-
+data_train = MNIST_train_test_14x14()[0]
+input_spikes = encoding_to_spikes(data_train[0][0], 2)
+applied_voltages = input_spikes[0].reshape(196, 1)
+#applied_voltages = np.ones([196, 1])
 def g(x):
     if x < 0.00005:
         return 1 / 0.000005
@@ -15,9 +19,6 @@ def g(x):
 
 torch.set_printoptions(threshold=10_000)
 
-# Applied voltages in volts.
-
-applied_voltages = np.ones([196, 1])
 
 # w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
 # w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
@@ -28,11 +29,14 @@ w1.apply_(g)
 w = w.numpy()
 w1 = w1.numpy()
 k = 0
-for i in range(len(w1)):
-    for j in range(len(w1[0])):
-        if k < 500:
-            w1[i][j] = np.min(w1)
-        k += 1
+mask= np.ones([20, 50]) * np.min(w1)
+w1[80:100,0:50]= mask
+
+# for i in range(len(w1)):
+#     for j in range(len(w1[0])):
+#         if k < 5000:
+#             w1[i][j] = np.max(w1)
+#         k += 1
 r_i = 1
 fig = plt.figure(figsize=(8, 8))
 axW1 = fig.add_subplot(3, 3, 1)
