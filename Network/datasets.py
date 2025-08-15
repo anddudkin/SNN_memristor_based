@@ -27,7 +27,7 @@ def MNIST_train_test():
 
 
 def MNIST_train_test_14x14():
-    datasets.MNIST(root='./data', train=True, download=True, transform=None)
+    datasets.MNIST(root='../data', train=True, download=False, transform=None)
 
     transform = transforms.Compose([
         transforms.ToTensor(), transforms.Resize((14, 14), interpolation=InterpolationMode.NEAREST)])

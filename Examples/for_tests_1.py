@@ -61,22 +61,22 @@ out_neurons2 = NeuronLifAdaptiveThresh(n_neurons_in,
 conn = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
 conn.all_to_all_conn()
 conn.initialize_weights("normal")
-<<<<<<< HEAD
+
 conn.weights=torch.ones([196,50])/100/2
-=======
+
 
 conn2 = Connections(n_neurons_in, n_neurons_out, "all_to_all", w_min=0.00005, w_max=0.01)
 conn2.all_to_all_conn()
 conn2.initialize_weights("normal")
 
->>>>>>> 2b498938d922db8fea401a108bc9a0f4ebc6b8bf
+
 data_train = MNIST_train_test_14x14()[0]
 data_test = MNIST_train_test_14x14()[1]
 input_spikes = encoding_to_spikes(data_train[0][0], time_test)
 input_spikes = encoding_to_spikes(torch.ones([196,1]), time_test)
 # out_neurons.compute_U_mem(input_spikes[0].reshape(196), conn.weights)
 #conn.load_weights('../Examples/paper2_2/256_72/weights_tensor.pt')
-<<<<<<< HEAD
+
 # conn.load_weights('../Examples/paper2_2/20_neurons/weights_tensor.pt')
 # conn.weights=torch.ones([196,50])/60
 plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
@@ -101,7 +101,7 @@ g1 = out_neurons2.I_for_each_neuron
 print(g1)
 
 f = torch.div(g, g1)
-=======
+
 #conn.load_weights('../Examples/paper2_2/20_neurons/weights_tensor.pt')
 #conn.weights=torch.ones([196,50])/60
 # plt.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005, vmax=0.01)
@@ -139,7 +139,7 @@ print(torch.div(g1,g3))
 breakpoint()
 f = torch.div(g,g1)
 
->>>>>>> 2b498938d922db8fea401a108bc9a0f4ebc6b8bf
+
 print(f)
 print(torch.mean(f))
 y=plt.imshow(torch.unsqueeze(f, 0), cmap='YlOrBr', vmin=min(f), vmax=max(f))

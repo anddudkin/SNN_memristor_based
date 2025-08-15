@@ -8,8 +8,8 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 
 data_train = MNIST_train_test_14x14()[0]
 input_spikes = encoding_to_spikes(data_train[0][0], 2)
-applied_voltages = input_spikes[0].reshape(196, 1)
-#applied_voltages = np.ones([196, 1])
+#applied_voltages = input_spikes[0].reshape(196, 1)
+applied_voltages = np.ones([196, 1])
 def g(x):
     if x < 0.00005:
         return 1 / 0.000005
@@ -22,8 +22,10 @@ torch.set_printoptions(threshold=10_000)
 
 # w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
 # w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
-w = torch.load("../Examples/SNN_tests/weights_tensor.pt")
-w1 = torch.load("../Examples/SNN_tests/weights_tensor.pt")
+# w = torch.load("../Examples/SNN_tests/weights_tensor.pt")
+# w1 = torch.load("../Examples/SNN_tests/weights_tensor.pt")
+w = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
+w1 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
 w.apply_(g)
 w1.apply_(g)
 w = w.numpy()
@@ -35,11 +37,12 @@ w1[80:100,0:50]= mask
 
 #plt.show()
 
-for i in range(0,196,14):
-
-    mask = np.ones([14, 50]) * np.min(w1)
-    w1[i:i+14, 0:50] = mask
-    r_i = 1
+for i in range(0,196):
+    w1 = np.array(w)
+    mask = np.ones([1, 50]) * np.min(w1)
+    w1[i*1:i*1+1, 0:50] = mask
+    #w1[196 - (i * 14 + 14): 196 - i * 14, 0:50] = mask
+    r_i = 0
     fig = plt.figure(figsize=(8, 8))
     axW1 = fig.add_subplot(3, 3, 1)
     axV = fig.add_subplot(3, 3, 4)
@@ -94,7 +97,7 @@ for i in range(0,196,14):
     plt.tight_layout()
     plt.subplots_adjust(bottom=0.07, left=0, right=0.85, top=0.98, wspace=0)
 
-    diff = solution1.currents.output / solution.currents.output * 100 - 100
+    diff = np.abs(solution1.currents.output-solution.currents.output) /solution.currents.output * 100
     print(solution1.currents.output)
     print(solution.currents.output)
     print(diff)
@@ -105,15 +108,19 @@ for i in range(0,196,14):
     bar = fig1.add_subplot(3, 1, 1)
     bar1 = fig1.add_subplot(3, 1, 2)
     bar2 = fig1.add_subplot(3, 1, 3)
-    bar.imshow(solution.currents.output, cmap='gray_r', interpolation='None')
-    bar1.imshow(solution1.currents.output, cmap='gray_r', interpolation='None')
-    b1 = bar2.imshow(diff, cmap='gray_r', interpolation='None')
-    plt.colorbar(b1, ax=bar2, orientation='horizontal', shrink=0.5)
+    b=bar.imshow(solution.currents.output, cmap='gray_r', interpolation='None')
+    plt.colorbar(b, ax=bar, orientation='horizontal', shrink=0.5)
+    b1=bar1.imshow(solution1.currents.output, cmap='gray_r', interpolation='None')
+    plt.colorbar(b1, ax=bar1, orientation='horizontal', shrink=0.5)
+    b2 = bar2.imshow(diff, cmap='gray_r', interpolation='None')
+    plt.colorbar(b2, ax=bar2, orientation='horizontal', shrink=0.5)
     fig1.tight_layout()
-    fig.savefig("V_I"+str(i))
-    fig1.savefig("I_out" + str(i))
+
+    # fig.savefig("V_I"+str(i))
+    # fig1.savefig("I_out" + str(i))
+
     with open('result'+'.txt', 'a+') as f:
         f.write("\n " + str(i))
-        f.write("\nMean" + str(np.mean(diff)))
-        f.write("\nMax" + str(np.max(diff)))
-        f.write("\nMin" + str(np.min(diff)))
+        f.write("\nMean " + str(np.mean(diff)))
+        f.write("\nMax " + str(np.max(diff)))
+        f.write("\nMin " + str(np.min(diff)))
