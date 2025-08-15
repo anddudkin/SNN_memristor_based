@@ -106,7 +106,7 @@ def snn(ar):
                 evall.conclude(assig.assignments, data_train[i][1])
 
     evall.final()
-    with open('result'+str(ar)+'.txt', 'w+') as f:
+    with open('result'+str(ar)+'.txt', 'a+') as f:
         f.write("\ntrain: " + str(train_labels))
         f.write("\ntrain: " + str(n_train))
         f.write("\ntest: " + str(n_test))

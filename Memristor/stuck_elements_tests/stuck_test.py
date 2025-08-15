@@ -13,7 +13,7 @@ torch.set_printoptions(threshold=10_000)
 
 # Applied voltages in volts.
 applied_voltages = np.ones([5, 1])
-applied_voltages = np.ones([196, 1])
+#applied_voltages = np.ones([196, 1])
 w = [
     [100, 100, 100, 100, 100],
     [100, 100, 100, 100, 100],
@@ -24,22 +24,24 @@ w = [
 w1 = [
     [100, 100, 100, 100, 100],
     [100, 100, 100, 100, 100],
-    [100, 100, 3000, 10000, 100],
-    [100, 100, 10000, 10000, 100],
+    [100, 100, 3000, 100, 100],
+    [100, 100, 100, 100, 100],
     [100, 100, 100, 100, 100],
 ]
-w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
-w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
-w.apply_(g)
-w1.apply_(g)
-w=w.numpy()
-w1=w1.numpy()
-k=0
-for i in range(len(w1)):
-    for j in range(len(w1[0])):
-        if j !=0 and k < 500:
-            w1[i][j] = np.min(w1)
-        k+=1
+# #w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+# #w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+# w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
+# w1 = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Работа/SNN-memristor-based/test/70_3000/weights_tensor.pt")
+# w.apply_(g)
+# w1.apply_(g)
+# w=w.numpy()
+# w1=w1.numpy()
+# k=0
+# for i in range(len(w1)):
+#     for j in range(len(w1[0])):
+#         if j !=0 and k < 500:
+#             w1[i][j] = np.min(w1)
+#         k+=1
 r_i = 1
 fig = plt.figure(figsize=(8, 8))
 axW1 = fig.add_subplot(3, 3, 1)
