@@ -48,19 +48,19 @@ for k in range(n_test):
     for probabil in percents:
 
         w1 = np.array(w)
-        mask = np.random.binomial(n=1, p=probabil/2, size=[196, n_neurons1])
+        mask = np.random.binomial(n=1, p=probabil, size=[196, n_neurons1])
         #print(np.sum(mask) / 196 / n_neurons1 * 100)
         for i in range(196):
             for j in range(n_neurons1):
                 if mask[i][j] == 1:
-                    w1[i][j] = np.max(w)
-
-
-        mask1 = np.random.binomial(n=1, p=probabil/2, size=[196, n_neurons1])
-        for i in range(196):
-            for j in range(n_neurons1):
-                if mask1[i][j] == 1:
                     w1[i][j] = np.min(w)
+
+        # probabil1 = 0.005
+        # mask1 = np.random.binomial(n=1, p=probabil1, size=[196, n_neurons1])
+        # for i in range(196):
+        #     for j in range(n_neurons1):
+        #         if mask1[i][j] == 1:
+        #             w1[i][j] = np.min(w)
         r_i = 1
         solution = badcrossbar.compute(applied_voltages, w, r_i)
         v = solution.voltages.word_line
@@ -77,7 +77,7 @@ for k in range(n_test):
         #print("Mean", np.mean(diff))
         # print("min", np.min(diff))
         # print("max", np.max(diff))
-        #print("Std", np.std(diff))
+        print("Std", np.std(diff))
         sol_mean.append(np.mean(diff))
         err.append(np.std(diff))
     #     print(sol_mean)
