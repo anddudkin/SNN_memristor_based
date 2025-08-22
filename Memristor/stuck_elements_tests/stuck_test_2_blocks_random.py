@@ -59,7 +59,7 @@ def blocks_random(pos):
             for i in range(pos[0][0],pos[0][1]):
                 for j in range(pos[1][0],pos[1][1]):
                     if mask[i][j] == 1:
-                        w1[i][j] = np.max(w)
+                        w1[i][j] = np.min(w)
 
 
             # mask1 = np.random.binomial(n=1, p=probabil/2, size=[196, n_neurons1])

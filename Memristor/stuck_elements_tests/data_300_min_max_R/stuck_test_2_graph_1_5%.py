@@ -28,3 +28,4 @@ plt.subplots_adjust(bottom=0.07, left=0, right=0.2, top=0.98, wspace=0)
 plt.tight_layout()
 plt.subplots_adjust( hspace=0.03,bottom=0.27,)
 plt.show()
+
