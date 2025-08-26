@@ -51,7 +51,7 @@ def plot_simple_stdp():
     plt.legend()
     plt.show()
 
-plot_simple_stdp()
+
 
 def plot_classic_STDP():
     A_plus_ = 0.005  # positive reinforcement

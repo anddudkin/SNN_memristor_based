@@ -17,7 +17,6 @@ def g(x):
         return 1 / x
 
 
-torch.set_printoptions(threshold=10_000)
 
 
 # w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")

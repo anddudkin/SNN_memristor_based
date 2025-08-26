@@ -7,12 +7,16 @@ import matplotlib.pyplot as plt
 
 from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 from tqdm import  tqdm
-data_train = MNIST_train_test_14x14()[0]
-input_spikes = encoding_to_spikes(data_train[0][0], 2)
-applied_voltages = input_spikes[0].reshape(196, 1)
 
+from Network.topology import Connections
+
+
+# data_train = MNIST_train_test_14x14()[0]
+# input_spikes = encoding_to_spikes(data_train[0][0], 2)
+# applied_voltages = input_spikes[0].reshape(196, 1)
+applied_voltages = np.ones([196, 1])
 def blocks_random(pos):
-    # applied_voltages = np.ones([196, 1])
+
     def g(x):
         if x < 0.00005:
             return 1 / 0.000005
@@ -27,26 +31,24 @@ def blocks_random(pos):
     # w = torch.load("../Examples/SNN_tests/weights_tensor.pt")
     # w1 = torch.load("../Examples/SNN_tests/weights_tensor.pt")
 
-    w = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
+    w2 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
     w1 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
+    w = Connections(196, 50, "all_to_all", w_min=0.00005, w_max=0.01)
+    w = np.random.randint(100, 20000, size=(196, 50))
+    w1 = np.array(w)
+
 
     # w = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/mnist_example/weights_tensor.pt")
     # w1 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/mnist_example/weights_tensor.pt")
 
     # w = torch.load("C:/Users/anddu/OneDrive/Документы/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
     # w1 = torch.load("C:/Users/anddu/OneDrive/Документы/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
-    w.apply_(g)
-    w1.apply_(g)
-    w = w.numpy()
-    w1 = w1.numpy()
+
 
     n_neurons1 = 50
     percents = [0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05]
     n_test=300
 
-    position1=[[[0,65],[0, 16]],[[0,65],[16, 32]],[[0,65],[32, 50]],
-               [[65,130],[0, 16]],[[65,130],[16, 32]],[[65,130],[32, 50]],
-               [[130,196],[0, 16]],[[130,196],[16, 32]],[[130,196],[32, 50]]]
     err_all, sol_mean_all = np.zeros(len(percents)), np.zeros(len(percents))
     for k in tqdm(range(n_test)):
 
@@ -54,19 +56,19 @@ def blocks_random(pos):
         for probabil in percents:
 
             w1 = np.array(w)
-            mask = np.random.binomial(n=1, p=probabil/2, size=[196, n_neurons1])
+            mask = np.random.binomial(n=1, p=probabil, size=[196, n_neurons1])
             #print(np.sum(mask) / 196 / n_neurons1 * 100)
             for i in range(pos[0][0],pos[0][1]):
                 for j in range(pos[1][0],pos[1][1]):
                     if mask[i][j] == 1:
-                        w1[i][j] = np.min(w)
+                        w1[i][j] = 100
 
 
-            mask1 = np.random.binomial(n=1, p=probabil/2, size=[196, n_neurons1])
-            for i in range(pos[0][0], pos[0][1]):
-                for j in range(pos[1][0], pos[1][1]):
-                    if mask1[i][j] == 1:
-                        w1[i][j] = np.max(w)
+            # mask1 = np.random.binomial(n=1, p=probabil/2, size=[196, n_neurons1])
+            # for i in range(pos[0][0], pos[0][1]):
+            #     for j in range(pos[1][0], pos[1][1]):
+            #         if mask1[i][j] == 1:
+            #             w1[i][j] = 20000
             r_i = 1
             solution = badcrossbar.compute(applied_voltages, w, r_i)
             v = solution.voltages.word_line
