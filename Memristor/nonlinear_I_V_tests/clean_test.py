@@ -21,7 +21,7 @@ w = torch.load("C:/Users/anddu/Desktop/7сем/2_Работа/SNN-memristor-base
 
 d = {}
 
-with open('Res_states.pkl', 'rb') as f:
+with open('../Res_states.pkl', 'rb') as f:
     r = pickle.load(f)
 with open('Volt_Amper.pkl', 'rb') as f:
     U_I = pickle.load(f)

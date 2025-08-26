@@ -15,7 +15,7 @@ import torch
 
 
 
-with open('interp_coeff.pkl', 'rb') as f:
+with open('../interp_coeff.pkl', 'rb') as f:
     args2 = pickle.load(f)
 print(args2)
 v=[]

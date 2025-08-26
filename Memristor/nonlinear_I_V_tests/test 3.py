@@ -23,13 +23,13 @@ w = torch.load("G:/Другие компьютеры/Ноутбук/7сем/2_Р
 
 d = {}
 
-with open('Res_states.pkl', 'rb') as f:
+with open('../Res_states.pkl', 'rb') as f:
     r = pickle.load(f)
 # with open('Volt_Amper.pkl', 'rb') as f:
 #     U_I = pickle.load(f)
-with open('Res_coeff.pkl', 'rb') as f:
+with open('../Res_coeff.pkl', 'rb') as f:
     R_coef = pickle.load(f)
-with open('interp_coeff.pkl', 'rb') as f:
+with open('../interp_coeff.pkl', 'rb') as f:
     Int_coef = pickle.load(f)
 c = TransformToCrossbarBase(w, 5000, 25000, 0)
 print(R_coef)
@@ -55,7 +55,7 @@ from Network.datasets import encoding_to_spikes, MNIST_train_test_14x14
 
 data_train = MNIST_train_test_14x14()[0]
 #input_spikes = encoding_to_spikes(data_train[0][0], 2)
-with open("spikes.pt", 'rb') as f:
+with open("../spikes.pt", 'rb') as f:
     input_spikes= pickle.load(f)
 V = np.ones([196, 1]) / 2
 crR = c.weights_Om

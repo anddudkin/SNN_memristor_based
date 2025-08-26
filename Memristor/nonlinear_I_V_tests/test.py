@@ -7,9 +7,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy import exp
 
-with open('V_0_07.pkl', 'rb') as f:
+with open('../V_0_07.pkl', 'rb') as f:
     voltage = pickle.load(f)
-with open('I_0_07.pkl', 'rb') as f:
+with open('../I_0_07.pkl', 'rb') as f:
     current = pickle.load(f)
 for i, j in enumerate(voltage):
     # plt.semilogy(j, current[i])
