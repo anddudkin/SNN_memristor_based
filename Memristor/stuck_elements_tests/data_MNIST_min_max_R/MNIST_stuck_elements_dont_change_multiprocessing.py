@@ -12,6 +12,7 @@ import numpy as np
 
 
 def snn(ar):
+
     n_neurons_out = 50  # number of neurons in input layer
     n_neurons_in = 196  # number of output in input layer
     n_train = 2000  # number of images for training
@@ -21,7 +22,7 @@ def snn(ar):
     test = True  # do testing or not
     plot = False  # plot graphics or not
 
-    probabil = 0.01
+    probabil = ar
     mask = np.random.binomial(n=1, p=probabil / 2, size=[196, n_neurons_out])
     mask1 = np.random.binomial(n=1, p=probabil / 2, size=[196, n_neurons_out])
 
@@ -83,7 +84,7 @@ def snn(ar):
                 out_neurons.check_spikes1()
                 assig.count_spikes_train(out_neurons.spikes, data_train[i][1])
                 conn.update_w2(out_neurons.spikes_trace_in, out_neurons.spikes_trace_out, out_neurons.spikes,
-                               0.00005, 0.01, ar, nonlinear=False)
+                               0.00005, 0.01, 2048, nonlinear=False)
 
                 for rr in range(196):
                     for rr1 in range(n_neurons_out):
@@ -100,7 +101,7 @@ def snn(ar):
     axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
                      vmax=0.01)
     plt.colorbar(axim, fraction=0.046, pad=0.04)
-    fig.savefig("weights" + str(ar))
+    fig.savefig("weights" + str(ar*100)+".png")
     evall = MnistEvaluation(n_neurons_out)
 
     # conn.save_weights(path='weights_tensor'+str(ar)+'.pt')
