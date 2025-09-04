@@ -1,0 +1,1 @@
+print([x/100 for x in list(range(1,31))])

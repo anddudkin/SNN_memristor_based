@@ -94,18 +94,19 @@ def snn(ar):
                             conn.weights[rr][rr1] = np.max(conn.w_max)
 
     assig.get_assignment()
-    # assig.save_assignment(path='assignments'+str(ar)+'.pkl')
+
 
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(111)
     axim = ax.imshow(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights), cmap='YlOrBr', vmin=0.00005,
                      vmax=0.01)
     plt.colorbar(axim, fraction=0.046, pad=0.04)
-    fig.savefig("weights" + str(ar*100)+".png")
+    fig.savefig("weights" + str(int(ar*100))+".png")
     evall = MnistEvaluation(n_neurons_out)
-
-    # conn.save_weights(path='weights_tensor'+str(ar)+'.pt')
-    # out_neurons.save_U_thresh(path='thresh'+str(ar)+'.pt')
+    if ar > 0.45:
+        assig.save_assignment(path='assignments' + str(int(ar * 100)) + '.pkl')
+        conn.save_weights(path='weights_tensor'+str(int(ar*100))+'.pt')
+        out_neurons.save_U_thresh(path='thresh'+str(int(ar*100))+'.pt')
 
     out_neurons.train = False
     out_neurons.reset_variables(True, True, True)
@@ -123,7 +124,7 @@ def snn(ar):
                 evall.conclude(assig.assignments, data_train[i][1])
 
     evall.final()
-    with open('result' + str(ar) + '.txt', 'a+') as f:
+    with open('result' + str(int(ar*100)) + '.txt', 'a+') as f:
         f.write("\ntrain: " + str(train_labels))
         f.write("\ntrain: " + str(n_train))
         f.write("\ntest: " + str(n_test))
@@ -136,5 +137,6 @@ def snn(ar):
 
 
 if __name__ == "__main__":
+
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
-    result = pool.map(snn, [0.005, 0.01, 0.015, 0.02, 0.025, 0.03, 0.035, 0.04, 0.045, 0.05])
+    result = pool.map(snn, [x/100 for x in list(range(30,80))])
