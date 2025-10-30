@@ -32,7 +32,7 @@ def read_data_from_dir(folder_path):
     return data
 
 def read_data_full():
-    folder_path = 'D:/Phd/sound_db/database{}'
+    folder_path = 'C://Users/anddu/Documents/GitHub/anddudkin_mem_project/data/Sound/database{}'
     motors_path = '/motors/samples'
     airplane_path = '/airplane/samples'
     data = []
@@ -51,3 +51,4 @@ if __name__ == '__main__':
     data, labels = read_data_full()
 
     print(len(data), len(labels))
+
