@@ -19,8 +19,8 @@ def g(x):
 torch.set_printoptions(threshold=10_000)
 
 
-# w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
-# w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
 # w = torch.load("../Examples/SNN_tests/weights_tensor.pt")
 # w1 = torch.load("../Examples/SNN_tests/weights_tensor.pt")
 
@@ -30,8 +30,8 @@ torch.set_printoptions(threshold=10_000)
 # w = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/mnist_example/weights_tensor.pt")
 # w1 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/mnist_example/weights_tensor.pt")
 
-w = torch.load("C:/Users/anddu/OneDrive/Документы/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
-w1 = torch.load("C:/Users/anddu/OneDrive/Документы/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+# w = torch.load("C:/Users/anddu/OneDrive/Документы/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+# w1 = torch.load("C:/Users/anddu/OneDrive/Документы/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
 w.apply_(g)
 w1.apply_(g)
 w = w.numpy()
@@ -40,7 +40,12 @@ k = 0
 probabil=0.005
 n_neurons1=50
 mask = np.random.binomial(n=1, p=probabil, size=[196,n_neurons1])
+torch.set_printoptions(threshold=10_000)
+np.set_printoptions(threshold=10000)
+print(mask)
+
 print(np.sum(mask)/196/n_neurons1 * 100)
+breakpoint()
 for i in range(196):
     for j in range(n_neurons1):
         if mask[i][j] == 1:

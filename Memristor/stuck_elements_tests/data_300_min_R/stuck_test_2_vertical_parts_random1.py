@@ -20,13 +20,13 @@ def g(x):
 
 torch.set_printoptions(threshold=10_000)
 
-# w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
-# w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+w = torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
+w1= torch.load("C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/Examples/SNN_tests/weights_tensor.pt")
 # w = torch.load("../Examples/SNN_tests/weights_tensor.pt")
 # w1 = torch.load("../Examples/SNN_tests/weights_tensor.pt")
 
-w = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
-w1 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
+# w = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
+# w1 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/SNN_tests/weights_tensor.pt")
 
 # w = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/mnist_example/weights_tensor.pt")
 # w1 = torch.load("/home/anddudkin/PycharmProjects/SNN_memristor_based/Examples/mnist_example/weights_tensor.pt")

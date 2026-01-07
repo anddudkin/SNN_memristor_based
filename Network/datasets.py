@@ -29,7 +29,7 @@ def MNIST_train_test():
 import os
 
 
-def MNIST_train_test_14x14(root="../data"):
+def MNIST_train_test_14x14(root="C:/Users/anddu/Documents/GitHub/anddudkin_mem_project/data"):
 
     datasets.MNIST(root=root, train=True, download=True, transform=None)
 
