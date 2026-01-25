@@ -41,7 +41,7 @@ plt.title(f'conv2d')
 plt.subplot(1, 5, 4)
 edges = KF.sobel(output_tensor)
 plt.imshow(edges.squeeze(),cmap='binary')
-plt.title(f'KF')
+plt.title(f'sobel')
 
 
 plt.subplot(1, 5, 5)
