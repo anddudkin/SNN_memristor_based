@@ -15,7 +15,7 @@ n_test = 1000 # number of images for testing
 time = 350  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
-plot = False # plot graphics or not
+plot = True # plot graphics or not
 
 out_neurons = NeuronLifAdaptiveThresh(n_neurons_in,
                                       n_neurons_out,

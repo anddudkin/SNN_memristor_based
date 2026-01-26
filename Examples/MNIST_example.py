@@ -8,11 +8,11 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 
-n_neurons_out = 144  # number of neurons in input layer
+n_neurons_out = 50  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 2500 # number of images for training
 n_test = 1000 # number of images for testing
-time = 350  # time of each image presentation during training
+time = 250  # time of each image presentation during training
 time_test = 200 # time of each image presentation during testing
 test = True  # do testing or not
 plot = True # plot graphics or not
@@ -48,7 +48,7 @@ if plot:
     ax2 = fig1.add_subplot(211)
     ax3 = fig1.add_subplot(212)
     axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
-    axim3 = ax3.imshow(torch.zeros([196, 350])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
+    axim3 = ax3.imshow(torch.zeros([196, time])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 
 train_labels = [0, 1, 2, 3,4,5,6,7,8,9]
 
@@ -60,7 +60,7 @@ for i in tqdm(range(n_train), desc='training', colour='green', position=0):
         if plot:
             axim.set_data(plot_weights_square(n_neurons_in, n_neurons_out, conn.weights))
             axim2.set_data(torch.squeeze(data_train[i][0]))
-            axim3.set_data(input_spikes.reshape(196, 350)[::4, ::4])
+            axim3.set_data(input_spikes.reshape(196, time)[::4, ::4])
             fig.canvas.flush_events()
 
         for j in range(time):

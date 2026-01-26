@@ -22,6 +22,8 @@ def compute_dw1(t):
         return 0.00005 * np.exp(t / tau_plus)
     else:
         return  -0.000044 #-0.00003
+
+
 def plot_simple_stdp():
     """Plots simple STDP reinforcement learning curve"""
 

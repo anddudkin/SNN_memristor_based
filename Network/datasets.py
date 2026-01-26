@@ -32,8 +32,9 @@ import os
 
 def MNIST_train_test_14x14(root="../data"):
     current_file = Path(__file__).resolve()
-    project_root = current_file.parent
+    project_root = current_file.parent.parent
     root = project_root / "data"
+    print("data path", root)
     datasets.MNIST(root=root, train=True, download=True, transform=None)
 
     transform = transforms.Compose([
@@ -48,7 +49,7 @@ def MNIST_train_test_14x14(root="../data"):
 def MNIST_train_test_14x14_norm(root="../data"):
 
     current_file = Path(__file__).resolve()
-    project_root = current_file.parent
+    project_root = current_file.parent.parent
     root = project_root / "data"
     datasets.MNIST(root=root, train=True, download=True, transform=None)
 
