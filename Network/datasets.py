@@ -1,7 +1,7 @@
 import torch
 from torchvision import datasets, transforms
 from torchvision.transforms import InterpolationMode
-
+from pathlib import Path
 
 def rand_in_U(n_in_neurons):  # [1., 1., 0., 0., 1., 1., 1., 0., 1., 0.]
     U = torch.bernoulli(torch.randn(n_in_neurons).uniform_())
@@ -31,7 +31,9 @@ import os
 
 
 def MNIST_train_test_14x14(root="../data"):
-
+    current_file = Path(__file__).resolve()
+    project_root = current_file.parent
+    root = project_root / "data"
     datasets.MNIST(root=root, train=True, download=True, transform=None)
 
     transform = transforms.Compose([
@@ -44,6 +46,10 @@ def MNIST_train_test_14x14(root="../data"):
 
 
 def MNIST_train_test_14x14_norm(root="../data"):
+
+    current_file = Path(__file__).resolve()
+    project_root = current_file.parent
+    root = project_root / "data"
     datasets.MNIST(root=root, train=True, download=True, transform=None)
 
     transform = transforms.Compose([
@@ -56,32 +62,32 @@ def MNIST_train_test_14x14_norm(root="../data"):
     return dataset1, dataset2
 
 
-i = 5
-data_train = MNIST_train_test_14x14()[0]
-s=0
-for i in range(1000):
-    s+=torch.sum(data_train[i][0])
-
-for i in range(20):
-    print(data_train[i][1],torch.sum(data_train[i][0]),torch.sum(data_train[i][0]) / torch.sum(data_train[i][0] / 8))
-
-
-
-import matplotlib.pyplot as plt
-
-
-
-plt.subplot(1, 2, 1)
-plt.imshow(data_train[1][0].squeeze(), vmax=1,cmap="gray")
-
-# Plot 2:
-
-
-plt.subplot(1, 2, 2)
-plt.imshow((data_train[1][0].squeeze() / torch.sum(data_train[1][0] / 8)),vmax=1,cmap="gray")
-
-
-plt.show()
+# i = 5
+# data_train = MNIST_train_test_14x14()[0]
+# s=0
+# for i in range(1000):
+#     s+=torch.sum(data_train[i][0])
+#
+# for i in range(20):
+#     print(data_train[i][1],torch.sum(data_train[i][0]),torch.sum(data_train[i][0]) / torch.sum(data_train[i][0] / 8))
+#
+#
+#
+# import matplotlib.pyplot as plt
+#
+#
+#
+# plt.subplot(1, 2, 1)
+# plt.imshow(data_train[1][0].squeeze(), vmax=1,cmap="gray")
+#
+# # Plot 2:
+#
+#
+# plt.subplot(1, 2, 2)
+# plt.imshow((data_train[1][0].squeeze() / torch.sum(data_train[1][0] / 8)),vmax=1,cmap="gray")
+#
+#
+# plt.show()
 
 def MNIST_train_test_9x9():
     datasets.MNIST(root='./data', train=True, download=True, transform=None)
