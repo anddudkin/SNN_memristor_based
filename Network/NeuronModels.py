@@ -248,25 +248,26 @@ class NeuronLifAdaptiveThresh(NeuronLIF):
                     self.spikes[i] = 1  # record spike
 
                     self.refractor_count[i] = self.refr_time  # start refractor period
-                    """
+
                     if self.inh:  # inhibition
                         for j in range(self.n_neurons_out):
                             if i != j:
                                 self.U_mem_all_neurons[j] -=  U_mem_all_neurons_decrease
                                 if self.U_mem_all_neurons[j] < self.U_rest:
                                     self.U_mem_all_neurons[j] = self.U_rest
-                                self.refractor_count[j] = 5
+                                self.refractor_count[j] = self.refr_time
                                 self.spikes[j] = 0
-                                """
+
+                    """
                     if self.inh:  # inhibition
                         for j in range(self.n_neurons_out):
                             if i != j:
                                 self.U_mem_all_neurons[j] *=  U_mem_all_neurons_decrease
                                 if self.U_mem_all_neurons[j] < self.U_rest:
                                     self.U_mem_all_neurons[j] = self.U_rest
-                                self.refractor_count[j] = 6
+                                self.refractor_count[j] = self.refr_time
                                 self.spikes[j] = 0
-
+                                """
                     if self.traces and self.train:
                         for j in range(self.n_neurons_out):
                             if self.spikes[j] == 1:

@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 """ Simple STDP learning rule"""
 
-A_plus = 0.005  # positive reinforcement
+A_plus = 0.005 # positive reinforcement
 tau_plus = 5
 
 
@@ -18,6 +18,7 @@ def compute_dw(t):
 
 def compute_dw1(t):
     """ Computes dw """
+    tau_plus = 5
     if -10 <= t <= 0:
         return 0.00005 * np.exp(t / tau_plus)
     else:

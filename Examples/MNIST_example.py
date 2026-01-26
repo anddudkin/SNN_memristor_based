@@ -8,7 +8,7 @@ from Network.NeuronModels import NeuronLifAdaptiveThresh
 import matplotlib.pyplot as plt
 import time as t
 
-n_neurons_out = 50  # number of neurons in input layer
+n_neurons_out = 40  # number of neurons in input layer
 n_neurons_in = 196  # number of output in input layer
 n_train = 2500 # number of images for training
 n_test = 1000 # number of images for testing
@@ -50,7 +50,7 @@ if plot:
     axim2 = ax2.imshow(torch.zeros([14, 14]), cmap='gray', vmin=0, vmax=1, interpolation='None')
     axim3 = ax3.imshow(torch.zeros([196, time])[::4, ::4], cmap='gray', vmin=0, vmax=1, interpolation='None')
 
-train_labels = [0, 1, 2, 3,4,5,6,7,8,9]
+train_labels = [0, 1, 2 ,9]
 
 for i in tqdm(range(n_train), desc='training', colour='green', position=0):
 
