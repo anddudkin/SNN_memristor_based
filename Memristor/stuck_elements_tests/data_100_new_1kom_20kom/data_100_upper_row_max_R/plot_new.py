@@ -7,7 +7,7 @@ err_all = np.load('data_std.npy')
 percents = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7]
 
 sol_mean_all = np.insert(sol_mean_all,0,0)
-err_all = np.insert(err_all,0,0)
+err_all = np.insert(err_all,0,0.1)
 # Нормализация данных (деление на 40)
 mean_normalized = sol_mean_all / 40
 err_normalized = err_all / 40
@@ -33,7 +33,7 @@ plt.errorbar(percents, mean_normalized, err_normalized,
 plt.xlabel("Stuck elements, %", fontsize=20)
 plt.ylabel("Deviation, %", fontsize=20)
 plt.grid(True, alpha=0.3)
-plt.ylim(bottom=0.0001, top = 20)
+plt.ylim(bottom=0.0001)
 plt.xlim(left = 0, right = 7)
 
 # Легенда

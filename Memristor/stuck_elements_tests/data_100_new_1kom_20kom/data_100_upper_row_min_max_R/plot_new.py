@@ -33,7 +33,7 @@ plt.errorbar(percents, mean_normalized, err_normalized,
 plt.xlabel("Stuck elements, %", fontsize=20)
 plt.ylabel("Deviation, %", fontsize=20)
 plt.grid(True, alpha=0.3)
-plt.ylim(bottom=0.0001, top = 20)
+plt.ylim(bottom=0.0001)
 plt.xlim(left = 0, right = 7)
 
 # Легенда
