@@ -1,4 +1,3 @@
-# Загрузка данных
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -12,44 +11,35 @@ err_all = np.insert(err_all,0,0)
 mean_normalized = sol_mean_all / 40
 err_normalized = err_all / 40
 
-# Построение графика
+# Построение графика в оттенках серого
 fig = plt.figure(figsize=(6, 6))
 
-# Закрашиваем область между mean+err и mean-err
+# Закрашиваем область между mean+err и mean-err (светло-серый)
 plt.fill_between(percents,
                  mean_normalized - err_normalized,
                  mean_normalized + err_normalized,
-                 alpha=0.1, color='blue', label='mean STD')
+                 alpha=0.4, color='#CCCCCC', label='mean STD')  # светло-серый
 
+# Линия среднего значения (темно-серый/черный)
+plt.plot(percents, mean_normalized, '-', marker='.', markersize=8,
+         linewidth=2, label='mean', color='#333333')  # темно-серый
 
-#Точки с ошибками (опционально, можно убрать если нужно)
+# Точки с ошибками (средне-серый)
 plt.errorbar(percents, mean_normalized, err_normalized,
              fmt='s', markersize=1, capsize=2, linewidth=0.6,
-             color='darkblue', alpha=0.5)
-# Линия среднего значения
-plt.plot(percents, mean_normalized, 'b-', marker ='.', markersize = 8, linewidth=2, label='mean')
+             color='#666666', alpha=0.4)  # средне-серый
 
+# Настройки графика
 # Настройки графика
 plt.xlabel("Кол-во залипших элементов, %", fontsize=20)
 plt.ylabel(r'$\overline{\Delta \mathtt{I}}$, %', fontsize=20)
 plt.grid(True, alpha=0.3)
-plt.ylim(bottom=0.0001)
+plt.ylim(bottom=0.0001, top = 1.4)
 plt.xlim(left = 0, right = 7)
 
 # Легенда
 
 plt.tick_params(axis='both', which='major', labelsize=20)
 plt.tight_layout()
-fig.savefig("fig0", dpi=300)
-plt.show()
+fig.savefig("fig0_grayscale", dpi=300)
 
-from PIL import Image
-
-# Открываем изображение
-img = Image.open('fig0.png')
-
-# Преобразуем в оттенки серого
-gray_img = img.convert('L')
-
-# Сохраняем результат
-gray_img.save('fig0_gray.png')

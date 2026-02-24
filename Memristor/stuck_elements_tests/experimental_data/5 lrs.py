@@ -11,7 +11,7 @@ fig = plt.figure(figsize=(8, 5))
 
 print(df.iloc[:,0])
 
-plt.scatter(df.iloc[:,0], df.iloc[:,1], marker='o', s = 7, label = "HRS")
+plt.scatter(df.iloc[:,0], df.iloc[:,1], marker='o', s = 7, label = "HRS", c="gray")
 
 plt.xlabel("Номер импульса", fontsize=13)
 plt.ylabel("Напряжение, В", fontsize=13)

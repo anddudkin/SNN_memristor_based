@@ -6,8 +6,8 @@ x = np.array([0.01, 0.02, 0.05,0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5,0
 y = np.array([74.8, 74, 74.5, 74, 73.8, 70,64,61,63,56,51,61,57,44, 40, 42, 45, 42, 43]) +2
 
 # МНК для линейной регрессии y = a*x + b
-
-plt.scatter(x, y, marker="." ,alpha=0.8, label='Исходные точки')
+fig = plt.figure(figsize=(7, 4))
+plt.scatter(x, y, marker="." ,alpha=0.8, label='Исходные точки', c='gray')
 # mean_val = np.mean(d)
 # plt.axhline(y=mean_val, color='gray', linestyle='--', linewidth=1,
 #             label=f'Среднее: 77.2')
@@ -23,5 +23,6 @@ plt.ylabel("Точность распознавания, %", fontsize=13)
 plt.grid(True, alpha=0.3)
 #plt.ylim(bottom=60, top = 85)
 plt.legend(fontsize=12)
-plt.savefig("plot_inference.png")
+plt.tight_layout()
+plt.savefig("plot_inference.png", dpi=300)
 plt.show()

@@ -12,8 +12,8 @@ fig = plt.figure(figsize=(10, 3))
 
 print(df.iloc[:,0])
 
-plt.scatter(df.iloc[240:300,0], df.iloc[240:300,1], marker='o', s = 9, label = "HRS")
-plt.scatter(df.iloc[240:300,2], df.iloc[240:300,3], marker='x', s = 9, label = "LRS")
+plt.scatter(df.iloc[240:300,0], df.iloc[240:300,1], marker='o', s = 10, label = "HRS", c="gray")
+plt.scatter(df.iloc[240:300,2], df.iloc[240:300,3], marker='^', s = 10, label = "LRS",c="gray")
 plt.ylabel("Сопротивление, Ом", fontsize=13)
 plt.xlabel("Цикл переключения", fontsize=13)
 plt.grid(True, alpha=0.3)

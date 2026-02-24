@@ -37,7 +37,6 @@ plt.ylim(bottom=0.0001, top = 20)
 plt.xlim(left = 0, right = 7)
 
 # Легенда
-plt.legend()
 plt.tick_params(axis='both', which='major', labelsize=20)
 plt.tight_layout()
 fig.savefig("fig0")
