@@ -26,7 +26,7 @@ transform = torchvision.transforms.Compose([
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize((0.1307,), (0.3081,))
 ])
-train_set = torchvision.datasets.MNIST('../data/MNIST', train=True, download=False, transform=transform)
+train_set = torchvision.datasets.MNIST('../data', train=True, download=False, transform=transform)
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=1, shuffle=True)
 
 

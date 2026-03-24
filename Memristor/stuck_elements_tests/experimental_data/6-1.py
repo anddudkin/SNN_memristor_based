@@ -1,3 +1,5 @@
+import random
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -23,5 +25,5 @@ plt.grid(True, alpha=0.3)
 # plt.legend()
 plt.tick_params(axis='both', which='major', labelsize=13)
 plt.tight_layout()
-fig.savefig("6-1")
+fig.savefig("6-1", dpi=300)
 plt.show()

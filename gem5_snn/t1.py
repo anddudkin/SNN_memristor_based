@@ -3,19 +3,22 @@ import torchvision
 import numpy as np
 import pickle
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+
+from Network.datasets import encoding_to_spikes
 
 # Параметры
-n_train = 30
+n_train = 50
 N_INPUT = 28 * 28
 N_NEURONS = 100
 TIME_STEPS = 25
-LR_STDP = 0.003
+LR_STDP = 0.005
 TAU_M = 15  # мембранная постоянная
 TAU_TRACE = 20.0  # постоянная следов STDP
-THRESHOLD = 5
+THRESHOLD = 2
 REST = 0.0
-REFRACTORY_PERIOD = 10  # длительность рефрактерного периода в тиках
-
+REFRACTORY_PERIOD = 15  # длительность рефрактерного периода в тиках
+inh_coef = 0.9
 # Инициализация весов и следов
 W = torch.randn(N_INPUT, N_NEURONS) * 0.01
 W.requires_grad_(False)
@@ -26,9 +29,9 @@ trace_post = torch.zeros(N_NEURONS)
 # Загрузка MNIST
 transform = torchvision.transforms.Compose([
     torchvision.transforms.ToTensor(),
-    torchvision.transforms.Normalize((0.1307,), (0.3081,))
+    #torchvision.transforms.Normalize((0.1307,), (0.3081,))
 ])
-train_set = torchvision.datasets.MNIST('../data/MNIST', train=True, download=True, transform=transform)
+train_set = torchvision.datasets.MNIST('../data', train=True, download=True, transform=transform)
 train_loader = torch.utils.data.DataLoader(train_set, batch_size=1, shuffle=True)
 
 
@@ -40,6 +43,8 @@ def lif_update(v, refractory_counter, spikes_in, w_col):
 
     # Входной ток от спайков
     i_in = torch.dot(spikes_in, w_col)
+    # plt.imshow(spikes_in.reshape(28,28))
+    # plt.show()
     # Обновление потенциала
     v = v * (1 - 1 / TAU_M) + i_in
 
@@ -75,24 +80,31 @@ def stdp_update(w, trace_pre_col, trace_post_val, spikes_pre, spike_post, refrac
 # Обучение
 print("Обучение...")
 for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
+
     if batch_idx >= n_train:
         break
 
     # Преобразование изображения в спайки (интенсивность -> частота)
-    img = data.view(-1)
-    spikes_input = (torch.rand(N_INPUT) < img).float()
-
+    img = data.view(-1) # в одну строку 784
+    input_spikes = encoding_to_spikes(img, TIME_STEPS)
+    # print(input_spikes.shape)
+    # print(input_spikes)
     # Инициализация состояния
     v = torch.zeros(N_NEURONS)
     refractory_counters = torch.zeros(N_NEURONS, dtype=torch.long)
     spike_history = []
 
-    for t in range(TIME_STEPS):
+    for i, t in enumerate(range(TIME_STEPS)):
         # Обновление всех нейронов
         spikes_out = torch.zeros(N_NEURONS)
+
         new_refractory = torch.zeros(N_NEURONS, dtype=torch.long)
 
         for j in range(N_NEURONS):
+
+            #spikes_input = (torch.rand(N_INPUT) < img).float()
+            spikes_input = input_spikes[i].squeeze()
+
             v[j], s, new_refractory[j] = lif_update(
                 v[j], refractory_counters[j], spikes_input, W[:, j]
             )
@@ -101,9 +113,10 @@ for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
         refractory_counters = new_refractory
 
         # Латеральное торможение (ингибирование соседей)
-        active = torch.where((spikes_out > 0) & (refractory_counters == 0))[0]
+        active = torch.where((spikes_out > 0))[0]
 
         if len(active) > 0:
+
             # Выбираем самый активный нейрон среди не-рефрактерных
             winner = active[torch.argmax(v[active])]
 
@@ -115,7 +128,7 @@ for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
             # (опционально, можно добавить негативный импульс)
             for j in range(N_NEURONS):
                 if j != winner and refractory_counters[j] == 0:
-                    v[j] = max(v[j] - 0.5, REST)  # дополнительное торможение
+                    v[j] = max(v[j] * inh_coef, REST)  # дополнительное торможение
 
         spike_history.append(spikes_out)
 
