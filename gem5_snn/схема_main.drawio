@@ -1,101 +1,101 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.3.6 Chrome/140.0.7339.249 Electron/38.8.0 Safari/537.36" version="29.3.6">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
   <diagram name="Страница-1" id="f2t_mXARj1giLKr0V1aF">
-    <mxGraphModel dx="1560" dy="629" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1038" dy="595" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="oZpI48wN4aER0jpegoV--2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="129.63" width="65" x="490" y="175.19" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--2" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="490" y="175.19" width="65" height="129.63" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" value="" vertex="1">
-          <mxGeometry height="880" width="930" x="140" y="110" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--1" value="" style="rounded=0;whiteSpace=wrap;html=1;movable=0;resizable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" parent="1" vertex="1">
+          <mxGeometry x="140" y="110" width="930" height="880" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--4" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--4" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="200" y="220" as="sourcePoint" />
             <mxPoint x="420" y="220" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--5" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--5" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="200" y="240" as="sourcePoint" />
             <mxPoint x="420" y="240" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--6" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--6" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="200" y="260" as="sourcePoint" />
             <mxPoint x="420" y="260" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Подготовка входных импульсов" vertex="1">
-          <mxGeometry height="30" width="190" x="210" y="180" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--7" value="Подготовка входных импульсов" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="210" y="180" width="190" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Аналоговое векторно-матричное умножение" vertex="1">
-          <mxGeometry height="30" width="180" x="445" y="130" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--12" value="Аналоговое векторно-матричное умножение" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="445" y="130" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--16" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--16" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="445" y="220" as="sourcePoint" />
             <mxPoint x="560" y="220" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--19" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--19" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="445" y="239.57999999999998" as="sourcePoint" />
             <mxPoint x="560" y="240" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--21" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--21" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="507" y="344" as="sourcePoint" />
             <mxPoint x="507" y="284" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--22" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--22" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="524" y="344" as="sourcePoint" />
             <mxPoint x="524" y="284" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--23" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--23" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="540" y="344" as="sourcePoint" />
             <mxPoint x="540" y="284" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--25" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="20" x="490" y="350" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--25" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="490" y="350" width="20" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--26" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="20" x="516" y="350" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--26" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="516" y="350" width="20" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--27" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="20" x="540" y="350" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--27" value="" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="540" y="350" width="20" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--28" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--28" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="505" y="434" as="sourcePoint" />
             <mxPoint x="505" y="374" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--29" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--29" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="526" y="435" as="sourcePoint" />
             <mxPoint x="526" y="375" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--30" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--30" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="549" y="435" as="sourcePoint" />
             <mxPoint x="549" y="375" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--31" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Активация нейрона/ов" vertex="1">
-          <mxGeometry height="30" width="80" x="400" y="345" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--31" value="Активация нейрона/ов" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="400" y="345" width="80" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--32" edge="1" parent="1" source="oZpI48wN4aER0jpegoV--27" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--32" value="" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=0;" parent="1" source="oZpI48wN4aER0jpegoV--27" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="580" y="400" />
               <mxPoint x="600" y="360" />
@@ -106,53 +106,65 @@
             <mxPoint x="530" y="350" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--33" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Ингибирование&amp;nbsp;" vertex="1">
-          <mxGeometry height="30" width="80" x="610" y="345" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--33" value="Ингибирование&amp;nbsp;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="610" y="345" width="80" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--34" parent="1" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" value="" vertex="1">
-          <mxGeometry height="60" width="200" x="435" y="450" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--34" value="" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" parent="1" vertex="1">
+          <mxGeometry x="435" y="450" width="200" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--35" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Классификатор" vertex="1">
-          <mxGeometry height="30" width="80" x="500" y="465" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--35" value="Классификатор" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="500" y="465" width="80" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--8" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--8" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="490" y="310" as="sourcePoint" />
             <mxPoint x="490" y="170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--9" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--9" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="507" y="310" as="sourcePoint" />
             <mxPoint x="507" y="170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--10" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--10" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="524" y="310" as="sourcePoint" />
             <mxPoint x="524" y="170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--11" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--11" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="540" y="310" as="sourcePoint" />
             <mxPoint x="540" y="170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--13" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--13" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="555" y="310" as="sourcePoint" />
             <mxPoint x="555" y="170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--20" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
+        <mxCell id="oZpI48wN4aER0jpegoV--20" value="" style="endArrow=none;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="445" y="260" as="sourcePoint" />
             <mxPoint x="560" y="260" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="oZpI48wN4aER0jpegoV--36" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Адаптивный порог срабатывания&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Обучение&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="124.99" width="130" x="790" y="225.01" as="geometry" />
+        <mxCell id="oZpI48wN4aER0jpegoV--36" value="Адаптивный порог срабатывания&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Обучение&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="790" y="225.01" width="130" height="124.99" as="geometry" />
+        </mxCell>
+        <mxCell id="2G6JZAi93iDgM8k3pJzm-1" value="нужно проанализировать/учесть&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;В зависмости от цифры 50-150 нДж потребляет проход кросбар-массива&lt;/div&gt;&lt;div&gt;при 40-150 импульсах на вход&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Амплитуда входных импульсов (сейчас 0.5)&lt;br&gt;Длительность импульсов (сейчас 1мкс)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="991" y="140.01" width="250" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="2G6JZAi93iDgM8k3pJzm-2" value="&lt;span class=&quot;base&quot; style=&quot;border-color: currentcolor; white-space: nowrap; width: min-content; position: relative; display: inline-block; color: rgb(15, 17, 21); font-family: KaTeX_Main, &amp;quot;Times New Roman&amp;quot;, serif; font-size: 19.36px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span class=&quot;mord&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;border-color: currentcolor; font-family: KaTeX_Math; font-style: italic; margin-right: 0.05764em;&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;msupsub&quot; style=&quot;border-color: currentcolor; text-align: left;&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot; style=&quot;border-color: currentcolor; border-collapse: collapse; table-layout: fixed; display: inline-table; margin-right: -2px;&quot;&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; display: table-cell; position: relative; height: 0.3361em;&quot;&gt;&lt;span style=&quot;border-color: currentcolor; height: 0px; display: block; position: relative; top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;border-color: currentcolor; display: inline-block; width: 0px; overflow: hidden; height: 2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot; style=&quot;border-color: currentcolor; display: inline-block; font-size: 0.7em;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord text mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;spike&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; width: 2px; min-width: 2px; font-size: 1px; display: table-cell;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; display: table-cell; position: relative; height: 0.2861em;&quot;&gt;&lt;span style=&quot;border-color: currentcolor; height: 0px; display: block; position: relative;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;border-color: currentcolor; display: inline-block; margin-right: 0.2778em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mrel&quot; style=&quot;border-color: currentcolor;&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;border-color: currentcolor; display: inline-block; margin-right: 0.2778em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot; style=&quot;border-color: currentcolor; white-space: nowrap; width: min-content; position: relative; display: inline-block; color: rgb(15, 17, 21); font-family: KaTeX_Main, &amp;quot;Times New Roman&amp;quot;, serif; font-size: 19.36px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;border-color: currentcolor; display: inline-block; height: 0.9694em; vertical-align: -0.2861em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;border-color: currentcolor; font-family: KaTeX_Math; font-style: italic; margin-right: 0.05764em;&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;msupsub&quot; style=&quot;border-color: currentcolor; text-align: left;&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot; style=&quot;border-color: currentcolor; border-collapse: collapse; table-layout: fixed; display: inline-table; margin-right: -2px;&quot;&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; display: table-cell; position: relative; height: 0.3175em;&quot;&gt;&lt;span style=&quot;border-color: currentcolor; height: 0px; display: block; position: relative; top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;border-color: currentcolor; display: inline-block; width: 0px; overflow: hidden; height: 2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot; style=&quot;border-color: currentcolor; display: inline-block; font-size: 0.7em;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord text mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;integrate&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; width: 2px; min-width: 2px; font-size: 1px; display: table-cell;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; display: table-cell; position: relative; height: 0.2861em;&quot;&gt;&lt;span style=&quot;border-color: currentcolor; height: 0px; display: block; position: relative;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;border-color: currentcolor; display: inline-block; margin-right: 0.2222em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mbin&quot; style=&quot;border-color: currentcolor;&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;border-color: currentcolor; display: inline-block; margin-right: 0.2222em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot; style=&quot;border-color: currentcolor; white-space: nowrap; width: min-content; position: relative; display: inline-block; color: rgb(15, 17, 21); font-family: KaTeX_Main, &amp;quot;Times New Roman&amp;quot;, serif; font-size: 19.36px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;border-color: currentcolor; display: inline-block; height: 0.8333em; vertical-align: -0.15em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;border-color: currentcolor; font-family: KaTeX_Math; font-style: italic; margin-right: 0.05764em;&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;msupsub&quot; style=&quot;border-color: currentcolor; text-align: left;&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot; style=&quot;border-color: currentcolor; border-collapse: collapse; table-layout: fixed; display: inline-table; margin-right: -2px;&quot;&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; display: table-cell; position: relative; height: 0.3361em;&quot;&gt;&lt;span style=&quot;border-color: currentcolor; height: 0px; display: block; position: relative; top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;border-color: currentcolor; display: inline-block; width: 0px; overflow: hidden; height: 2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot; style=&quot;border-color: currentcolor; display: inline-block; font-size: 0.7em;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord text mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;fire&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; width: 2px; min-width: 2px; font-size: 1px; display: table-cell;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; display: table-cell; position: relative; height: 0.15em;&quot;&gt;&lt;span style=&quot;border-color: currentcolor; height: 0px; display: block; position: relative;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;border-color: currentcolor; display: inline-block; margin-right: 0.2222em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mbin&quot; style=&quot;border-color: currentcolor;&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mspace&quot; style=&quot;border-color: currentcolor; display: inline-block; margin-right: 0.2222em;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;base&quot; style=&quot;border-color: currentcolor; white-space: nowrap; width: min-content; position: relative; display: inline-block; color: rgb(15, 17, 21); font-family: KaTeX_Main, &amp;quot;Times New Roman&amp;quot;, serif; font-size: 19.36px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span class=&quot;strut&quot; style=&quot;border-color: currentcolor; display: inline-block; height: 0.8333em; vertical-align: -0.15em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;mord&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mathnormal&quot; style=&quot;border-color: currentcolor; font-family: KaTeX_Math; font-style: italic; margin-right: 0.05764em;&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;msupsub&quot; style=&quot;border-color: currentcolor; text-align: left;&quot;&gt;&lt;span class=&quot;vlist-t vlist-t2&quot; style=&quot;border-color: currentcolor; border-collapse: collapse; table-layout: fixed; display: inline-table; margin-right: -2px;&quot;&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;span class=&quot;vlist&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; display: table-cell; position: relative; height: 0.2806em;&quot;&gt;&lt;span style=&quot;border-color: currentcolor; height: 0px; display: block; position: relative; top: -2.55em; margin-left: -0.0576em; margin-right: 0.05em;&quot;&gt;&lt;span class=&quot;pstrut&quot; style=&quot;border-color: currentcolor; display: inline-block; width: 0px; overflow: hidden; height: 2.7em;&quot;&gt;&lt;/span&gt;&lt;span class=&quot;sizing reset-size6 size3 mtight&quot; style=&quot;border-color: currentcolor; display: inline-block; font-size: 0.7em;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord text mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;&lt;span class=&quot;mord mtight&quot; style=&quot;border-color: currentcolor;&quot;&gt;reset&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-s&quot; style=&quot;border-color: currentcolor; vertical-align: bottom; width: 2px; min-width: 2px; font-size: 1px; display: table-cell;&quot;&gt;​&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;vlist-r&quot; style=&quot;border-color: currentcolor; display: table-row;&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br class=&quot;Apple-interchange-newline&quot;&gt;" style="text;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1270" y="215.01" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="2G6JZAi93iDgM8k3pJzm-3" value="Нейрон" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="160" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2G6JZAi93iDgM8k3pJzm-4" value="условно 5 нДж на нейрон (среднее)" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="290" width="120" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

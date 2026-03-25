@@ -2,69 +2,26 @@ import torch
 import torchvision
 import numpy as np
 import pickle
-
-from sympy.physics.units import energy
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
-import badcrossbar
-from Memristor.compute_crossbar import TransformToCrossbarBase
 from Network.datasets import encoding_to_spikes
 
-
-def g_to_r_2d(matrix_2d):
-    """
-    Быстрое преобразование 2D матрицы в сопротивления
-    """
-    # Масштабирование в проводимости [0.00005, 0.001]
-    G = 0.00005 + matrix_2d * (0.001 - 0.00005)
-
-    # Преобразование в сопротивления [1000, 20000]
-    R = 1000 * (0.001 / G)
-
-    return torch.clamp(R, min=1000, max=20000)
-
-def compute_e_crossbar(input_spikes = None, w = None):
-    r_i = 1
-    # g = TransformToCrossbarBase(w, R_min=1000, R_max=20000)
-    # return g.weights_Om
-
-    r = g_to_r_2d(w)
-    #print( torch.max(r), torch.min(r),torch.mean(r) ) можно построить график с уменьшением среднего значения весов
-
-    solution = badcrossbar.compute(input_spikes*0.5, r, r_i)
-    #print(solution.currents.word_line, len(solution.currents.word_line),len(solution.currents.word_line[0]))
-    cur_devices = torch.from_numpy(solution.currents.device)
-    cur_w_line = torch.from_numpy(solution.currents.word_line)
-    cur_b_line = torch.from_numpy(solution.currents.bit_line)
-    energy_devices = torch.sum( cur_devices ** 2 * r * 1 * 10 ** -6) * 10**9
-    energy_w_line = torch.sum( cur_w_line ** 2 * r_i * 1 * 10 ** -6) * 10 ** 9
-    energy_b_line = torch.sum( cur_b_line ** 2 * r_i * 1 * 10 ** -6) * 10 ** 9
-    sum_energy = energy_devices + energy_w_line + energy_b_line
-    print(f"-------{torch.sum(input_spikes)}--------")
-    print(f"{energy_devices} нДж device")
-    print(f"{energy_w_line} нДж word line")
-    print(f"{energy_b_line} нДж bit line")
-    print(f"{sum_energy} нДж sum")
-    return sum_energy
-    #print(np.max(solution.currents.device), np.min(solution.currents.device),np.mean(solution.currents.device))
 # Параметры
-torch.set_printoptions(threshold=100000)
 n_train = 50
 N_INPUT = 28 * 28
 N_NEURONS = 100
-TIME_STEPS = 4
+TIME_STEPS = 25
 LR_STDP = 0.005
 TAU_M = 15  # мембранная постоянная
 TAU_TRACE = 20.0  # постоянная следов STDP
-THRESHOLD = 4
+THRESHOLD = 2
 REST = 0.0
-REFRACTORY_PERIOD = 10  # длительность рефрактерного периода в тиках
-inh_coef = 0.8
+REFRACTORY_PERIOD = 15  # длительность рефрактерного периода в тиках
+inh_coef = 0.9
 # Инициализация весов и следов
 W = torch.randn(N_INPUT, N_NEURONS) * 0.01
 W = torch.clamp(W, 0.0, 1.0)
-
 W.requires_grad_(False)
 
 trace_pre = torch.zeros(N_INPUT, N_NEURONS)
@@ -118,18 +75,12 @@ def stdp_update(w, trace_pre_col, trace_post_val, spikes_pre, spike_post, refrac
     # Ограничение весов
     w = torch.clamp(w, 0, 1)
 
-
-    #print(w)
     return w, trace_pre_col, trace_post_val
 
 
 # Обучение
 print("Обучение...")
-
-full_crossbar_power = []
-all_neuron_spikes = 0
-comparator_energy = 0
-for batch_idx, (data, label) in enumerate(train_loader):
+for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
 
     if batch_idx >= n_train:
         break
@@ -144,13 +95,8 @@ for batch_idx, (data, label) in enumerate(train_loader):
     refractory_counters = torch.zeros(N_NEURONS, dtype=torch.long)
     spike_history = []
 
-
     for i, t in enumerate(range(TIME_STEPS)):
         # Обновление всех нейронов
-        # print(input_spikes[i].shape, W.shape)
-        # print(input_spikes[i].reshape(784,1))
-        full_crossbar_power.append(compute_e_crossbar(input_spikes[i].reshape(784,1), w=W))
-
         spikes_out = torch.zeros(N_NEURONS)
 
         new_refractory = torch.zeros(N_NEURONS, dtype=torch.long)
@@ -169,13 +115,12 @@ for batch_idx, (data, label) in enumerate(train_loader):
 
         # Латеральное торможение (ингибирование соседей)
         active = torch.where((spikes_out > 0))[0]
-        comparator_energy += 1
+
         if len(active) > 0:
 
             # Выбираем самый активный нейрон среди не-рефрактерных
             winner = active[torch.argmax(v[active])]
 
-            all_neuron_spikes += 1
             # Подавляем все остальные спайки
             spikes_out = torch.zeros(N_NEURONS)
             spikes_out[winner] = 1.0
@@ -199,14 +144,13 @@ for batch_idx, (data, label) in enumerate(train_loader):
                     spikes_input, spikes_out[j], refractory_before
                 )
 
-
         # Обновление следов для всех нейронов
         trace_post = trace_post * (1 - 1 / TAU_TRACE) + spikes_out
         trace_pre = trace_pre * (1 - 1 / TAU_TRACE) + spikes_input.unsqueeze(1)
 
 # Вывод и сохранение
-# print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
-#
+print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
+
 with open('weights.pkl', 'wb') as f:
     pickle.dump(W.numpy(), f)
 print("\nВеса сохранены в weights.pkl")

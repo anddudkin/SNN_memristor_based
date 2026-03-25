@@ -7,6 +7,11 @@ import matplotlib.pyplot as plt
 
 from Network.datasets import encoding_to_spikes
 
+with open("weights.pkl", 'rb') as f:
+    W = torch.load(f)
+
+W.requires_grad_(False)
+W = [[],[]]
 # Параметры
 n_train = 50
 N_INPUT = 28 * 28
@@ -20,11 +25,7 @@ REST = 0.0
 REFRACTORY_PERIOD = 15  # длительность рефрактерного периода в тиках
 inh_coef = 0.9
 # Инициализация весов и следов
-W = torch.randn(N_INPUT, N_NEURONS) * 0.01
-W.requires_grad_(False)
 
-trace_pre = torch.zeros(N_INPUT, N_NEURONS)
-trace_post = torch.zeros(N_NEURONS)
 
 # Загрузка MNIST
 transform = torchvision.transforms.Compose([
@@ -40,56 +41,26 @@ def lif_update(v, refractory_counter, spikes_in, w_col):
     if refractory_counter > 0:
         # Нейрон в рефрактерном периоде
         return v, 0.0, refractory_counter - 1
-
-    # Входной ток от спайков
     i_in = torch.dot(spikes_in, w_col)
-    # plt.imshow(spikes_in.reshape(28,28))
-    # plt.show()
-    # Обновление потенциала
     v = v * (1 - 1 / TAU_M) + i_in
-
-    # Генерация спайков
     if v >= THRESHOLD:
         spike = 1.0
         v = REST
         refractory_counter = REFRACTORY_PERIOD
     else:
         spike = 0.0
-
     return v, spike, refractory_counter
 
 
-def stdp_update(w, trace_pre_col, trace_post_val, spikes_pre, spike_post, refractory_active):
-    """Обновление весов по правилу STDP"""
-    # Обновление следов
-    trace_pre_col = trace_pre_col * (1 - 1 / TAU_TRACE) + spikes_pre
-    trace_post_val = trace_post_val * (1 - 1 / TAU_TRACE) + spike_post
-
-    # STDP только если нейрон не в рефрактерном периоде
-    if spike_post > 0 and not refractory_active:
-        # Пост-синаптический спайк: LTP для активных пре-синапсов
-        delta_w = LR_STDP * trace_pre_col
-        w += delta_w
-
-    # Ограничение весов
-    w = torch.clamp(w, 0, 1)
-
-    return w, trace_pre_col, trace_post_val
-
-
-# Обучение
-print("Обучение...")
 for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
 
     if batch_idx >= n_train:
         break
 
-    # Преобразование изображения в спайки (интенсивность -> частота)
-    img = data.view(-1) # в одну строку 784
+
+    img = data.view(-1)
     input_spikes = encoding_to_spikes(img, TIME_STEPS)
-    # print(input_spikes.shape)
-    # print(input_spikes)
-    # Инициализация состояния
+
     v = torch.zeros(N_NEURONS)
     refractory_counters = torch.zeros(N_NEURONS, dtype=torch.long)
     spike_history = []
@@ -131,21 +102,6 @@ for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
                     v[j] = max(v[j] * inh_coef, REST)  # дополнительное торможение
 
         spike_history.append(spikes_out)
-
-        # STDP обучение для активных нейронов
-        for j in range(N_NEURONS):
-            if spikes_out[j] > 0:
-                # Проверяем, не в рефрактерном ли периоде был нейрон до спайка
-                refractory_before = (refractory_counters[j] == REFRACTORY_PERIOD - 1)
-
-                W[:, j], trace_pre[:, j], trace_post[j] = stdp_update(
-                    W[:, j], trace_pre[:, j], trace_post[j],
-                    spikes_input, spikes_out[j], refractory_before
-                )
-
-        # Обновление следов для всех нейронов
-        trace_post = trace_post * (1 - 1 / TAU_TRACE) + spikes_out
-        trace_pre = trace_pre * (1 - 1 / TAU_TRACE) + spikes_input.unsqueeze(1)
 
 # Вывод и сохранение
 print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
