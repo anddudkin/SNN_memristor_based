@@ -4,7 +4,7 @@
 
 const int N_INPUT = 28 * 28;
 const int N_NEURONS = 100;
-const int TIME_STEPS = 4;
+const int TIME_STEPS = 25;
 const int N_IMAGES = 50;
 const float TAU_M = 15.0f;
 const float THRESHOLD = 2.0f;  //
