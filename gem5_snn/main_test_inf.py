@@ -148,7 +148,7 @@ for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
         trace_post = trace_post * (1 - 1 / TAU_TRACE) + spikes_out
         trace_pre = trace_pre * (1 - 1 / TAU_TRACE) + spikes_input.unsqueeze(1)
 
-# Вывод и сохранение
+# Вывод и сохранени
 print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
 
 with open('weights.pkl', 'wb') as f:
