@@ -38,7 +38,7 @@ def compute_e_crossbar(input_spikes = None, w = None):
     cur_devices = torch.from_numpy(solution.currents.device)
     cur_w_line = torch.from_numpy(solution.currents.word_line)
     cur_b_line = torch.from_numpy(solution.currents.bit_line)
-    print(solution.currents.device.shape,solution.currents.word_line.shape,solution.currents.bit_line.shape)
+
     energy_devices = torch.sum( cur_devices ** 2 * r * 1 * 10 ** -6) * 10**9
     energy_w_line = torch.sum( cur_w_line ** 2 * r_i * 1 * 10 ** -6) * 10 ** 9
     energy_b_line = torch.sum( cur_b_line ** 2 * r_i * 1 * 10 ** -6) * 10 ** 9
