@@ -1,0 +1,1 @@
+./mcpat -infile test7.xml -print_level 5 > results15.log
