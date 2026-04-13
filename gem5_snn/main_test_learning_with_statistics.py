@@ -22,8 +22,8 @@ def g_to_r_2d(matrix_2d):
     R = 1000 * (0.001 / G)
 
     return torch.clamp(R, min=1000, max=20000)
-
-def compute_e_crossbar(input_spikes = None, w = None):
+weights_plot = []
+def compute_e_crossbar(input_spikes = None, w = None, time_step = None):
     r_i = 1
     # g = TransformToCrossbarBase(w, R_min=1000, R_max=20000)
     # return g.weights_Om
@@ -32,6 +32,8 @@ def compute_e_crossbar(input_spikes = None, w = None):
     #print( torch.max(r), torch.min(r),torch.mean(r) ) можно построить график с уменьшением среднего значения весов
 
     solution = badcrossbar.compute(input_spikes*0.5, r, r_i)
+    if time_step == TIME_STEPS:
+        weights_plot.append(torch.mean(r))
     #print(solution.currents.word_line, len(solution.currents.word_line),len(solution.currents.word_line[0]))
     cur_devices = torch.from_numpy(solution.currents.device)
     cur_w_line = torch.from_numpy(solution.currents.word_line)
@@ -145,11 +147,11 @@ for batch_idx, (data, label) in enumerate(train_loader):
     spike_history = []
 
 
-    for i, t in enumerate(range(TIME_STEPS)):
+    for i in range(TIME_STEPS):
         # Обновление всех нейронов
         # print(input_spikes[i].shape, W.shape)
         # print(input_spikes[i].reshape(784,1))
-        full_crossbar_power.append(compute_e_crossbar(input_spikes[i].reshape(784,1), w=W))
+        full_crossbar_power.append(compute_e_crossbar(input_spikes[i].reshape(784,1), w=W, time_step = i))
 
         spikes_out = torch.zeros(N_NEURONS)
 
@@ -207,9 +209,11 @@ for batch_idx, (data, label) in enumerate(train_loader):
 # Вывод и сохранение
 # print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
 #
-with open('weights.pkl', 'wb') as f:
-    pickle.dump(W.numpy(), f)
-print("\nВеса сохранены в weights.pkl")
+plt.plot(list(range(n_train)),weights_plot)
+plt.show()
+# with open('weights.pkl', 'wb') as f:
+#     pickle.dump(W.numpy(), f)
+# print("\nВеса сохранены в weights.pkl")
 
 # Визуализация обученных рецептивных полей
 import matplotlib.pyplot as plt

@@ -80,6 +80,7 @@ def stdp_update(w, trace_pre_col, trace_post_val, spikes_pre, spike_post, refrac
 
 # Обучение
 print("Обучение...")
+plot_weights = []
 for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
 
     if batch_idx >= n_train:
@@ -147,13 +148,18 @@ for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
         # Обновление следов для всех нейронов
         trace_post = trace_post * (1 - 1 / TAU_TRACE) + spikes_out
         trace_pre = trace_pre * (1 - 1 / TAU_TRACE) + spikes_input.unsqueeze(1)
-
+    plot_weights.append(torch.mean(W))
+def g(x):
+    return 1/x
+plot_weights=list(map(g,plot_weights))
+plt.plot(range(n_train), plot_weights)
+plt.show()
 # Вывод и сохранени
 print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
 
-with open('weights.pkl', 'wb') as f:
-    pickle.dump(W.numpy(), f)
-print("\nВеса сохранены в weights.pkl")
+# with open('weights.pkl', 'wb') as f:
+#     pickle.dump(W.numpy(), f)
+# print("\nВеса сохранены в weights.pkl")
 
 # Визуализация обученных рецептивных полей
 import matplotlib.pyplot as plt
