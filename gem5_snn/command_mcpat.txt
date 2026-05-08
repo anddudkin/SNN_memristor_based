@@ -1,9 +1,19 @@
 sudo docker run -it -v $(pwd):/gem5_work -w /gem5_work ghcr.io/gem5/ubuntu-24.04_all-dependencies /bin/bash
 
+Компиляция для ARM gem5
+sudo apt-get install g++-aarch64-linux-gnu
+aarch64-linux-gnu-g++ -static -O2 -o test_snn main_test_formal_network_with_clean.cc
+
+запуск
+./build/ARM/gem5.opt test_ann.py
+
+Тест сс программы
+ gcc -o main_test_formal_network_with_clean1 main_test_formal_network_with_clean1.cc -lm
+./main_test_formal_network_with_clean1
 
 
 
-
+Mcpat
 
 ./mcpat -infile test7.xml -print_level 5 > results15.log
 
