@@ -11,7 +11,7 @@ from Network.datasets import encoding_to_spikes
 
 import badcrossbar
 from Network.datasets import encoding_to_spikes
-
+from badcrossbar.compute import compute
 
 def g_to_r_2d(matrix_2d):
     """
@@ -27,21 +27,22 @@ def g_to_r_2d(matrix_2d):
 
 def compute_e_crossbar(input_spikes = None, w = None):
     r_i = 1
+    t_pulse = 1 * 10 ** -6
     # g = TransformToCrossbarBase(w, R_min=1000, R_max=20000)
     # return g.weights_Om
 
     r = g_to_r_2d(w)
     #print( torch.max(r), torch.min(r),torch.mean(r) ) можно построить график с уменьшением среднего значения весов
 
-    solution = badcrossbar.compute(input_spikes*0.5, r, r_i)
+    solution = badcrossbar.compute(input_spikes*0.6, r, r_i)
     #print(solution.currents.word_line, len(solution.currents.word_line),len(solution.currents.word_line[0]))
     cur_devices = torch.from_numpy(solution.currents.device)
     cur_w_line = torch.from_numpy(solution.currents.word_line)
     cur_b_line = torch.from_numpy(solution.currents.bit_line)
 
-    energy_devices = torch.sum( cur_devices ** 2 * r * 1 * 10 ** -6) * 10**9
-    energy_w_line = torch.sum( cur_w_line ** 2 * r_i * 1 * 10 ** -6) * 10 ** 9
-    energy_b_line = torch.sum( cur_b_line ** 2 * r_i * 1 * 10 ** -6) * 10 ** 9
+    energy_devices = torch.sum( cur_devices ** 2 * r * t_pulse) * 10**9
+    energy_w_line = torch.sum( cur_w_line ** 2 * r_i * t_pulse) * 10 ** 9
+    energy_b_line = torch.sum( cur_b_line ** 2 * r_i * t_pulse) * 10 ** 9
     sum_energy = energy_devices + energy_w_line + energy_b_line
     # print(f"-------{torch.sum(input_spikes)}--------")
     # print(f"{energy_devices} нДж device")
@@ -56,13 +57,18 @@ with open("weights.pkl", "rb") as f:
 # plt.imshow(W)
 # plt.show()
 W = np.array(W)
+
+N_NEURONS = 10
+W = W[:, :N_NEURONS]
+
+
 W= torch.from_numpy(W)
 W.requires_grad_(False)
 
 # Параметры
 n_train = 50
 N_INPUT = 28 * 28
-N_NEURONS = 100
+
 TIME_STEPS = 25
 LR_STDP = 0.005
 TAU_M = 15  # мембранная постоянная
@@ -156,33 +162,34 @@ for batch_idx, (data, label) in enumerate(tqdm(train_loader, total= n_train)):
         spike_history.append(spikes_out)
 
 # Вывод и сохранение
-print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
+# print(f"\nФинальная матрица весов (первые 10x10):\n{W[:10, :10]}")
 
-with open('weights.pkl', 'wb') as f:
-    pickle.dump(W.numpy(), f)
-print("\nВеса сохранены в weights.pkl")
+# with open('weights.pkl', 'wb') as f:
+#     pickle.dump(W.numpy(), f)
+# print("\nВеса сохранены в weights.pkl")
 
 # Визуализация обученных рецептивных полей
-import matplotlib.pyplot as plt
-
-fig, axes = plt.subplots(10, 10, figsize=(10, 10))
-for i in range(min(100, N_NEURONS)):
-    row, col = i // 10, i % 10
-    weight_map = W[:, i].reshape(28, 28).numpy()
-    axes[row, col].imshow(weight_map, cmap='hot', interpolation='nearest')
-    axes[row, col].axis('off')
-plt.suptitle('Рецептивные поля обученных нейронов')
-plt.tight_layout()
-plt.savefig('receptive_fields.png', dpi=100)
-plt.show()
+# import matplotlib.pyplot as plt
+#
+# fig, axes = plt.subplots(10, 10, figsize=(10, 10))
+# for i in range(min(100, N_NEURONS)):
+#     row, col = i // 10, i % 10
+#     weight_map = W[:, i].reshape(28, 28).numpy()
+#     axes[row, col].imshow(weight_map, cmap='hot', interpolation='nearest')
+#     axes[row, col].axis('off')
+# plt.suptitle('Рецептивные поля обученных нейронов')
+# plt.tight_layout()
+# plt.savefig('receptive_fields.png', dpi=100)
+# plt.show()
 
 # Дополнительная статистика
 print(f"\nСтатистика:")
+print(N_NEURONS)
 # print(f"Среднее значение весов: {W.mean():.4f}")
 # print(f"Количество нулевых весов: {(W == 0).sum().item()}")
 # print(f"Количество максимальных весов: {(W == 1).sum().item()}")
 print(f"сгенерированные импульсы нейронами {all_neuron_spikes}")
-print(f"количество сравнений с порогом {comparator_energy}")
+# print(f"количество сравнений с порогом {comparator_energy}")
 print(f"Кроссбар суммарная {sum(full_crossbar_power)} средняя {np.mean(full_crossbar_power)} кол во проходов {n_train*TIME_STEPS}")
 
 
