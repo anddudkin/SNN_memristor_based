@@ -34,7 +34,7 @@ def compute_e_crossbar(input_spikes = None, w = None):
     return energy_devices,energy_w_line,energy_b_line,sum_energy
 
 energy_devices,energy_w_line,energy_b_line,sum_energy =[],[],[],[]
-n_values = range(1,300)
+n_values = range(1,850)
 
 for n in tqdm(n_values):
     arr = np.random.uniform(1000, 20000, size=(784, n))
