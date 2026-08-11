@@ -1,12 +1,8 @@
 from matplotlib import pyplot as plt
 
-import badcrossbar
-from Network.datasets import encoding_to_spikes
-from badcrossbar.compute import compute
+
 import numpy as np
-import torch
-from tqdm import tqdm
-import pickle
+
 
 data = np.load('energy_data.npz')
 n_values = data['n_values']
